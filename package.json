@@ -1,0 +1,79 @@
+{
+  "name": "bedmal",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "start": "react-native start",
+    "test": "jest",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@react-native-community/async-storage": "^1.10.0",
+    "@react-native-community/masked-view": "^0.1.10",
+    "@react-native-community/netinfo": "^5.8.0",
+    "@react-native-community/picker": "^1.8.1",
+    "@react-native-community/toolbar-android": "0.1.0-rc.2",
+    "@react-native-firebase/app": "^12.1.0",
+    "@react-native-firebase/auth": "^12.1.0",
+    "@react-native-google-signin/google-signin": "^6.0.1",
+    "@react-native-mapbox-gl/maps": "^8.2.0-beta2",
+    "axios": "^0.21.1",
+    "beautify-json": "^1.0.1",
+    "lottie-ios": "^3.1.8",
+    "lottie-react-native": "^4.0.2",
+    "moment-jalaali": "^0.9.2",
+    "native-base": "^2.13.8",
+    "popup-ui": "^1.0.10",
+    "react": "16.9.0",
+    "react-native": "0.61.5",
+    "react-native-cards-slider": "^0.1.2",
+    "react-native-dialog-input": "^1.0.8",
+    "react-native-exit-app": "^1.1.0",
+    "react-native-gesture-handler": "^1.6.1",
+    "react-native-htmlview": "^0.16.0",
+    "react-native-image-crop-picker": "^0.31.1",
+    "react-native-image-slider-box": "^1.0.12",
+    "react-native-image-slider-show": "^1.0.3",
+    "react-native-modal": "^11.5.6",
+    "react-native-phone-input": "^1.0.10",
+    "react-native-render-html": "^5.1.0",
+    "react-native-safe-area-context": "^0.7.3",
+    "react-native-screens": "^2.7.0",
+    "react-native-scrolling-button-menu": "0.0.4",
+    "react-native-side-menu": "^1.1.3",
+    "react-native-simple-radio-button": "^2.7.4",
+    "react-native-slideshow": "^1.0.1",
+    "react-native-svg": "^12.1.1",
+    "react-native-svg-transformer": "^0.14.3",
+    "react-native-textinput-effects": "^0.6.1",
+    "react-native-ui-stepper": "^1.2.4",
+    "react-native-vector-icons": "^6.6.0",
+    "react-navigation": "^4.3.9",
+    "react-navigation-stack": "^2.10.4",
+    "react-redux": "^7.2.4",
+    "redux": "^4.1.0",
+    "redux-persist": "^6.0.0",
+    "reselect": "^4.0.0",
+    "rn-modal-picker": "^0.2.9"
+  },
+  "rnpm": {
+    "assets": [
+      "./asset/fonts"
+    ]
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.2",
+    "@babel/runtime": "^7.6.2",
+    "@react-native-community/eslint-config": "^0.0.5",
+    "babel-jest": "^24.9.0",
+    "eslint": "^6.5.1",
+    "jest": "^24.9.0",
+    "metro-react-native-babel-preset": "^0.56.0",
+    "react-test-renderer": "16.9.0"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}

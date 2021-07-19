@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="73" height="41" viewBox="0 0 73 41">
+  <defs>
+    <filter id="Toggle_BG" x="0" y="0" width="73" height="41" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Toggle" transform="translate(9 6)">
+    <g id="Toggle-2" data-name="Toggle" transform="translate(55.269 23) rotate(180)">
+      <g transform="matrix(-1, 0, 0, -1, 64.27, 29)" filter="url(#Toggle_BG)">
+        <rect id="Toggle_BG-2" data-name="Toggle BG" width="55" height="23" rx="11.5" transform="translate(64 29) rotate(180)" fill="#c3bcbc"/>
+      </g>
+      <circle id="Toggle-3" data-name="Toggle" cx="9.5" cy="9.5" r="9.5" transform="translate(34.521 2)" fill="#f0f0f0"/>
+    </g>
+  </g>
+</svg>

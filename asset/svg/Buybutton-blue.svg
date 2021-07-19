@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="90" height="45" viewBox="0 0 90 45">
+  <defs>
+    <filter id="Rectangle_12" x="0" y="0" width="90" height="45" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Buy_button" data-name="Buy button" transform="translate(9 6)">
+    <g id="Component_23_1" data-name="Component 23 – 1">
+      <g transform="matrix(1, 0, 0, 1, -9, -6)" filter="url(#Rectangle_12)">
+        <rect id="Rectangle_12-2" data-name="Rectangle 12" width="72" height="27" rx="13.5" transform="translate(9 6)" fill="#3d80f2"/>
+      </g>
+    </g>
+    <text id="Buy" transform="translate(36 18)" fill="#fafafa" font-size="18" font-family="SegoeUI, Segoe UI"><tspan x="-14.607" y="0">Buy</tspan></text>
+  </g>
+</svg>

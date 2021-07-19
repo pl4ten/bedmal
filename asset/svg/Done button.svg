@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="54" height="54" viewBox="0 0 54 54">
+  <g id="Done_button" data-name="Done button" transform="translate(-168 -651)">
+    <g id="Curved_Rectangle" data-name="Curved Rectangle" transform="translate(168 651)">
+      <rect id="Curved_Rectangle-2" data-name="Curved Rectangle" width="54" height="54" rx="27" fill="#3d80f2"/>
+    </g>
+    <path id="Icon_material-done" data-name="Icon material-done" d="M14.489,26.172,7.447,19.13,5.1,21.478l9.389,9.389,20.12-20.12L32.261,8.4Z" transform="translate(175.146 658.367)" fill="#fff"/>
+  </g>
+</svg>

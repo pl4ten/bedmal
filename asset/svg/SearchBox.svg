@@ -1,0 +1,11 @@
+<svg id="Search_Icon" data-name="Search Icon" xmlns="http://www.w3.org/2000/svg" width="174" height="33" viewBox="0 0 174 33">
+  <g id="Search_Icon-2" data-name="Search Icon" fill="#fff" stroke="#707070" stroke-width="1">
+    <rect width="174" height="33" rx="16.5" stroke="none"/>
+    <rect x="0.5" y="0.5" width="173" height="32" rx="16" fill="none"/>
+  </g>
+  <g id="Search_Icon-3" data-name="Search Icon" transform="translate(22.273 7.965)">
+    <path id="Path_17" data-name="Path 17" d="M19.674,12.087A7.587,7.587,0,1,1,12.087,4.5a7.587,7.587,0,0,1,7.587,7.587Z" transform="translate(-4.5 -4.5)" fill="none" stroke="#707070" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+    <path id="Path_18" data-name="Path 18" d="M29.1,29.1l-4.125-4.125" transform="translate(-12.03 -12.03)" fill="none" stroke="#707070" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+  </g>
+  <text id="Search" transform="translate(77 22)" fill="#c3bcbc" font-size="16" font-family="SegoeUI, Segoe UI"><tspan x="-23.508" y="0">Search</tspan></text>
+</svg>

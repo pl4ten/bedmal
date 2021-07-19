@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="4.805" height="41.743" viewBox="0 0 48.805 41.743">
+  <defs>
+    <filter id="Icon_feather-message-square" x="0" y="0" width="48.805" height="41.743" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="new_masssage" data-name="new masssage" transform="translate(-212.5 -154.628)">
+    <g transform="matrix(1, 0, 0, 1, 212.5, 154.63)" filter="url(#Icon_feather-message-square)">
+      <path id="Icon_feather-message-square-2" data-name="Icon feather-message-square" d="M32.305,18.329c0,1.273-1.383,2.3-3.089,2.3H10.679L4.5,25.243V6.8c0-1.273,1.383-2.3,3.089-2.3H29.216c1.706,0,3.089,1.032,3.089,2.3Z" transform="translate(6 3)" fill="none" stroke="#707070" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+    </g>
+    <g id="Component_3_3" data-name="Component 3 – 3" transform="translate(241 158)">
+      <circle id="Ellipse_10" data-name="Ellipse 10" cx="8.5" cy="8.5" r="8.5" fill="#e03174"/>
+    </g>
+  </g>
+</svg>
