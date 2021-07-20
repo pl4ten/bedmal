@@ -37,6 +37,7 @@ class Bag extends React.Component {
       <View style={styles.container}>
         <View style={styles.bag}>
           <View style={styles.bagHeading}>
+
             <View style={styles.top}>
               <Text style={styles.bagHeadingTitle}>
                 Starbucks of Belsize Park
@@ -62,7 +63,7 @@ class Bag extends React.Component {
                     {this.state.packInBorrowBags ? <SwitchOn /> : <SwitchOff />}
                   </Button>
                 </View>
-                <View style={styles.optionRow}>
+                <View style={styles.optionRow2}>
                   <Text>Returning any Borrows?</Text>
                   <Button
                     transparent
@@ -378,6 +379,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   bag: {
+    height: "70%",
     borderRadius: 10,
     borderColor: '#C3BCBC',
     borderWidth: 1,
@@ -464,6 +466,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+
+  },
+  optionRow2: {
+    width: '80%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: "-2%"
+
   },
   content: {
     width: '100%',
@@ -557,7 +568,7 @@ const styles = StyleSheet.create({
     width: '100%',
     display: 'flex',
     flexDirection: 'column',
-    height: _defz.height / 2,
+    height: _defz.height / 2.5,
   },
   paginationContainer: {
     display: 'flex',

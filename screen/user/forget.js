@@ -7,6 +7,7 @@ import {Button, Text} from 'native-base';
 
 import {Keyboard, TouchableWithoutFeedback} from 'react-native';
 let _phone = '';
+let code="";
 let _defz = require('../com/def');
 import Loader from '../com/loader';
 const DismissKeyboard = ({children}) => (
@@ -27,6 +28,9 @@ class forget extends Component {
     this.setState({loading: true});
     const {navigate} = this.props.navigation;
     let formData = new FormData();
+    if (code!==''){
+      _phone=code+ "-"+_phone
+    }
     formData.append('username', _phone);
 
     await _defz
@@ -62,15 +66,29 @@ class forget extends Component {
           <Text style={styles.text2}>
             To reset your password , please enter the Phone number
           </Text>
-          <TextInput
-            placeholder="  Enter Phone number"
-            placeholderTextColor="silver"
-            onChangeText={text => {
-              _phone = text;
-            }}
-            maxLength={50}
-            style={styles.textInput}
-          />
+          <View style={{flexDirection: "row",marginTop: _defz.height/10}}>
+
+
+
+<TextInput
+  placeholder="+1"
+  placeholderTextColor="silver"
+  onChangeText={text => {
+    code = text;
+  }}
+  maxLength={50}
+  style={styles.textInput2}
+/>
+<TextInput
+  placeholder=" Phone number"
+  placeholderTextColor="silver"
+  onChangeText={text => {
+    _names = text;
+  }}
+  maxLength={50}
+  style={styles.textInput3}
+/>
+</View>
 
           <Button
             rounded
@@ -149,6 +167,37 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     marginLeft: '7%',
     marginTop: '3%',
+  },
+  textInput3: {
+    width: '75%',
+    alignSelf: 'center',
+
+    borderTopRightRadius: 20,
+    borderBottomRightRadius: 20,
+    height: 41,
+    elevation: 3,
+    backgroundColor: 'white',
+    color: 'black',
+    borderColor: '#000000',
+    textAlign: 'left',
+    marginTop: '5%',
+    padding: 13,
+    marginLeft: 1,
+  },
+  textInput2: {
+    width: '10%',
+    alignSelf: 'center',
+    borderTopLeftRadius: 25,
+    borderBottomLeftRadius:25,
+    height: 30,
+    elevation: 3,
+    backgroundColor: 'white',
+    color: 'black',
+    borderColor: '#000000',
+    textAlign: 'left',
+    marginTop: '5%',
+    padding: 13,
+    marginLeft: "5%"
   },
   textInput: {
     width: '90%',

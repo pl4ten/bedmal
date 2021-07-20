@@ -47,7 +47,6 @@ class usermain extends Component {
       await _defz
         .get_via_token('user/account/profile', 'GET', x)
         .then(response => {
-          console.log(response);
           if (response.status == 200) {
             this.setState({loading: false});
             navigate('home');
@@ -56,6 +55,7 @@ class usermain extends Component {
           }
         });
     } catch (error) {
+      this.setState({loading: true});
       console.log(error);
     }
   }

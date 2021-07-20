@@ -31,7 +31,7 @@ import {
 } from '@react-native-google-signin/google-signin';
 import PhoneInput from 'react-native-phone-input'
 import RNExitApp from 'react-native-exit-app';
-
+import RNPickerDialog from 'rn-modal-picker';
 const DismissKeyboard = ({children}) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
     {children}
@@ -43,10 +43,77 @@ class login extends Component {
     this.state = {
       loading: false,
       visible: true,
-      pickerData:null,
-      valid: "",
-      type: "",
-      value: ""
+      data: [
+        {
+          id: 1,
+          name: 'Afghanistan',
+        },
+        {
+          id: 2,
+          name: 'Bahrain',
+        },
+        {
+          id: 3,
+          name: 'Canada',
+        },
+        {
+          id: 4,
+          name: 'Denmark',
+        },
+        {
+          id: 5,
+          name: 'Egypt',
+        },
+        {
+          id: 6,
+          name: 'France',
+        },
+        {
+          id: 7,
+          name: 'Greece',
+        },
+        {
+          id: 8,
+          name: 'Hong Kong',
+        },
+        {
+          id: 9,
+          name: 'India',
+        },
+        {
+          id: 10,
+          name: 'Japan',
+        },
+        {
+          id: 11,
+          name: 'Kenya',
+        },
+        {
+          id: 12,
+          name: 'Liberia',
+        },
+        {
+          id: 13,
+          name: 'Malaysia',
+        },
+        {
+          id: 14,
+          name: 'Nepal',
+        },
+        {
+          id: 15,
+          name: 'Oman',
+        },
+        {
+          id: 16,
+          name: 'Poland',
+        },
+      ],
+      placeHolderText: '+1',
+      selectedText: '',
+      defaultValue: true,
+      select: '',
+      value: '',
     };
   }
   storeData = async () => {
@@ -57,30 +124,21 @@ class login extends Component {
       console.log('error save token ', e);
     }
   };
-
-
   signIn = async () => {
     try {
       GoogleSignin.configure({
         scopes: ['https://www.googleapis.com/auth/drive.readonly'],
         scopes: ['profile', 'email'],
         offlineAccess :false,
-        androidClientId:
-          '656104263668-6hb4db4ab35g18d8i0ljnvi5564k0u0r.apps.googleusercontent.com',
+        webClientId:
+          '726577649573-ln72gpmn99fignugjnjts3tedrn9r0im.apps.googleusercontent.com',
       });
-      await GoogleSignin.revokeAccess();
-      await GoogleSignin.signOut();
-      this.setState({ user: null });
-      const { idToken } = await GoogleSignin.signIn();
-      console.log('reached google sign in');
       const userInfo = await GoogleSignin.signIn();
-
-alert(userInfo.idToken)
       console.log(userInfo);
+      this.login_via_google(userInfo.idToken)
 
-      this.setState({userInfo});
-      const currentUser = await GoogleSignin.getCurrentUser();
-      console.log(currentUser );
+
+
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         alert('error occured SIGN_IN_CANCELLED');
@@ -132,7 +190,7 @@ alert(userInfo.idToken)
 
 
     await _defz
-      .send('user/login/google?idToken='+x, 'POST', "0", formData)
+      .send('user/login/google?idToken='+x, 'GET', "0", )
       .then(response => {
         console.log(response);
         this.setState({loading: false});
@@ -144,9 +202,9 @@ alert(userInfo.idToken)
           this.storeData();
           navigate('home');
         } else {
-          Alert.alert('Error', response.errors[0].message, [{text: 'ok'}], {
+           Alert.alert('Error', response.errors[0].message, [{text: 'ok'}], {
             cancelable: true,
-          });
+          }); 
         }
       });
   };
@@ -169,6 +227,9 @@ alert(userInfo.idToken)
               />
               <Text style={styles.text1}>Login</Text>
               <View style={{flexDirection: "row"}}>
+
+
+
               <TextInput
                 placeholder="+1"
                 placeholderTextColor="silver"
@@ -336,7 +397,9 @@ const styles = StyleSheet.create({
   textInput3: {
     width: '75%',
     alignSelf: 'center',
-    borderRadius: 25,
+
+    borderTopRightRadius: 20,
+    borderBottomRightRadius: 20,
     height: 41,
     elevation: 3,
     backgroundColor: 'white',
@@ -345,12 +408,14 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     marginTop: '5%',
     padding: 13,
+    marginLeft: 1,
   },
   textInput2: {
     width: '10%',
     alignSelf: 'center',
-    borderRadius: 10,
-    height: 25,
+    borderTopLeftRadius: 25,
+    borderBottomLeftRadius:25,
+    height: 30,
     elevation: 3,
     backgroundColor: 'white',
     color: 'black',
@@ -385,6 +450,91 @@ const styles = StyleSheet.create({
   splitterText: {
     margin: 10,
     color: 'gray',
+  },
+  selectedTextStyle: {
+    height: 50,
+    borderColor: 'gray',
+    backgroundColor: 'transparent',
+    justifyContent: 'center',
+    width: '100%',
+    color: 'black',
+    fontSize: 20,
+    paddingLeft: 10,
+    marginTop: -2,
+  },
+  selectedTextStyle1: {
+    height: 50,
+    borderColor: 'gray',
+    backgroundColor: 'transparent',
+    justifyContent: 'center',
+    width: '100%',
+    color: 'black',
+    fontSize: 20,
+    paddingLeft: 10,
+    marginTop: 15,
+  },
+  listTextStyle: {
+    color: '#000',
+    marginVertical: 10,
+    flex: 0.9,
+    marginLeft: 20,
+    marginHorizontal: 10,
+    textAlign: 'left',
+  },
+  searchBarStyle: {
+    marginBottom: 10,
+    flexDirection: 'row',
+    height: 40,
+    shadowRadius: 1,
+    shadowOpacity: 1.0,
+    borderWidth: 1,
+    shadowOffset: {
+      width: 1,
+      height: 1,
+    },
+    borderColor: '#303030',
+    shadowColor: '#303030',
+    borderRadius: 5,
+    elevation: 1,
+    marginHorizontal: 10,
+  },
+  placeHolderTextStyle: {
+    color: 'red',
+    padding: 10,
+    textAlign: 'left',
+    width: '99%',
+    flexDirection: 'row',
+  },
+  dropDownIconStyle: {
+    width: 10,
+    height: 10,
+    left: -40,
+    // marginTop: 20,
+  },
+  dropDownIconStyle1: {
+    width: 10,
+    height: 10,
+    left: -40,
+    marginTop: 15,
+  },
+  pickerStyle: {
+    shadowRadius: 0.5,
+    shadowOpacity: 0.5,
+    borderWidth: 0.5,
+    shadowOffset: {
+      width: 0.5,
+      height: 0.5,
+    },
+    height: 60,
+    borderColor: '#303030',
+    shadowColor: '#303030',
+    borderRadius: 2,
+    elevation: 0.5,
+  },
+  pickerStyle1: {
+    height: 60,
+    borderBottomColor: 'dodgerblue',
+    borderBottomWidth: 2,
   },
 });
 const mapStateToProps = state => ({

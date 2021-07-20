@@ -53,7 +53,7 @@ const RootStack = createStackNavigator(
   },
   {
     headerMode: 'none',
-    initialRouteName: 'login',
+    initialRouteName: 'usermain',
   },
 );
 

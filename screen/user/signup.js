@@ -6,24 +6,12 @@ import {StyleSheet, Image, TextInput, Alert} from 'react-native';
 import {Button, Text} from 'native-base';
 import AsyncStorage from '@react-native-community/async-storage';
 import {Keyboard, TouchableWithoutFeedback} from 'react-native';
-
+import {
+  GoogleSignin,
+  statusCodes,
+  GoogleSigninButton
+} from '@react-native-google-signin/google-signin';
 let _defz = require('../com/def');
-
-import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
-GoogleSignin.configure({
-  scopes: ['https://www.googleapis.com/auth/drive.readonly'], // what API you want to access on behalf of the user, default is email and profile
-  webClientId: '656104263668-6hb4db4ab35g18d8i0ljnvi5564k0u0r.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
-  offlineAccess: false, // if you want to access Google API on behalf of the user FROM YOUR SERVER
-  hostedDomain: '', // specifies a hosted domain restriction
-  loginHint: '', // [iOS] The user's ID, or email address, to be prefilled in the authentication UI if possible. [See docs here](https://developers.google.com/identity/sign-in/ios/api/interface_g_i_d_sign_in.html#a0a68c7504c31ab0b728432565f6e33fd)
-  forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below *.
-  accountName: 'bedmal', // [Android] specifies an account name on the device that should be used
-  iosClientId: '<FROM DEVELOPER CONSOLE>', // [iOS] optional, if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
-  googleServicePlistPath: '', // [iOS] optional, if you renamed your GoogleService-Info file, new name here, e.g. GoogleService-Info-Staging
-});
-GoogleSignin.configure({
-  webClientId: '656104263668-6hb4db4ab35g18d8i0ljnvi5564k0u0r.apps.googleusercontent.com',
-});
 
 import Loader from '../com/loader'
 let _names = '';
@@ -49,37 +37,34 @@ class signup extends Component {
   }
   signIn = async () => {
     try {
-      await GoogleSignin.hasPlayServices();
+      GoogleSignin.configure({
+        scopes: ['https://www.googleapis.com/auth/drive.readonly'],
+        scopes: ['profile', 'email'],
+        offlineAccess :false,
+        webClientId:
+          '726577649573-ln72gpmn99fignugjnjts3tedrn9r0im.apps.googleusercontent.com',
+      });
+
       const userInfo = await GoogleSignin.signIn();
-      console.log(userInfo)
-      this.setState({ userInfo });
-      alert(statusCodes)
+      this.login_via_google(userInfo.idToken)
+console.log(userInfo)
+
     } catch (error) {
+      console.log(error)
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        alert('error occured SIGN_IN_CANCELLED');
         // user cancelled the login flow
-        alert(statusCodes)
       } else if (error.code === statusCodes.IN_PROGRESS) {
-        // operation (e.g. sign in) is in progress already
-        alert(statusCodes)
+        alert('error occured IN_PROGRESS');
+        // operation (f.e. sign in) is in progress already
       } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        // play services not available or outdated
-        alert(statusCodes)
+        alert('error occured PLAY_SERVICES_NOT_AVAILABLE');
       } else {
-        // some other error happened
-        alert(statusCodes)
+        console.log(error);
+        alert('error occured unknow error');
       }
     }
   };
-onGoogleButtonPress= async () => {
-    // Get the users ID token
-    const { idToken } = await GoogleSignin.signIn();
-  
-    // Create a Google credential with the token
-    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-  
-    // Sign-in the user with the credential
-    return auth().signInWithCredential(googleCredential);
-  }
   storeData = async () => {
     try {
       await AsyncStorage.setItem('token', _token);
@@ -116,6 +101,31 @@ onGoogleButtonPress= async () => {
         }
       });
   };
+  login_via_google = async x => {
+    this.setState({loading: true});
+    const {navigate} = this.props.navigation;
+    let formData = new FormData();
+
+
+    await _defz
+      .send('user/login/google?idToken='+x, 'GET', "0", )
+      .then(response => {
+        console.log(response);
+        this.setState({loading: false});
+        if (response.status === 200) {
+          this.props.navigation.pop();
+          _token = response.token;
+          _defz._token = response.token;
+          this.storeData();
+          navigate('home');
+        } else {
+           Alert.alert('Error', response.errors[0].message, [{text: 'ok'}], {
+            cancelable: true,
+          }); 
+        }
+      });
+  };
+
   sigup = async x => {
    this.setState({loading:true})
     let formData = new FormData();
@@ -211,7 +221,7 @@ onGoogleButtonPress= async () => {
             <Text style={styles.splitterText}>Or</Text>
             <View style={styles.splitterLine} />
           </View>
-          <Button rounded style={styles.b2} onPress={() =>    this.onGoogleButtonPress().then(() => console.log('Signed in with Google!'))}>
+          <Button rounded style={styles.b2} onPress={() =>    this.signIn()}>
             <Image
               source={require('../../asset/google.png')}
               resizeMode="stretch"
@@ -334,7 +344,9 @@ const styles = StyleSheet.create({
   textInput3: {
     width: '75%',
     alignSelf: 'center',
-    borderRadius: 25,
+
+    borderTopRightRadius: 20,
+    borderBottomRightRadius: 20,
     height: 41,
     elevation: 3,
     backgroundColor: 'white',
@@ -343,12 +355,14 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     marginTop: '5%',
     padding: 13,
+    marginLeft: 1,
   },
   textInput2: {
     width: '10%',
     alignSelf: 'center',
-    borderRadius: 10,
-    height: 25,
+    borderTopLeftRadius: 25,
+    borderBottomLeftRadius:25,
+    height: 30,
     elevation: 3,
     backgroundColor: 'white',
     color: 'black',
