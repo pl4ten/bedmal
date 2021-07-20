@@ -648,7 +648,7 @@ class Product extends Component {
                 radio_props = [];
                 return (
                   <View>
-                    <Text style={styles.optionsTitle}>{'item.title'}</Text>
+                    <Text style={styles.optionsTitle}>{item.title}</Text>
                     <View style={styles.optionSize}>
                       <View style={styles.radioButtons}>
                         {item.values.forEach(val => {
