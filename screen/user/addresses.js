@@ -105,187 +105,188 @@ class Addresses extends Component {
                   navigation={this.props.navigation}
                   route={'Your Addresses'}
                 />
-                <ScrollView
-                  contentContainerStyle={{
-                    alignItems: 'center',
-                    justifyContent: 'space-around',
-                  }}
-                  showsVerticalScrollIndicator={false}
-                  style={styles.scrollView}>
-                  {this.state.addresses
-                    ? this.state.addresses.map(item => {
-                        return (
-                          <View
-                            style={
-                              this.state.itemToEditID === item.id
-                                ? styles.activeCard
-                                : styles.addressCard
-                            }>
-                            {this.state.itemToEditID === item.id ? (
-                              <>
-                                <Button
-                                  style={styles.closeEditButton}
-                                  transparent
-                                  onPress={() =>
-                                    this.setState({
-                                      itemToEditID: 0,
-                                      itemToEditPrimary: 0,
-                                    })
-                                  }>
-                                  <Icon
-                                    name="closecircleo"
-                                    type="AntDesign"
-                                    style={styles.closeEditButtonIcon}
-                                  />
-                                </Button>
-                                <TextInput
-                                  value={this.state.itemToEditAddress}
-                                  placeholder={'Your Address'}
-                                  onChangeText={text =>
-                                    this.setState({itemToEditAddress: text})
-                                  }
-                                  style={styles.textInput}
-                                />
-                                <TextInput
-                                  placeholder={'Postal Code'}
-                                  value={this.state.itemToEditPostalCode}
-                                  onChangeText={text =>
-                                    this.setState({itemToEditPostalCode: text})
-                                  }
-                                  style={styles.textInput}
-                                />
-                              </>
-                            ) : (
-                              <>
-                                <Text style={styles.addresText}>
-                                  {item.address}
-                                </Text>
-                                <Text>{item.postal_code}</Text>
-                              </>
-                            )}
-                            <View style={styles.addressCardFooter}>
+                {this.state.addresses ?(
+                  <ScrollView
+                    contentContainerStyle={{
+                      alignItems: 'center',
+                      justifyContent: 'space-around',
+                    }}
+                    showsVerticalScrollIndicator={false}
+                    style={styles.scrollView}>
+                    {this.state.addresses.map(item => {
+                      return (
+                        <View
+                          style={
+                            this.state.itemToEditID === item.id
+                              ? styles.activeCard
+                              : styles.addressCard
+                          }>
+                          {this.state.itemToEditID === item.id ? (
+                            <>
                               <Button
-                                iconRight
+                                style={styles.closeEditButton}
                                 transparent
                                 onPress={() =>
-                                  this.state.itemToEditID === item.id
-                                    ? this.setState({
-                                        primaryAddress: item.id,
-                                        itemToEditPrimary: item.id,
-                                      })
-                                    : null
-                                }
-                                style={
-                                  item.primary === 1 ||
-                                  this.state.itemToEditPrimary === item.id
-                                    ? styles.activePrimaryButton
-                                    : styles.addressCardFooterButton
+                                  this.setState({
+                                    itemToEditID: 0,
+                                    itemToEditPrimary: 0,
+                                  })
                                 }>
-                                <View style={{position: 'relative'}}>
-                                  {item.primary === 1 ? (
-                                    <Text
-                                      style={
-                                        item.primary === 1 ||
-                                        this.state.itemToEditPrimary === item.id
-                                          ? styles.primaryText
-                                          : styles.addressCardFooterText
-                                      }>
-                                      Primary
-                                    </Text>
-                                  ) : (
-                                    <View
-                                      style={[
-                                        item.primary === 1 ||
-                                        this.state.itemToEditPrimary === item.id
-                                          ? styles.primaryButtonActive
-                                          : styles.addressCardFooterText,
-                                      ]}>
-                                      <Text
-                                        style={[
-                                          this.state.itemToEditPrimary ===
-                                          item.id
-                                            ? styles.primaryText
-                                            : styles.notPrimaryText,
-                                        ]}>
-                                        Primary
-                                      </Text>
-                                      <Icon
-                                        name="circle"
-                                        type="FontAwesome"
-                                        style={
-                                          this.state.itemToEditPrimary ===
-                                          item.id
-                                            ? styles.footerButtonXIconPrimary
-                                            : styles.footerButtonXIcon
-                                        }
-                                      />
-                                    </View>
-                                  )}
-                                </View>
+                                <Icon
+                                  name="closecircleo"
+                                  type="AntDesign"
+                                  style={styles.closeEditButtonIcon}
+                                />
                               </Button>
-                              {this.state.itemToEditID === item.id ? (
-                                <Button
-                                  transparent
-                                  onPress={() => {
-                                    this.saveAddress(
-                                      this.state.itemToEditAddress,
-                                      this.state.itemToEditPostalCode,
-                                      this.state.itemToEditPrimary === item.id
-                                        ? 1
-                                        : 0,
-                                      this.state.itemToEditID,
-                                    );
-                                  }}
-                                  style={
-                                    this.state.itemToEditID === item.id
-                                      ? styles.activeEditButton
-                                      : styles.addressCardFooterButton
-                                  }>
+                              <TextInput
+                                value={this.state.itemToEditAddress}
+                                placeholder={'Your Address'}
+                                onChangeText={text =>
+                                  this.setState({itemToEditAddress: text})
+                                }
+                                style={styles.textInput}
+                              />
+                              <TextInput
+                                placeholder={'Postal Code'}
+                                value={this.state.itemToEditPostalCode}
+                                onChangeText={text =>
+                                  this.setState({itemToEditPostalCode: text})
+                                }
+                                style={styles.textInput}
+                              />
+                            </>
+                          ) : (
+                            <>
+                              <Text style={styles.addresText}>
+                                {item.address}
+                              </Text>
+                              <Text>{item.postal_code}</Text>
+                            </>
+                          )}
+                          <View style={styles.addressCardFooter}>
+                            <Button
+                              iconRight
+                              transparent
+                              onPress={() =>
+                                this.state.itemToEditID === item.id
+                                  ? this.setState({
+                                      primaryAddress: item.id,
+                                      itemToEditPrimary: item.id,
+                                    })
+                                  : null
+                              }
+                              style={
+                                item.primary === 1 ||
+                                this.state.itemToEditPrimary === item.id
+                                  ? styles.activePrimaryButton
+                                  : styles.addressCardFooterButton
+                              }>
+                              <View style={{position: 'relative'}}>
+                                {item.primary === 1 ? (
                                   <Text
                                     style={
-                                      this.state.itemToEditID === item.id
-                                        ? styles.activeEditText
+                                      item.primary === 1 ||
+                                      this.state.itemToEditPrimary === item.id
+                                        ? styles.primaryText
                                         : styles.addressCardFooterText
                                     }>
-                                    Save
+                                    Primary
                                   </Text>
-                                </Button>
-                              ) : (
-                                <Button
-                                  transparent
-                                  onPress={() =>
-                                    this.state.itemToEditID
-                                      ? null
-                                      : this.setState({
-                                          itemToEditID: item.id,
-                                          primaryAddress: 0,
-                                          itemToEditAddress: item.address,
-                                          itemToEditPostalCode:
-                                            item.postal_code,
-                                        })
-                                  }
+                                ) : (
+                                  <View
+                                    style={[
+                                      item.primary === 1 ||
+                                      this.state.itemToEditPrimary === item.id
+                                        ? styles.primaryButtonActive
+                                        : styles.addressCardFooterText,
+                                    ]}>
+                                    <Text
+                                      style={[
+                                        this.state.itemToEditPrimary === item.id
+                                          ? styles.primaryText
+                                          : styles.notPrimaryText,
+                                      ]}>
+                                      Primary
+                                    </Text>
+                                    <Icon
+                                      name="circle"
+                                      type="FontAwesome"
+                                      style={
+                                        this.state.itemToEditPrimary === item.id
+                                          ? styles.footerButtonXIconPrimary
+                                          : styles.footerButtonXIcon
+                                      }
+                                    />
+                                  </View>
+                                )}
+                              </View>
+                            </Button>
+                            {this.state.itemToEditID === item.id ? (
+                              <Button
+                                transparent
+                                onPress={() => {
+                                  this.saveAddress(
+                                    this.state.itemToEditAddress,
+                                    this.state.itemToEditPostalCode,
+                                    this.state.itemToEditPrimary === item.id
+                                      ? 1
+                                      : 0,
+                                    this.state.itemToEditID,
+                                  );
+                                }}
+                                style={
+                                  this.state.itemToEditID === item.id
+                                    ? styles.activeEditButton
+                                    : styles.addressCardFooterButton
+                                }>
+                                <Text
                                   style={
                                     this.state.itemToEditID === item.id
-                                      ? styles.activeEditButton
-                                      : styles.addressCardFooterButtonEdit
+                                      ? styles.activeEditText
+                                      : styles.addressCardFooterText
                                   }>
-                                  <Text
-                                    style={
-                                      this.state.itemToEditID === item.id
-                                        ? styles.activeEditText
-                                        : styles.addressCardFooterTextEdit
-                                    }>
-                                    Edit
-                                  </Text>
-                                </Button>
-                              )}
-                            </View>
+                                  Save
+                                </Text>
+                              </Button>
+                            ) : (
+                              <Button
+                                transparent
+                                onPress={() =>
+                                  this.state.itemToEditID
+                                    ? null
+                                    : this.setState({
+                                        itemToEditID: item.id,
+                                        primaryAddress: 0,
+                                        itemToEditAddress: item.address,
+                                        itemToEditPostalCode: item.postal_code,
+                                      })
+                                }
+                                style={
+                                  this.state.itemToEditID === item.id
+                                    ? styles.activeEditButton
+                                    : styles.addressCardFooterButtonEdit
+                                }>
+                                <Text
+                                  style={
+                                    this.state.itemToEditID === item.id
+                                      ? styles.activeEditText
+                                      : styles.addressCardFooterTextEdit
+                                  }>
+                                  Edit
+                                </Text>
+                              </Button>
+                            )}
                           </View>
-                        );
-                      })
-                    : null}
-                  <View style={{marginTop: 100}} />
-                </ScrollView>
+                        </View>
+                      );
+                    })}
+                    <View style={{marginTop: 100}} />
+                  </ScrollView>
+                ) : (
+                  <View style={styles.noAddress}>
+                    <Text>no address!</Text>
+                  </View>
+                )}
               </View>
             </View>
             <Footers navigation={this.props.navigation} route={'account'} />
@@ -305,6 +306,13 @@ const styles = StyleSheet.create({
   headerXbutton: {
     alignSelf: 'flex-end',
     marginTop: _defz.height / 50,
+  },
+  noAddress: {
+    width: '100%',
+    height: '90%',
+    backgroundColor: '#FAFAFA',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   headerXIcon: {
     alignSelf: 'center',

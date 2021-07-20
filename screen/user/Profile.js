@@ -181,7 +181,9 @@ class Profile extends Component {
                 </Left>
               ) : (
                 <Left style={styles.cardLeft}>
-                  <Text numberOfLines={1}  style={styles.text1}>Email Address</Text>
+                  <Text numberOfLines={1} style={styles.text1}>
+                    Email Address
+                  </Text>
                   <TextInput
                     placeholder={this.state.email}
                     placeholderTextColor="black"
@@ -332,7 +334,7 @@ const styles = StyleSheet.create({
   textInput: {
     alignSelf: 'flex-start',
     marginLeft: _defz.width / 40,
-    width:"100%"
+    width: '100%',
   },
   b2: {
     backgroundColor: '#3D80F2',
@@ -369,11 +371,11 @@ const styles = StyleSheet.create({
   },
   text1: {
     color: '#000',
-    fontSize: 17,
+    fontSize: 15,
     fontWeight: '100',
     alignSelf: 'flex-start',
     textTransform: 'capitalize',
-    width: "100%"
+    width: '120%',
   },
   headerXbutton: {
     alignSelf: 'flex-end',
@@ -388,11 +390,11 @@ const styles = StyleSheet.create({
   cardLeft: {
     display: 'flex',
     flexDirection: 'column',
-    width: "65%"
+    width: '100%',
   },
   cardLeftLarge: {
     flexDirection: 'column',
-    width: '70%',
+    width: '100%',
   },
   editButton: {
     color: 'white',

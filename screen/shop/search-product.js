@@ -1,5 +1,13 @@
 import React, {Component} from 'react';
-import {Text, StyleSheet, View, Alert, ScrollView,ActivityIndicator,Image} from 'react-native';
+import {
+  Text,
+  StyleSheet,
+  View,
+  Alert,
+  ScrollView,
+  ActivityIndicator,
+  Image,
+} from 'react-native';
 import {Button, Header, Icon, Item, Input} from 'native-base';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import MapboxGL, {MarkerView} from '@react-native-mapbox-gl/maps';
@@ -73,14 +81,14 @@ class SearchProduct extends Component {
       followUserLocation: true,
       showsUserHeadingIndicator: false,
     };
-    
+
     this.onRenderModeChange = this.onRenderModeChange.bind(this);
   }
   onRenderModeChange(index, renderMode) {
     this.setState({renderMode});
   }
   async get_store(parm_data) {
-    Keyboard.dismiss()
+    Keyboard.dismiss();
     this.setState({loading: true});
     const {navigate} = this.props.navigation;
     try {
@@ -93,7 +101,6 @@ class SearchProduct extends Component {
         .then(response => {
           console.log(response.departments);
           if (response.status === 200) {
-
             if (response.vendors) {
               this.setState({vendors: response.vendors});
             }
@@ -108,7 +115,6 @@ class SearchProduct extends Component {
     }
   }
   async searchProducts(searchText, id) {
-    
     try {
       console.log(searchText);
       Keyboard.dismiss();
@@ -157,7 +163,7 @@ class SearchProduct extends Component {
     }
   }
   shop_selecter = async x => {
-    Keyboard.dismiss()
+    Keyboard.dismiss();
     if (this.state.acctive_shop == x) {
       this.setState({acctive_shop: ''});
     } else {
@@ -166,15 +172,6 @@ class SearchProduct extends Component {
   };
   render() {
     let vendorID = this.props.navigation.state.params.vendorID;
-    const {
-      followUserLocation,
-      showsUserHeadingIndicator,
-      followUserMode,
-      androidRenderMode,
-    } = this.state;
-
-    let {settings, onUpdateSettings} = this.props;
-
     MapboxGL.setAccessToken(
       'pk.eyJ1IjoiYmFyYmFyeWFiIiwiYSI6ImNraTMyaWt3dTFta2oycnFxcDRrOW4xd2oifQ.190FCXQ4cF95_ZhzMisEyw',
     );
@@ -299,276 +296,272 @@ class SearchProduct extends Component {
           />
         </MapboxGL.MapView>
         {this.state.vendors !== null ? (
-              <View style={styles.types}>
-                <ScrollView style={styles.scrollViewH2} horizontal>
-                  {this.state.vendors.map((item, index) => {
-                    let img_arr = [];
-                    item.image_gallery.forEach(item => {
-                      img_arr.push(`http://bedmal-core.aralstudio.top${item}`);
-                    });
+          <View style={styles.types}>
+            <ScrollView style={styles.scrollViewH2} horizontal>
+              {this.state.vendors.map((item, index) => {
+                let img_arr = [];
+                item.image_gallery.forEach(item => {
+                  img_arr.push(`http://bedmal-core.aralstudio.top${item}`);
+                });
 
-                    return (
-                      <TouchableOpacity
-                        activeOpacity={1}
-                        key={index}
+                return (
+                  <TouchableOpacity
+                    activeOpacity={1}
+                    key={index}
+                    onPress={() => {
+                      this.state.acctive_shop !== item.id
+                        ? this.shop_selecter(item.id)
+                        : null;
+                    }}
+                    style={[
+                      this.state.acctive_shop !== item.id
+                        ? styles.touch_style_close
+                        : styles.touch_style_open,
+                    ]}>
+                    {this.state.acctive_shop == item.id ? (
+                      <Button
+                        style={styles.view_line_b}
                         onPress={() => {
-                          this.state.acctive_shop !== item.id
-                            ? this.shop_selecter(item.id)
-                            : null;
+                          this.shop_selecter(item.id);
                         }}
-                        style={[
-                          this.state.acctive_shop !== item.id
-                            ? styles.touch_style_close
-                            : styles.touch_style_open,
-                        ]}>
-                        {this.state.acctive_shop == item.id ? (
-                          <Button
-                            style={styles.view_line_b}
-                            onPress={() => {
-                              this.shop_selecter(item.id);
+                      />
+                    ) : null}
+                    <SliderBox
+                      images={img_arr}
+                      sliderBoxHeight={_defz.height / 6}
+                      parentWidth={_defz.width / 2}
+                      dotColor={'#fff'}
+                      style={styles.sliderImages}
+                    />
+                    <View style={{flexDirection: 'row', marginTop: ' 2%'}}>
+                      <Text style={styles.text_title_shop_number}>
+                        {index + 1} |{' '}
+                      </Text>
+                      <Text style={styles.text_title_shop}>{item.name}</Text>
+                    </View>
+                    {this.state.acctive_shop == item.id ? (
+                      <Text numberOfLines={1} style={styles.text_address}>
+                        {item.address}
+                      </Text>
+                    ) : null}
+
+                    {this.state.acctive_shop == item.id ? (
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          width: '80%',
+                          alignSelf: 'center',
+                          marginTop: 10,
+                        }}>
+                        <Text style={styles.text_borrow} numberOfLines={1}>
+                          Collection
+                        </Text>
+                        {item.collections ? (
+                          <Icon
+                            name="check"
+                            type="AntDesign"
+                            style={{
+                              color: 'black',
+                              marginLeft: 'auto',
+                              size: 15,
                             }}
                           />
-                        ) : null}
-                        <SliderBox
-                          images={img_arr}
-                          sliderBoxHeight={_defz.height / 6}
-                          parentWidth={_defz.width / 2}
-                          dotColor={'#fff'}
-                          style={styles.sliderImages}
-                        />
-                        <View style={{flexDirection: 'row', marginTop: ' 2%'}}>
-                          <Text style={styles.text_title_shop_number}>
-                            {index + 1} |{' '}
+                        ) : (
+                          <Icon
+                            name="close"
+                            type="AntDesign"
+                            style={{
+                              color: 'black',
+                              marginLeft: 'auto',
+                              size: 15,
+                            }}
+                          />
+                        )}
+                      </View>
+                    ) : null}
+                    {this.state.acctive_shop == item.id ? (
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          width: '80%',
+                          alignSelf: 'center',
+                        }}>
+                        <Text style={styles.text_borrow} numberOfLines={1}>
+                          Delivery{' '}
+                        </Text>
+                        {item.fulfillments ? (
+                          <Icon
+                            name="check"
+                            type="AntDesign"
+                            style={{
+                              color: 'black',
+                              marginLeft: 'auto',
+                              size: 15,
+                            }}
+                          />
+                        ) : (
+                          <Icon
+                            name="close"
+                            type="AntDesign"
+                            style={{
+                              color: 'black',
+                              marginLeft: 'auto',
+                              size: 15,
+                            }}
+                          />
+                        )}
+                      </View>
+                    ) : null}
+
+                    {this.state.acctive_shop == item.id ? (
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          width: '80%',
+                          alignSelf: 'center',
+                          marginTop: 20,
+                        }}>
+                        <Text style={styles.text_borrow} numberOfLines={1}>
+                          BorrowCup
+                        </Text>
+                        {item.borrow_partner_cup == 1 ? (
+                          <Icon
+                            name="check"
+                            type="AntDesign"
+                            style={{
+                              color: 'black',
+                              marginLeft: 'auto',
+                              size: 15,
+                            }}
+                          />
+                        ) : (
+                          <Icon
+                            name="close"
+                            type="AntDesign"
+                            style={{
+                              color: 'black',
+                              marginLeft: 'auto',
+                              size: 15,
+                            }}
+                          />
+                        )}
+                      </View>
+                    ) : null}
+                    {this.state.acctive_shop == item.id ? (
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          width: '80%',
+
+                          alignSelf: 'center',
+                        }}>
+                        <Text style={styles.text_borrow} numberOfLines={1}>
+                          BorrowBag
+                        </Text>
+                        {item.borrow_partner_bag == 1 ? (
+                          <Icon
+                            name="check"
+                            type="AntDesign"
+                            size={25}
+                            style={{
+                              color: 'black',
+                              marginLeft: 'auto',
+                              fontSize: 10,
+                            }}
+                          />
+                        ) : (
+                          <Icon
+                            name="close"
+                            type="AntDesign"
+                            style={{
+                              color: 'black',
+                              marginLeft: 'auto',
+                              size: 10,
+                            }}
+                          />
+                        )}
+                      </View>
+                    ) : null}
+
+                    {this.state.acctive_shop == item.id ? (
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          backgroundColor: '#F0F0F0',
+                          elevation: 5,
+                          width: '80%',
+                          alignSelf: 'center',
+                          borderRadius: 10,
+                          marginTop: '5%',
+                        }}>
+                        {this.state.loading_like == false ? (
+                          <Button
+                            transparent
+                            rounded
+                            style={{marginLeft: '5%'}}
+                            onPress={() =>
+                              this.like_dislike_vendor(item.id, index)
+                            }>
+                            {item.liked == true ? (
+                              <Icon
+                                name="heart"
+                                type="AntDesign"
+                                style={{color: '#3D80F2'}}
+                              />
+                            ) : (
+                              <Icon
+                                name="hearto"
+                                type="AntDesign"
+                                style={{color: 'gray'}}
+                              />
+                            )}
+                          </Button>
+                        ) : (
+                          <ActivityIndicator
+                            size="small"
+                            style={{marginLeft: '15%'}}
+                            color="gray"
+                          />
+                        )}
+                        <Button
+                          rounded
+                          style={{
+                            marginTop: _defz.height / 70,
+                            height: 26,
+                            bottom: _defz.height / 300,
+                            textTransform: 'capitalize',
+                            marginRight: '4%',
+                            justifyContent: 'center',
+                            marginLeft: 'auto',
+                            width: '30%',
+                            backgroundColor: '#3D80F2',
+                          }}
+                          onPress={() => navigate('storeFront', {id: item.id})}>
+                          <Text
+                            style={{
+                              color: 'white',
+                              textTransform: 'capitalize',
+                              textAlign: 'center',
+                            }}>
+                            Shop
                           </Text>
-                          <Text style={styles.text_title_shop}>
-                            {item.name}
-                          </Text>
-                        </View>
-                        {this.state.acctive_shop == item.id ? (
-                          <Text numberOfLines={1} style={styles.text_address}>
-                            {item.address}
-                          </Text>
-                        ) : null}
+                        </Button>
+                      </View>
+                    ) : null}
+                    {this.state.acctive_shop !== item.id ? (
+                      <View style={styles.view_line} />
+                    ) : null}
 
-                        {this.state.acctive_shop == item.id ? (
-                          <View
-                            style={{
-                              flexDirection: 'row',
-                              width: '80%',
-                              alignSelf: 'center',
-                              marginTop: 10,
-                            }}>
-                            <Text style={styles.text_borrow} numberOfLines={1}>
-                              Collection
-                            </Text>
-                            {item.collections ? (
-                              <Icon
-                                name="check"
-                                type="AntDesign"
-                                style={{
-                                  color: 'black',
-                                  marginLeft: 'auto',
-                                  size: 15,
-                                }}
-                              />
-                            ) : (
-                              <Icon
-                                name="close"
-                                type="AntDesign"
-                                style={{
-                                  color: 'black',
-                                  marginLeft: 'auto',
-                                  size: 15,
-                                }}
-                              />
-                            )}
-                          </View>
-                        ) : null}
-                        {this.state.acctive_shop == item.id ? (
-                          <View
-                            style={{
-                              flexDirection: 'row',
-                              width: '80%',
-                              alignSelf: 'center',
-                            }}>
-                            <Text style={styles.text_borrow} numberOfLines={1}>
-                              Delivery{' '}
-                            </Text>
-                            {item.fulfillments ? (
-                              <Icon
-                                name="check"
-                                type="AntDesign"
-                                style={{
-                                  color: 'black',
-                                  marginLeft: 'auto',
-                                  size: 15,
-                                }}
-                              />
-                            ) : (
-                              <Icon
-                                name="close"
-                                type="AntDesign"
-                                style={{
-                                  color: 'black',
-                                  marginLeft: 'auto',
-                                  size: 15,
-                                }}
-                              />
-                            )}
-                          </View>
-                        ) : null}
-
-                        {this.state.acctive_shop == item.id ? (
-                          <View
-                            style={{
-                              flexDirection: 'row',
-                              width: '80%',
-                              alignSelf: 'center',
-                              marginTop: 20,
-                            }}>
-                            <Text style={styles.text_borrow} numberOfLines={1}>
-                              BorrowCup
-                            </Text>
-                            {item.borrow_partner_cup == 1 ? (
-                              <Icon
-                                name="check"
-                                type="AntDesign"
-                                style={{
-                                  color: 'black',
-                                  marginLeft: 'auto',
-                                  size: 15,
-                                }}
-                              />
-                            ) : (
-                              <Icon
-                                name="close"
-                                type="AntDesign"
-                                style={{
-                                  color: 'black',
-                                  marginLeft: 'auto',
-                                  size: 15,
-                                }}
-                              />
-                            )}
-                          </View>
-                        ) : null}
-                        {this.state.acctive_shop == item.id ? (
-                          <View
-                            style={{
-                              flexDirection: 'row',
-                              width: '80%',
-
-                              alignSelf: 'center',
-                            }}>
-                            <Text style={styles.text_borrow} numberOfLines={1}>
-                              BorrowBag
-                            </Text>
-                            {item.borrow_partner_bag == 1 ? (
-                              <Icon
-                                name="check"
-                                type="AntDesign"
-                                size={25}
-                                style={{
-                                  color: 'black',
-                                  marginLeft: 'auto',
-                                  fontSize: 10,
-                                }}
-                              />
-                            ) : (
-                              <Icon
-                                name="close"
-                                type="AntDesign"
-                                style={{
-                                  color: 'black',
-                                  marginLeft: 'auto',
-                                  size: 10,
-                                }}
-                              />
-                            )}
-                          </View>
-                        ) : null}
-
-                        {this.state.acctive_shop == item.id ? (
-                          <View
-                            style={{
-                              flexDirection: 'row',
-                              backgroundColor: '#F0F0F0',
-                              elevation: 5,
-                              width: '80%',
-                              alignSelf: 'center',
-                              borderRadius: 10,
-                              marginTop: '5%',
-                            }}>
-                            {this.state.loading_like == false ? (
-                              <Button
-                                transparent
-                                rounded
-                                style={{marginLeft: '5%'}}
-                                onPress={() =>
-                                  this.like_dislike_vendor(item.id, index)
-                                }>
-                                {item.liked == true ? (
-                                  <Icon
-                                    name="heart"
-                                    type="AntDesign"
-                                    style={{color: '#3D80F2'}}
-                                  />
-                                ) : (
-                                  <Icon
-                                    name="hearto"
-                                    type="AntDesign"
-                                    style={{color: 'gray'}}
-                                  />
-                                )}
-                              </Button>
-                            ) : (
-                              <ActivityIndicator
-                                size="small"
-                                style={{marginLeft: '15%'}}
-                                color="gray"
-                              />
-                            )}
-                            <Button
-                              rounded
-                              style={{
-                                marginTop: _defz.height / 70,
-                                height: 26,
-                                bottom: _defz.height / 300,
-                                textTransform: 'capitalize',
-                                marginRight: '4%',
-                                justifyContent: "center",
-                                marginLeft: 'auto',
-                                width: "30%",
-                                backgroundColor: '#3D80F2',
-                              }}
-                              onPress={() =>
-                                navigate('storeFront', {id: item.id})
-                              }>
-                              <Text
-                                style={{
-                                  color: 'white',
-                                  textTransform: 'capitalize',
-                                  textAlign: "center"
-                                }}>
-                                Shop
-                              </Text>
-                            </Button>
-                          </View>
-                        ) : null}
-                        {this.state.acctive_shop !== item.id ? (
-                          <View style={styles.view_line} />
-                        ) : null}
-
-                        <View
-                          style={{marginTop: '10%', bottom: _defz.height / 300}}
-                        />
-                      </TouchableOpacity>
-                    );
-                  })}
-                  <View style={{marginRight: 25}} />
-                </ScrollView>
-              </View>
-            ) : null}
+                    <View
+                      style={{marginTop: '10%', bottom: _defz.height / 300}}
+                    />
+                  </TouchableOpacity>
+                );
+              })}
+              <View style={{marginRight: 25}} />
+            </ScrollView>
+          </View>
+        ) : null}
         <View style={styles.footer}>
           <Button
             style={styles.homeButton}
@@ -771,17 +764,15 @@ const styles = StyleSheet.create({
     marginTop: 5,
     backgroundColor: 'black',
     position: 'absolute',
-    flex:1,
-    zIndex:999,
+    flex: 1,
+    zIndex: 999,
   },
 
   map: {
-    marginTop: _defz.height/20,
+    marginTop: _defz.height / 20,
     width: _defz.width,
-    height: _defz.height,
     borderRadius: 100,
-    position: "relative"
-
+    position: 'relative',
   },
   transparentHeader: {
     zIndex: 999999,
@@ -861,12 +852,12 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 25,
     position: 'absolute',
     top: _defz.height / 13.5,
+    marginBottom: _defz.height / 3,
     backgroundColor: '#F0F0F0',
   },
   contentTransparent: {
     width: '100%',
     height: '100%',
-
     position: 'absolute',
     backgroundColor: '#000',
   },
@@ -890,7 +881,8 @@ const styles = StyleSheet.create({
   },
   productCards: {
     width: '100%',
-    marginTop: _defz.height / 4,
+    position: 'absolute',
+    top: _defz.height / 4,
     flex: 1,
     paddingRight: '2%',
     paddingLeft: '2%',

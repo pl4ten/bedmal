@@ -56,17 +56,22 @@ class Term extends Component {
           </Button>
         </View>
         <View style={styles.content}>
-          <Header
-            navigation={this.props.navigation}
-            route={
-              this.state.terms ? <Text> {this.state.terms.title} </Text> : null
-            }
-          />
-          <ScrollView style={{flexGrow: 0.5}}>
+          <View style={styles.heading}>
+            <Header
+              navigation={this.props.navigation}
+              route={
+                this.state.terms ? (
+                  <Text> {this.state.terms.title} </Text>
+                ) : null
+              }
+            />
+          </View>
+
+          <ScrollView style={styles.scrollView}>
             {this.state.terms ? (
               <Text style={styles.termsText}>{this.state.terms.content}</Text>
             ) : null}
-            <View style={{marginTop: 1500}} />
+            <View style={{marginTop: 300}} />
           </ScrollView>
         </View>
         <View style={styles.footer}>
@@ -87,6 +92,12 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     height: 100,
+  },
+  heading: {
+    width: '100%',
+    backgroundColor: '#FAFAFA',
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
   },
   content: {
     position: 'absolute',
@@ -109,9 +120,9 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     paddingTop: 20,
+    height: _defz.height / 1,
   },
   footer: {
-    backgroundColor: 'red',
     width: '100%',
     height: 90,
     zIndex: 99999,
@@ -129,8 +140,8 @@ const styles = StyleSheet.create({
   termsText: {
     color: '#707070',
     fontSize: 16,
-    width: "92%",
-    alignSelf: "center"
+    width: '92%',
+    alignSelf: 'center',
   },
 });
 export default Term;

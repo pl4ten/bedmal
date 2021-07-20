@@ -24,7 +24,7 @@ import {
   Badge,
 } from 'native-base';
 
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import {selectUserToken} from '../../redux/user/user.selectors';
 
 import AsyncStorage from '@react-native-community/async-storage';
@@ -53,21 +53,20 @@ class chat_main extends Component {
 
   componentWillMount() {
     this.get_chat();
-    timer= setInterval(() => {
+    timer = setInterval(() => {
       this.get_chat();
     }, 15000);
   }
-  componentWillUnmount(){
+  componentWillUnmount() {
     clearInterval(timer);
   }
-  nav(x){
+  nav(x) {
     const {navigate} = this.props.navigation;
-    if (x.receiver.type== "super_admin" ){
-          navigate('chat_one', {id: x.id,type:"admin"})
-    }else{
-      navigate('chat_one', {id: x.receiver.id,type:"vendor_chat"})
+    if (x.receiver.type == 'super_admin') {
+      navigate('chat_one', {id: x.id, type: 'admin'});
+    } else {
+      navigate('chat_one', {id: x.receiver.id, type: 'vendor_chat'});
     }
-
   }
   renderItems() {
     const {navigate} = this.props.navigation;
@@ -76,31 +75,38 @@ class chat_main extends Component {
       this.state.chatdata.map((dataItem, i) => {
         items.push(
           <List style={{}}>
-            <ListItem avatar>
+            <ListItem noBorder avatar style={styles.cartItem}>
               <TouchableOpacity
                 activeOpacity={1}
                 style={styles.chatAvatar}
-                onPress={() =>  this.nav(dataItem)}>
+                onPress={() => this.nav(dataItem)}>
                 <Left>
                   {dataItem.new_message === true ? (
-                                                         <Icon
-                                                         name="circle"
-                                                         type="FontAwesome"
-                                                         style={styles.avatarBadge}
-                                                       />
-                  ) : (
                     <Icon
-                    name="circle"
-                    type="FontAwesome"
-                    style={styles.avatarBadge_non}
-                  />
-                  )}
-                                    {dataItem.receiver.type== "super_admin"  ? (
-                      <Thumbnail style={{backgroundColor: 'white',borderWidth:1,borderColor:"black"}}  source={require('../../asset/img/playstore-icon.png')} />
+                      name="circle"
+                      type="FontAwesome"
+                      style={styles.avatarBadge}
+                    />
+                  ) : null}
+                  {dataItem.receiver.type == 'super_admin' ? (
+                    <Thumbnail
+                      style={{
+                        backgroundColor: 'white',
+                        borderWidth: 1,
+                        borderColor: 'black',
+                      }}
+                      source={require('../../asset/img/playstore-icon.png')}
+                    />
                   ) : (
-                    <Thumbnail style={{backgroundColor: 'white',}}  source={{uri:  "http://bedmal-core.aralstudio.top"+dataItem.receiver.image_gallery[0] }} />
+                    <Thumbnail
+                      style={{backgroundColor: 'white'}}
+                      source={{
+                        uri:
+                          'http://bedmal-core.aralstudio.top' +
+                          dataItem.receiver.image_gallery[0],
+                      }}
+                    />
                   )}
-               
                 </Left>
               </TouchableOpacity>
               <Body>
@@ -121,7 +127,7 @@ class chat_main extends Component {
       });
 
       return items;
-    } 
+    }
   }
 
   async get_chat() {
@@ -146,7 +152,7 @@ class chat_main extends Component {
   }
 
   render() {
-    console.log(this.props.token)
+    console.log(this.props.token);
     const {navigate} = this.props.navigation;
     return (
       <Root>
@@ -186,7 +192,9 @@ class chat_main extends Component {
                 <Button
                   transparent
                   style={styles.b1}
-                  onPress={() => navigate('chat_one', {id: '0',type:"admin"})}>
+                  onPress={() =>
+                    navigate('chat_one', {id: '0', type: 'admin'})
+                  }>
                   <Image
                     source={require('../../asset/img/Message.png')}
                     resizeMode="stretch"
@@ -223,12 +231,16 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
-
+  cartItem: {
+    borderBottomColor: '#F0F0F0',
+    borderBottomWidth: 2,
+  },
   b1: {
     width: _defz.width / 4,
     textTransform: 'capitalize',
     justifyContent: 'center',
     marginLeft: '5%',
+    marginTop: '5%',
   },
   b2: {
     backgroundColor: '#3D80F2',
@@ -246,7 +258,6 @@ const styles = StyleSheet.create({
     marginTop: _defz.height / 60,
     elevation: 5,
     height: _defz.height / 20,
-    borderColor: '#F0F0F0',
     backgroundColor: '#F0F0F0',
   },
   icon: {
@@ -273,15 +284,15 @@ const styles = StyleSheet.create({
     height: _defz.width / 50,
     marginTop: '20%',
     marginRight: '10%',
-    color: "#E03174",
-    elevation: 5
+    color: '#E03174',
+    elevation: 5,
   },
   avatarBadge_non: {
     width: _defz.width / 50,
     height: _defz.width / 50,
     marginTop: '20%',
     marginRight: '10%',
-    color: "white",
+    color: 'white',
   },
   chatInfo: {
     elevation: 0,
@@ -298,8 +309,9 @@ const styles = StyleSheet.create({
     margin: 5,
   },
   header: {
-    backgroundColor: 'white',
+    backgroundColor: '#fff',
     flexDirection: 'row',
+    alignItems: 'center',
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
   },
@@ -333,6 +345,6 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   token: selectUserToken(state),
-})
+});
 
 export default connect(mapStateToProps)(chat_main);

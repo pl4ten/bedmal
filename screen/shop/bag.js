@@ -37,7 +37,6 @@ class Bag extends React.Component {
       <View style={styles.container}>
         <View style={styles.bag}>
           <View style={styles.bagHeading}>
-
             <View style={styles.top}>
               <Text style={styles.bagHeadingTitle}>
                 Starbucks of Belsize Park
@@ -96,8 +95,8 @@ class Bag extends React.Component {
               <View style={styles.bagCardBg}>
                 <View style={styles.bagCardLeft}>
                   <Text>Espresso coffee </Text>
-                  <Text>Large + 50p</Text>
-                  <Text>Extra Syrup</Text>
+                  <Text style={styles.subTtitle}>Large + 50p</Text>
+                  <Text style={styles.subTtitle}>Extra Syrup</Text>
                 </View>
                 <View style={styles.bagCardRigth}>
                   <View style={styles.cardImage}>
@@ -120,200 +119,8 @@ class Bag extends React.Component {
               <View style={styles.bagCard}>
                 <View style={styles.bagCardLeft}>
                   <Text>Espresso coffee </Text>
-                  <Text>Large + 50p</Text>
-                  <Text>Extra Syrup</Text>
-                </View>
-                <View style={styles.bagCardRigth}>
-                  <View style={styles.cardImage}>
-                    <EmptyGlass
-                      width={_defz.width / 9}
-                      height={_defz.height / 10}
-                    />
-                  </View>
-                  <View style={styles.counter}>
-                    <Button transparent style={styles.counterButton}>
-                      <Text style={styles.counterButtonText}>-</Text>
-                    </Button>
-                    <Text>2</Text>
-                    <Button transparent style={styles.counterButton}>
-                      <Text style={styles.counterButtonText}>+</Text>
-                    </Button>
-                  </View>
-                </View>
-              </View>
-              <View style={styles.bagCardBg}>
-                <View style={styles.bagCardLeft}>
-                  <Text>Espresso coffee </Text>
-                  <Text>Large + 50p</Text>
-                  <Text>Extra Syrup</Text>
-                </View>
-                <View style={styles.bagCardRigth}>
-                  <View style={styles.cardImage}>
-                    <EmptyGlass
-                      width={_defz.width / 9}
-                      height={_defz.height / 10}
-                    />
-                  </View>
-                  <View style={styles.counter}>
-                    <Button transparent style={styles.counterButton}>
-                      <Text style={styles.counterButtonText}>-</Text>
-                    </Button>
-                    <Text>2</Text>
-                    <Button transparent style={styles.counterButton}>
-                      <Text style={styles.counterButtonText}>+</Text>
-                    </Button>
-                  </View>
-                </View>
-              </View>
-              <View style={styles.bagCard}>
-                <View style={styles.bagCardLeft}>
-                  <Text>Espresso coffee </Text>
-                  <Text>Large + 50p</Text>
-                  <Text>Extra Syrup</Text>
-                </View>
-                <View style={styles.bagCardRigth}>
-                  <View style={styles.cardImage}>
-                    <EmptyGlass
-                      width={_defz.width / 9}
-                      height={_defz.height / 10}
-                    />
-                  </View>
-                  <View style={styles.counter}>
-                    <Button transparent style={styles.counterButton}>
-                      <Text style={styles.counterButtonText}>-</Text>
-                    </Button>
-                    <Text>2</Text>
-                    <Button transparent style={styles.counterButton}>
-                      <Text style={styles.counterButtonText}>+</Text>
-                    </Button>
-                  </View>
-                </View>
-              </View>
-              <View style={styles.bagCardBg}>
-                <View style={styles.bagCardLeft}>
-                  <Text>Espresso coffee </Text>
-                  <Text>Large + 50p</Text>
-                  <Text>Extra Syrup</Text>
-                </View>
-                <View style={styles.bagCardRigth}>
-                  <View style={styles.cardImage}>
-                    <EmptyGlass
-                      width={_defz.width / 9}
-                      height={_defz.height / 10}
-                    />
-                  </View>
-                  <View style={styles.counter}>
-                    <Button transparent style={styles.counterButton}>
-                      <Text style={styles.counterButtonText}>-</Text>
-                    </Button>
-                    <Text>2</Text>
-                    <Button transparent style={styles.counterButton}>
-                      <Text style={styles.counterButtonText}>+</Text>
-                    </Button>
-                  </View>
-                </View>
-              </View>
-              <View style={styles.bagCardBg}>
-                <View style={styles.bagCardLeft}>
-                  <Text>Espresso coffee </Text>
-                  <Text>Large + 50p</Text>
-                  <Text>Extra Syrup</Text>
-                </View>
-                <View style={styles.bagCardRigth}>
-                  <View style={styles.cardImage}>
-                    <EmptyGlass
-                      width={_defz.width / 9}
-                      height={_defz.height / 10}
-                    />
-                  </View>
-                  <View style={styles.counter}>
-                    <Button transparent style={styles.counterButton}>
-                      <Text style={styles.counterButtonText}>-</Text>
-                    </Button>
-                    <Text>2</Text>
-                    <Button transparent style={styles.counterButton}>
-                      <Text style={styles.counterButtonText}>+</Text>
-                    </Button>
-                  </View>
-                </View>
-              </View>
-              <View style={styles.bagCard}>
-                <View style={styles.bagCardLeft}>
-                  <Text>Espresso coffee </Text>
-                  <Text>Large + 50p</Text>
-                  <Text>Extra Syrup</Text>
-                </View>
-                <View style={styles.bagCardRigth}>
-                  <View style={styles.cardImage}>
-                    <EmptyGlass
-                      width={_defz.width / 9}
-                      height={_defz.height / 10}
-                    />
-                  </View>
-                  <View style={styles.counter}>
-                    <Button transparent style={styles.counterButton}>
-                      <Text style={styles.counterButtonText}>-</Text>
-                    </Button>
-                    <Text>2</Text>
-                    <Button transparent style={styles.counterButton}>
-                      <Text style={styles.counterButtonText}>+</Text>
-                    </Button>
-                  </View>
-                </View>
-              </View>
-              <View style={styles.bagCardBg}>
-                <View style={styles.bagCardLeft}>
-                  <Text>Espresso coffee </Text>
-                  <Text>Large + 50p</Text>
-                  <Text>Extra Syrup</Text>
-                </View>
-                <View style={styles.bagCardRigth}>
-                  <View style={styles.cardImage}>
-                    <EmptyGlass
-                      width={_defz.width / 9}
-                      height={_defz.height / 10}
-                    />
-                  </View>
-                  <View style={styles.counter}>
-                    <Button transparent style={styles.counterButton}>
-                      <Text style={styles.counterButtonText}>-</Text>
-                    </Button>
-                    <Text>2</Text>
-                    <Button transparent style={styles.counterButton}>
-                      <Text style={styles.counterButtonText}>+</Text>
-                    </Button>
-                  </View>
-                </View>
-              </View>
-              <View style={styles.bagCard}>
-                <View style={styles.bagCardLeft}>
-                  <Text>Espresso coffee </Text>
-                  <Text>Large + 50p</Text>
-                  <Text>Extra Syrup</Text>
-                </View>
-                <View style={styles.bagCardRigth}>
-                  <View style={styles.cardImage}>
-                    <EmptyGlass
-                      width={_defz.width / 9}
-                      height={_defz.height / 10}
-                    />
-                  </View>
-                  <View style={styles.counter}>
-                    <Button transparent style={styles.counterButton}>
-                      <Text style={styles.counterButtonText}>-</Text>
-                    </Button>
-                    <Text>2</Text>
-                    <Button transparent style={styles.counterButton}>
-                      <Text style={styles.counterButtonText}>+</Text>
-                    </Button>
-                  </View>
-                </View>
-              </View>
-              <View style={styles.bagCardBg}>
-                <View style={styles.bagCardLeft}>
-                  <Text>Espresso coffee </Text>
-                  <Text>Large + 50p</Text>
-                  <Text>Extra Syrup</Text>
+                  <Text style={styles.subTtitle}>Large + 50p</Text>
+                  <Text style={styles.subTtitle}>Extra Syrup</Text>
                 </View>
                 <View style={styles.bagCardRigth}>
                   <View style={styles.cardImage}>
@@ -379,7 +186,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   bag: {
-    height: "70%",
+    height: '70%',
     borderRadius: 10,
     borderColor: '#C3BCBC',
     borderWidth: 1,
@@ -466,15 +273,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-
   },
   optionRow2: {
     width: '80%',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: "-2%"
-
+    marginTop: '-2%',
   },
   content: {
     width: '100%',
@@ -521,6 +326,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginTop: '2%',
+    paddingTop: '2%',
+    paddingBottom: '2%',
     backgroundColor: '#fafafa',
   },
   bagCardRigth: {
@@ -528,6 +335,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    paddingTop: '2%',
+    paddingBottom: '2%',
   },
   counter: {
     display: 'flex',
@@ -595,11 +404,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignSelf: 'center',
     marginTop: _defz.height / 45,
+    marginBottom: _defz.height / 45,
   },
   checkOutButtonText: {
     color: '#fff',
     fontSize: 20,
     textAlign: 'center',
+  },
+  subTtitle: {
+    color: '#F79F28',
   },
 });
 

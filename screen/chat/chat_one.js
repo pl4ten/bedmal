@@ -23,7 +23,7 @@ import {
 } from 'native-base';
 import ImagePicker from 'react-native-image-crop-picker';
 import {Keyboard} from 'react-native';
-
+import Loader from '../com/loader';
 const {jsonBeautify} = require('beautify-json');
 
 let img_temp = '';
@@ -52,6 +52,7 @@ class Chat_one extends Component {
       mobile: '',
       number_image: 0,
       chatdata: null,
+      isLoading: false,
     };
   }
   forceUpdateHandler() {
@@ -67,7 +68,7 @@ class Chat_one extends Component {
 
     type_chat = navigation.getParam('type', 'bedmal');
     id_chat = navigation.getParam('id', 'bedmal');
-    console.log(id_chat)
+    console.log(id_chat);
     this.forceUpdateHandler();
     this.get_chat();
   }
@@ -99,40 +100,25 @@ class Chat_one extends Component {
 
   send_chat = async x => {
     Keyboard.dismiss();
+    this.setState({isLoading: true});
     const {navigate} = this.props.navigation;
     let formData = new FormData();
 
     let url = 'user/chats/send-message';
 
-
-
     if (type_chat === 'vendor_chat') {
-      formData.append('receiver_type', "vendor");
+      formData.append('receiver_type', 'vendor');
       formData.append('receiver_id', id_chat);
       formData.append('message', msg);
       formData.append('type', 'text');
+    } else if (type_chat === 'vendor_id') {
+      formData.append('receiver_type', 'vendor');
 
-    }
-
-
-
-
-    else if (type_chat === 'vendor_id') {
-      formData.append('receiver_type', "vendor");
-      
       formData.append('receiver_id', id_chat);
       formData.append('message', msg);
       formData.append('type', 'text');
       url = 'user/chats/send-message';
-
-    }
-
-
-
-
-
-
-    else {
+    } else {
       formData.append('receiver_type', 'admin');
       formData.append('message', msg);
 
@@ -142,6 +128,7 @@ class Chat_one extends Component {
 
     await _defz.send(url, 'POST', _defz._token, formData).then(response => {
       console.log(response);
+      this.setState({isLoading: false});
       if (response.chat) {
         this.get_chat();
       }
@@ -154,6 +141,7 @@ class Chat_one extends Component {
   };
 
   async get_chat() {
+    this.setState({isLoading: true});
     const {navigate} = this.props.navigation;
     let url = 'user/chats/messages?receiver_type=admin';
 
@@ -161,17 +149,16 @@ class Chat_one extends Component {
       url = 'user/chats/messages?receiver_type=admin';
     }
     if (type_chat === 'vendor_chat') {
-      url="user/chats/messages?receiver_type=vendor&receiver_id="+ id_chat;
+      url = 'user/chats/messages?receiver_type=vendor&receiver_id=' + id_chat;
     }
     if (type_chat === 'vendor_id') {
       url = 'user/chats/messages?receiver_type=vendor&receiver_id=' + id_chat;
     }
 
-
-
     try {
       await _defz.get_via_token(url, 'GET', _defz._token).then(response => {
         //console.log(jsonBeautify(response));
+        this.setState({isLoading: false});
         if (response.status === 200) {
           console.log(response);
           this.setState({chatdata: response.messages});
@@ -195,14 +182,14 @@ class Chat_one extends Component {
         .then(response => {
           console.log(response);
           if (response.status === 200) {
-            this.setState({profile: response.profile['personal_info']});
-            this.setState({name: response.profile['personal_info'].name});
-            this.setState({pass: response.profile['personal_info']});
-            this.setState({mobile: response.profile['personal_info'].mobile});
-            this.setState({email: response.profile['personal_info'].email});
-            name: response.profile['personal_info'].name;
-            mobile: response.profile['personal_info'].mobile;
-            email = response.profile['personal_info'].email;
+            this.setState({profile: response.profile.personal_info});
+            this.setState({name: response.profile.personal_info.name});
+            this.setState({pass: response.profile.personal_info});
+            this.setState({mobile: response.profile.personal_info.mobile});
+            this.setState({email: response.profile.personal_info.email});
+            name: response.profile.personal_info.name;
+            mobile: response.profile.personal_info.mobile;
+            email = response.profile.personal_info.email;
           }
           if (response.status === 400) {
             Alert.alert('Error', response.errors[0].message, [{text: 'ok'}], {
@@ -295,114 +282,119 @@ class Chat_one extends Component {
       });
 
       return items;
-    } 
+    }
   }
 
   render() {
     const {navigate} = this.props.navigation;
     return (
       <Root>
-        <View style={styles.container}>
-          <View style={{flexDirection: 'row'}}>
-            <Button
-              transparent
-              style={{marginLeft: '3%', marginTop: _defz.height / 100}}
-              onPress={() => this.props.navigation.goBack()}>
+        {this.state.isLoading ? (
+          <Loader />
+        ) : (
+          <View style={styles.container}>
+            <View style={{flexDirection: 'row'}}>
+              <Button
+                transparent
+                style={{marginLeft: '3%', marginTop: _defz.height / 100}}
+                onPress={() => this.props.navigation.goBack()}>
+                <Image
+                  source={require('../../asset/img/back_b.png')}
+                  resizeMode="stretch"
+                />
+              </Button>
+              <Button
+                transparent
+                style={styles.headerXButton}
+                onPress={() => this.props.navigation.goBack()}>
+                <Icon
+                  name="closecircleo"
+                  type="AntDesign"
+                  style={styles.headerBackButton}
+                />
+              </Button>
+            </View>
+            <View style={styles.heading}>
               <Image
-                source={require('../../asset/img/back_b.png')}
+                source={require('../../asset/img/Message.png')}
                 resizeMode="stretch"
+                style={styles.headingImg}
               />
-            </Button>
-            <Button
-              transparent
-              style={styles.headerXButton}
-              onPress={() => this.props.navigation.goBack()}>
-              <Icon
-                name="closecircleo"
-                type="AntDesign"
-                style={styles.headerBackButton}
-              />
-            </Button>
-          </View>
-          <View style={styles.heading}>
-            <Image
-              source={require('../../asset/img/Message.png')}
-              resizeMode="stretch"
-              style={styles.headingImg}
-            />
 
-            <Text style={styles.text1}>
-              {' '}
-              App or borrow product issues? We’re here to help.
-            </Text>
-          </View>
+              <Text style={styles.text1}>
+                {' '}
+                App or borrow product issues? We’re here to help.
+              </Text>
+            </View>
 
-          <ScrollView
-            ref={ref => {
-              this.scrollView = ref;
-            }}
-            onContentSizeChange={() =>
-              this.scrollView.scrollToEnd({animated: true})
-            }>
-            <View>{this.renderItems()}</View>
-            <View style={{marginTop: 200}} />
-          </ScrollView>
+            <ScrollView
+              ref={ref => {
+                this.scrollView = ref;
+              }}
+              onContentSizeChange={() =>
+                this.scrollView.scrollToEnd({animated: true})
+              }>
+              <View>{this.renderItems()}</View>
+              <View style={{marginTop: 200}} />
+            </ScrollView>
 
-          <View style={styles.footerContainer}>
-            <Footer style={styles.footer}>
-              <FooterTab active style={styles.footerTab}>
-                <Button vertical>
-                  <View style={{justifyContent: 'center', alignSelf: 'center'}}>
-                    <CardItem style={styles.card}>
-                      <Left style={{flex: 1}}>
-                        <Button
-                          rounded
-                          light
-                          transparent
-                          style={styles.b1}
-                          onPress={() => this.image_select()}>
-                          <Image
-                            source={require('../../asset/img/img.png')}
-                            resizeMode="stretch"
+            <View style={styles.footerContainer}>
+              <Footer style={styles.footer}>
+                <FooterTab active style={styles.footerTab}>
+                  <Button vertical>
+                    <View
+                      style={{justifyContent: 'center',alignItems: 'center', alignSelf: 'center'}}>
+                      <CardItem style={styles.card}>
+                        <Left style={{flex: 1}}>
+                          <Button
+                            rounded
+                            light
+                            transparent
+                            style={styles.b1}
+                            onPress={() => this.image_select()}>
+                            <Image
+                              source={require('../../asset/img/img.png')}
+                              resizeMode="stretch"
+                            />
+                          </Button>
+                        </Left>
+
+                        <Body style={styles.footerBody}>
+                          <TextInput
+                            ref={input => {
+                              this.textInput = input;
+                            }}
+                            placeholder="Type Message"
+                            placeholderTextColor="silver"
+                            multiline={true}
+                            onChangeText={text => {
+                              msg = text;
+                            }}
+                            maxLength={1000}
+                            style={styles.textInput}
                           />
-                        </Button>
-                      </Left>
-
-                      <Body style={styles.footerBody}>
-                        <TextInput
-                          ref={input => {
-                            this.textInput = input;
-                          }}
-                          placeholder="Type Message"
-                          placeholderTextColor="silver"
-                          multiline={true}
-                          onChangeText={text => {
-                            msg = text;
-                          }}
-                          maxLength={1000}
-                          style={styles.textInput}
-                        />
-                      </Body>
-                      <Right style={{flex: 1}}>
-                        <Button
-                          rounded
-                          light
-                          transparent
-                          style={styles.b1}
-                          onPress={() => this.send_chat()}>
-                          <Image
-                            source={require('../../asset/img/send_b.png')}
-                            resizeMode="stretch"
-                          />
-                        </Button>
-                      </Right>
-                    </CardItem>
-                  </View>
-                </Button>
-              </FooterTab>
-            </Footer>
+                        </Body>
+                        <Right style={{flex: 1}}>
+                          <Button
+                            rounded
+                            light
+                            transparent
+                            style={styles.b1}
+                            onPress={() => this.send_chat()}>
+                            <Image
+                              source={require('../../asset/img/send_b.png')}
+                              resizeMode="stretch"
+                            />
+                          </Button>
+                        </Right>
+                      </CardItem>
+                    </View>
+                  </Button>
+                </FooterTab>
+              </Footer>
+            </View>
           </View>
-        </View>
+        )}
       </Root>
     );
   }

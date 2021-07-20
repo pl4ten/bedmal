@@ -56,7 +56,7 @@ export class FooterInActive extends React.Component {
     return (
       <View style={styles.logoContainer}>
         <FooterInActiveSvg width={_defz.width / 10} height={_defz.width / 12} />
-        <Text>Active</Text>
+        <Text style={styles.text}>Active</Text>
       </View>
     );
   }
@@ -67,7 +67,7 @@ export class HomeInActive extends React.Component {
     return (
       <View style={styles.logoContainer}>
         <HomeInActiveSvg width={_defz.width / 10} height={_defz.width / 12} />
-        <Text>Home</Text>
+        <Text style={styles.text}>Home</Text>
       </View>
     );
   }
@@ -88,7 +88,7 @@ export class MeInActive extends React.Component {
     return (
       <View style={styles.logoContainer}>
         <MeInActiveSvg width={_defz.width / 10} height={_defz.width / 12} />
-        <Text>Me</Text>
+        <Text style={styles.text}>Me</Text>
       </View>
     );
   }
@@ -112,7 +112,7 @@ export class OnDemandInActive extends React.Component {
           width={_defz.width / 10}
           height={_defz.width / 12}
         />
-        <Text>On-demond</Text>
+        <Text style={styles.text}>On-demond</Text>
       </View>
     );
   }
@@ -133,7 +133,7 @@ export class BagInActive extends React.Component {
     return (
       <View style={styles.logoContainer}>
         <BagInActiveSvg width={_defz.width / 10} height={_defz.width / 12} />
-        <Text>Bag</Text>
+        <Text style={styles.text}>Bag</Text>
       </View>
     );
   }
@@ -261,5 +261,9 @@ const styles = StyleSheet.create({
   },
   activeText: {
     color: '#3D80F2',
+    fontSize: 12,
   },
+  text: {
+    fontSize: 12,
+  }
 });
