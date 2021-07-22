@@ -190,7 +190,7 @@ class login extends Component {
 
 
     await _defz
-      .send('user/login/google?idToken='+x, 'GET', "0", )
+      .send('user/login/google?idToken='+x, 'GET', "0", formData)
       .then(response => {
         console.log(response);
         this.setState({loading: false});
@@ -342,7 +342,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: _defz.height / 15,
     height: 50,
-    bottom: 1,
+    bottom: _defz.height / 25,
 
     width: '90%',
     justifyContent: 'center',

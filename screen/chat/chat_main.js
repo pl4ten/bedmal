@@ -61,6 +61,7 @@ class chat_main extends Component {
     clearInterval(timer);
   }
   nav(x) {
+    clearInterval(timer);
     const {navigate} = this.props.navigation;
     if (x.receiver.type == 'super_admin') {
       navigate('chat_one', {id: x.id, type: 'admin'});
@@ -80,14 +81,20 @@ class chat_main extends Component {
                 activeOpacity={1}
                 style={styles.chatAvatar}
                 onPress={() => this.nav(dataItem)}>
-                <Left>
-                  {dataItem.new_message === true ? (
+                <Left style={{}}>
+                  {dataItem.new_message==true ? (
                     <Icon
                       name="circle"
                       type="FontAwesome"
                       style={styles.avatarBadge}
                     />
-                  ) : null}
+                  ) : (
+                    <Icon
+                    name="circle"
+                    type="FontAwesome"
+                    style={styles.avatarBadge2}
+                  />
+                  )}
                   {dataItem.receiver.type == 'super_admin' ? (
                     <Thumbnail
                       style={{
@@ -234,6 +241,8 @@ const styles = StyleSheet.create({
   cartItem: {
     borderBottomColor: '#F0F0F0',
     borderBottomWidth: 2,
+    marginTop: 2
+
   },
   b1: {
     width: _defz.width / 4,
@@ -285,6 +294,14 @@ const styles = StyleSheet.create({
     marginTop: '20%',
     marginRight: '10%',
     color: '#E03174',
+    elevation: 5,
+  },
+  avatarBadge2: {
+    width: _defz.width / 50,
+    height: _defz.width / 50,
+    marginTop: '20%',
+    marginRight: '10%',
+    color: 'white',
     elevation: 5,
   },
   avatarBadge_non: {

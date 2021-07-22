@@ -135,9 +135,12 @@ class Product extends Component {
           price = response.product.price;
           let imgArray = [];
           response.product.images.forEach(item => {
-            imgArray.push(`http://bedmal-core.aralstudio.top${item}`);
+            this.state.images.push(`http://bedmal-core.aralstudio.top${item}`);
           });
-          this.setState({images: imgArray});
+          if (!this.state.images){
+            this.state.images.push(require('../../asset/img/bedmal-place-holder.jpg'),);
+          }
+
         });
     } catch (error) {
       console.log(error);
@@ -525,9 +528,12 @@ class Product extends Component {
               />
             </Button>
             <SliderBox
+              ImageComponent={Image}
               images={this.state.images}
               sliderBoxHeight={_defz.height / 3}
               dotColor={'#fff'}
+              resizeMethod={'resize'}
+              resizeMode={'cover'}
               style={styles.sliderImages}
             />
           </View>

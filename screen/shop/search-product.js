@@ -187,7 +187,6 @@ class SearchProduct extends Component {
 
           <Header transparent style={styles.header} searchBar rounded>
             <Item style={{borderRadius: 50, elevation: 6}}>
-              {!this.state.searchText ? (
                 <Button
                   transparent
                   onPress={() =>
@@ -195,24 +194,7 @@ class SearchProduct extends Component {
                   }>
                   <Icon name="ios-search" style={{color: 'black'}} />
                 </Button>
-              ) : null}
 
-              {this.state.searchText ? (
-                <View style={{flexDirection: 'row-reverse'}}>
-                  <Button
-                    transparent
-                    onPress={() =>
-                      this.get_store('?search=' + this.state.searchText)
-                    }>
-                    <Icon name="ios-search" style={{color: 'black'}} />
-                  </Button>
-                  <Button
-                    transparent
-                    onPress={() => this.setState({searchText: ''})}>
-                    <Icon name="close" style={{color: 'black'}} />
-                  </Button>
-                </View>
-              ) : null}
 
               <Input
                 placeholder=" Search"

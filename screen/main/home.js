@@ -91,6 +91,8 @@ class home extends Component {
         latitude: 53.4808,
         longitude: 2.2426,
       },
+      user_lat: "",
+      user_log: "",
       centerCoordinate: [53.4808, 2.2426],
       renderMode: this._renderModeOptions[0].data,
       followUserLocation: true,
@@ -181,7 +183,7 @@ class home extends Component {
         params = parm_data;
       }
       await _defz
-        .get_via_token('user/home' + params, 'GET', _defz._token)
+        .get_via_token('user/home?range=40' + params, 'GET', _defz._token)
         .then(response => {
           console.log(response.departments);
           if (response.status === 200) {
@@ -202,6 +204,44 @@ class home extends Component {
     }
   }
 
+
+  async get_store_via_location(x,y) {
+    this.setState({loading: true});
+    const {navigate} = this.props.navigation;
+    try {
+      let params = '';
+
+        params +="&latitude="+x+" &longitude="+y;
+
+      await _defz
+        .get_via_token('user/home?range=40' + params, 'GET', _defz._token)
+        .then(response => {
+          console.log(response.departments);
+          if (response.status === 200) {
+            if (response.departments) {
+              this.setState({departments: response.departments});
+            }
+            if (response.vendors) {
+              this.setState({vendors: response.vendors});
+            }
+          }
+          if (response.status === 400) {
+            navigate('usermain');
+          }
+          this.setState({loading: false});
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+location_seter(x,y){
+  if (x!==this.state.user_lat && y!==this.state.user_log){
+    this.setState({user_lat: x});
+    this.setState({user_log: y});
+  }
+
+}
   select_btn(b) {
     if (this.state.selected_btn == b) {
       this.get_store('new');
@@ -268,7 +308,18 @@ class home extends Component {
       return items;
     }
   }
-
+   checkImageURL(url){
+     fetch(url)
+       .then(res => {
+         console.log(res.status)
+       if(res.status == 404){
+         return require('../../asset/img/bedmal-place-holder.jpg')
+       }else{
+         return url
+      }
+    })
+   .catch(err=>{return require('../../asset/img/bedmal-place-holder.jpg')})
+   }
   render() {
     const {navigate} = this.props.navigation;
     const {
@@ -292,7 +343,7 @@ class home extends Component {
           <View style={styles.main}>
             <Header style={styles.header} searchBar rounded>
               <Item style={{backgroundColor: '#FDFDFD'}}>
-                {!this.state.serach_txt ? (
+            
                   <Button
                     transparent
                     onPress={() =>
@@ -300,28 +351,9 @@ class home extends Component {
                     }>
                     <Icon name="ios-search" style={{color: 'black'}} />
                   </Button>
-                ) : null}
+             
 
-                {this.state.serach_txt ? (
-                  <View
-                    style={{
-                      flexDirection: 'row-reverse',
-                      backgroundColor: '#FDFDFD',
-                    }}>
-                    <Button
-                      transparent
-                      onPress={() =>
-                        this.get_store('?search=' + this.state.serach_txt)
-                      }>
-                      <Icon name="ios-search" style={{color: 'black'}} />
-                    </Button>
-                    <Button
-                      transparent
-                      onPress={() => this.setState({serach_txt: ''})}>
-                      <Icon name="close" style={{color: 'black'}} />
-                    </Button>
-                  </View>
-                ) : null}
+
 
                 <Input
                   placeholder="ُSearch for a store or Product"
@@ -385,7 +417,7 @@ class home extends Component {
 
               <MapboxGL.UserLocation
                 ref={location => {
-                  // console.warn({location});
+                  /* console.warn(location.coordinate); */
                 }}
               />
             </MapboxGL.MapView>
@@ -396,9 +428,14 @@ class home extends Component {
                   {this.state.vendors.map((item, index) => {
                     let img_arr = [];
                     item.image_gallery.forEach(item => {
-                      img_arr.push(`http://bedmal-core.aralstudio.top${item}`);
-                    });
 
+
+                       img_arr.push(`https://bedmal-core.aralstudio.top${item}`)
+                    })
+                    if (!img_arr){
+                      img_arr.push(require('../../asset/img/bedmal-place-holder.jpg'),);
+                    }
+                    
                     return (
                       <TouchableOpacity
                         activeOpacity={1}

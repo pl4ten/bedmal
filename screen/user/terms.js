@@ -82,7 +82,7 @@ class Terms extends Component {
                           <Icon
                             type="AntDesign"
                             name="arrowright"
-                            style={styles.icon}
+                            style={{color: "#707070"}}
                           />
                         </TouchableOpacity>
                       </Right>

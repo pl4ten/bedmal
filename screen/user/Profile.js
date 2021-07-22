@@ -196,7 +196,7 @@ class Profile extends Component {
                 </Left>
               )}
 
-              <Right style={{flex: 1}}>
+              <Right style={{}}>
                 {!this.state.editemail ? (
                   <Button
                     rounded

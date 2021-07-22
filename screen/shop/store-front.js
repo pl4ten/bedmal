@@ -77,7 +77,6 @@ class StoreFront extends React.Component {
   }
   async getStoreFrontByCollection(vendorId, collectionId) {
     try {
-      this.setState({isLoading: true});
       await _defz
         .get_via_token(
           `user/store-front/info/${vendorId}/products/${collectionId}`,

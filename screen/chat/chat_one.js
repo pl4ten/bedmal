@@ -27,13 +27,14 @@ import Loader from '../com/loader';
 const {jsonBeautify} = require('beautify-json');
 
 let img_temp = '';
-let name = '',
-  msg = '',
-  mobile = '',
-  email = '';
+
+let msg = '';
+let chat_time = [];
+
 let _defz = require('../com/def');
 let type_chat = 'admin';
 let id_chat = 'admin';
+let t = [];
 
 class Chat_one extends Component {
   constructor() {
@@ -53,6 +54,8 @@ class Chat_one extends Component {
       number_image: 0,
       chatdata: null,
       isLoading: false,
+      chat_time:[],
+      
     };
   }
   forceUpdateHandler() {
@@ -72,6 +75,15 @@ class Chat_one extends Component {
     this.forceUpdateHandler();
     this.get_chat();
   }
+  finder(x) {
+    for (let i = 0; i < Object.keys(this.state.chat_time).length + 1; i++) {
+      if (x == this.state.chat_time[i]) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   upload_image = async x => {
     Keyboard.dismiss();
     const {navigate} = this.props.navigation;
@@ -160,8 +172,11 @@ class Chat_one extends Component {
         //console.log(jsonBeautify(response));
         this.setState({isLoading: false});
         if (response.status === 200) {
-          console.log(response);
           this.setState({chatdata: response.messages});
+          this.state.chatdata.reverse().map((dataItem, i) => {
+
+          });
+          console.log(chat_time);
           this.textInput.clear();
         }
         if (response.status === 400) {
@@ -170,33 +185,6 @@ class Chat_one extends Component {
           });
         }
       });
-    } catch (error) {
-      console.log(error);
-    }
-  }
-  async getprofile() {
-    const {navigate} = this.props.navigation;
-    try {
-      await _defz
-        .get_via_token('user/account/profile', 'GET', _defz._token)
-        .then(response => {
-          console.log(response);
-          if (response.status === 200) {
-            this.setState({profile: response.profile.personal_info});
-            this.setState({name: response.profile.personal_info.name});
-            this.setState({pass: response.profile.personal_info});
-            this.setState({mobile: response.profile.personal_info.mobile});
-            this.setState({email: response.profile.personal_info.email});
-            name: response.profile.personal_info.name;
-            mobile: response.profile.personal_info.mobile;
-            email = response.profile.personal_info.email;
-          }
-          if (response.status === 400) {
-            Alert.alert('Error', response.errors[0].message, [{text: 'ok'}], {
-              cancelable: true,
-            });
-          }
-        });
     } catch (error) {
       console.log(error);
     }
@@ -225,60 +213,76 @@ class Chat_one extends Component {
   }
   renderItems() {
     const {navigate} = this.props.navigation;
-    if (this.state.chatdata) {
+    if (this.state.chatdata != null ) {
       let items = [];
+
       this.state.chatdata.reverse().map((dataItem, i) => {
-        items.push(
-          <Text style={styles.createdAt}>
-            {dataItem.created_at.slice(0, 11)}
-          </Text>,
-          <List style={styles.chatContainer}>
-            {dataItem.sender === 'user' ? (
-              <View style={styles.userChatBox}>
-                {dataItem.type === 'text' ? (
-                  <View>
-                    <Text style={styles.chatText}>{dataItem.message} </Text>
-                    <Text style={styles.cahtBoxDateTime} note>
-                      {dataItem.updated_at.slice(11, 16)}
-                    </Text>
-                  </View>
-                ) : (
-                  <Image
-                    style={{width: _defz.width / 2, height: _defz.height / 4}}
-                    source={{
-                      uri:
-                        'https://bedmal-core.aralstudio.top' + dataItem.message,
-                    }}
-                  />
-                )}
-              </View>
-            ) : null}
-            {dataItem.sender === 'not_user' ? (
-              <View style={styles.notUserChatBox}>
-                {dataItem.type === 'text' ? (
-                  <View>
-                    <Text style={styles.chatText}>{dataItem.message} </Text>
-                    <Text style={styles.cahtBoxDateTime} note>
-                      {dataItem.updated_at.slice(11, 16)}
-                    </Text>
-                  </View>
-                ) : (
-                  <Image
-                    style={{
-                      width: _defz.width / 2,
-                      height: _defz.height / 4,
-                      alignSelf: 'center',
-                    }}
-                    source={{
-                      uri:
-                        'https://bedmal-core.aralstudio.top' + dataItem.message,
-                    }}
-                  />
-                )}
-              </View>
-            ) : null}
-          </List>,
-        );
+        let all=1
+          if(!this.finder(dataItem.created_at.slice(0, 10))){
+            this.state.chat_time.push(dataItem.created_at.slice(0, 10));
+          }else{
+            all=2
+          }
+          
+          items.push(
+            <View>
+              {all!==2? (
+                <Text style={styles.createdAt}>
+                  {dataItem.created_at.slice(0, 10)}
+                </Text>
+              ) : null}
+            </View>,
+
+            <List style={styles.chatContainer}>
+              {dataItem.sender === 'user' ? (
+                <View style={styles.userChatBox}>
+                  {dataItem.type === 'text' ? (
+                    <View>
+                      <Text style={styles.chatText}>{dataItem.message} </Text>
+                      <Text style={styles.cahtBoxDateTime} note>
+                        {dataItem.updated_at.slice(11, 16)}
+                      </Text>
+                    </View>
+                  ) : (
+                    <Image
+                      style={{width: _defz.width / 2, height: _defz.height / 4}}
+                      source={{
+                        uri:
+                          'https://bedmal-core.aralstudio.top' +
+                          dataItem.message,
+                      }}
+                    />
+                  )}
+                </View>
+              ) : null}
+              {dataItem.sender === 'not_user' ? (
+                <View style={styles.notUserChatBox}>
+                  {dataItem.type === 'text' ? (
+                    <View>
+                      <Text style={styles.chatText}>{dataItem.message} </Text>
+                      <Text style={styles.cahtBoxDateTime} note>
+                        {dataItem.updated_at.slice(11, 16)}
+                      </Text>
+                    </View>
+                  ) : (
+                    <Image
+                      style={{
+                        width: _defz.width / 2,
+                        height: _defz.height / 4,
+                        alignSelf: 'center',
+                      }}
+                      source={{
+                        uri:
+                          'https://bedmal-core.aralstudio.top' +
+                          dataItem.message,
+                      }}
+                    />
+                  )}
+                </View>
+              ) : null}
+            </List>,
+          );
+
       });
 
       return items;
@@ -343,7 +347,11 @@ class Chat_one extends Component {
                 <FooterTab active style={styles.footerTab}>
                   <Button vertical>
                     <View
-                      style={{justifyContent: 'center',alignItems: 'center', alignSelf: 'center'}}>
+                      style={{
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        alignSelf: 'center',
+                      }}>
                       <CardItem style={styles.card}>
                         <Left style={{flex: 1}}>
                           <Button

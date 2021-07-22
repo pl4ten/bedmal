@@ -11,6 +11,8 @@ import {
   statusCodes,
   GoogleSigninButton
 } from '@react-native-google-signin/google-signin';
+import {connect} from 'react-redux';
+import {setUserToken} from '../../redux/user/user.actions';
 let _defz = require('../com/def');
 
 import Loader from '../com/loader'
@@ -47,7 +49,7 @@ class signup extends Component {
 
       const userInfo = await GoogleSignin.signIn();
       this.login_via_google(userInfo.idToken)
-console.log(userInfo)
+        console.log(userInfo)
 
     } catch (error) {
       console.log(error)
@@ -114,6 +116,7 @@ console.log(userInfo)
         this.setState({loading: false});
         if (response.status === 200) {
           this.props.navigation.pop();
+          this.props.setUserToken(response.token);
           _token = response.token;
           _defz._token = response.token;
           this.storeData();
@@ -130,7 +133,7 @@ console.log(userInfo)
    this.setState({loading:true})
     let formData = new FormData();
     if (code!==''){
-      _phone=code+ "-"+_phone
+      formData.append('country_code', code);
     }
     formData.append('name', _names);
     formData.append('email', _email);
@@ -383,4 +386,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'silver',
   },
 });
-export default signup;
+const mapStateToProps = state => ({
+  state: state,
+});
+const mapDispatchToProps = dispatch => ({
+  setUserToken: token => dispatch(setUserToken(token)),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(signup);
+

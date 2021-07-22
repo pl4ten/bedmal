@@ -49,6 +49,7 @@ class usermain extends Component {
         .then(response => {
           if (response.status == 200) {
             this.setState({loading: false});
+            this.props.navigation.pop();
             navigate('home');
           } else {
             this.setState({loading: true});
@@ -61,6 +62,7 @@ class usermain extends Component {
   }
   nav(x) {
     const {navigate} = this.props.navigation;
+    this.props.navigation.pop();
     navigate(x);
   }
   render() {

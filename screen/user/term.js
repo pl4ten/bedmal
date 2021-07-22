@@ -66,12 +66,12 @@ class Term extends Component {
               }
             />
           </View>
-
+            <View style={{     backgroundColor: '#FAFAFA',height:10}}/>
           <ScrollView style={styles.scrollView}>
             {this.state.terms ? (
               <Text style={styles.termsText}>{this.state.terms.content}</Text>
             ) : null}
-            <View style={{marginTop: 300}} />
+            <View style={{marginTop: 400}} />
           </ScrollView>
         </View>
         <View style={styles.footer}>
@@ -119,6 +119,7 @@ const styles = StyleSheet.create({
     zIndex: 100,
   },
   scrollView: {
+
     paddingTop: 20,
     height: _defz.height / 1,
   },
