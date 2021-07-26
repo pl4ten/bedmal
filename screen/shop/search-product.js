@@ -14,12 +14,39 @@ import MapboxGL, {MarkerView} from '@react-native-mapbox-gl/maps';
 import {SearchBoxBlue, HomeInActive, BagInActive} from '../com/svg-files';
 import {SliderBox} from 'react-native-image-slider-box';
 import ProductCard from './product-card';
-import Loader from '../com/loader';
-import {Keyboard} from 'react-native';
 
+import {Keyboard} from 'react-native';
+import {PermissionsAndroid} from 'react-native';
 const {jsonBeautify} = require('beautify-json');
 let _defz = require('../com/def');
-
+const marker_Local_Image = [
+  require('../../asset/marker/1.png'),
+  require('../../asset/marker/2.png'),
+  require('../../asset/marker/3.png'),
+  require('../../asset/marker/4.png'),
+  require('../../asset/marker/5.png'),
+  require('../../asset/marker/6.png'),
+  require('../../asset/marker/7.png'),
+  require('../../asset/marker/8.png'),
+  require('../../asset/marker/9.png'),
+  require('../../asset/marker/10.png'),
+  require('../../asset/marker/11.png'),
+  require('../../asset/marker/12.png'),
+  require('../../asset/marker/13.png'),
+  require('../../asset/marker/14.png'),
+  require('../../asset/marker/15.png'),
+  require('../../asset/marker/16.png'),
+  require('../../asset/marker/17.png'),
+  require('../../asset/marker/18.png'),
+  require('../../asset/marker/19.png'),
+  require('../../asset/marker/20.png'),
+  require('../../asset/marker/21.png'),
+  require('../../asset/marker/22.png'),
+  require('../../asset/marker/23.png'),
+  require('../../asset/marker/24.png'),
+  require('../../asset/marker/25.png'),
+  require('../../asset/marker/26.png'),
+];
 MapboxGL.setAccessToken(
   'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',
 );
@@ -31,9 +58,10 @@ const Marker = ({coordinate, id, color, label}) => {
       <View style={[styles.markerView, {}]} />
       <View>
         <Image
+          resizeMode={'contain'}
           width={25}
           height={25}
-          source={require('../../asset/img/marker.png')}
+          source={marker_Local_Image[id]}
         />
       </View>
     </MarkerView>
@@ -70,7 +98,6 @@ class SearchProduct extends Component {
       selected_btn: '',
       show_box: false,
       departments: null,
-      selected_btn: '',
       vendors: null,
       position: {
         latitude: 53.4808,
@@ -170,6 +197,25 @@ class SearchProduct extends Component {
       this.setState({acctive_shop: x});
     }
   };
+  componentDidMount() {
+    PermissionsAndroid.requestMultiple(
+      [
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
+      ],
+      {
+        title: 'Location',
+        message: 'access location',
+      },
+    )
+      .then(granted => {
+        console.log(granted);
+        //
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
   render() {
     let vendorID = this.props.navigation.state.params.vendorID;
     MapboxGL.setAccessToken(
@@ -181,20 +227,19 @@ class SearchProduct extends Component {
         <View style={styles.transparentHeader}>
           <Button
             transparent
-            style={styles.headerBackButton}
+            style={styles.mapHeaderBackButton}
             onPress={() => this.props.navigation.goBack()}
           />
 
           <Header transparent style={styles.header} searchBar rounded>
             <Item style={{borderRadius: 50, elevation: 6}}>
-                <Button
-                  transparent
-                  onPress={() =>
-                    this.get_store('?search=' + this.state.searchText)
-                  }>
-                  <Icon name="ios-search" style={{color: 'black'}} />
-                </Button>
-
+              <Button
+                transparent
+                onPress={() =>
+                  this.get_store('?search=' + this.state.searchText)
+                }>
+                <Icon name="ios-search" style={{color: 'black'}} />
+              </Button>
 
               <Input
                 placeholder=" Search"
@@ -202,7 +247,6 @@ class SearchProduct extends Component {
                 style={styles.search_input}
                 autoFocus
                 onChangeText={text => this.setState({searchText: text})}
-                value={this.state.searchText}
                 onEndEditing={() =>
                   this.searchProducts(this.state.searchText, vendorID)
                 }
@@ -223,7 +267,14 @@ class SearchProduct extends Component {
               onPress={() =>
                 this.setState({searchType: 'current', show_full: false})
               }>
-              <Text>Current</Text>
+              <Text
+                style={
+                  this.state.searchType === 'current'
+                    ? styles.searchTypeTextActive
+                    : styles.searchTypeText
+                }>
+                Current
+              </Text>
             </Button>
             <Button
               style={
@@ -235,7 +286,14 @@ class SearchProduct extends Component {
               onPress={() =>
                 this.setState({searchType: 'all', show_full: true})
               }>
-              <Text>All stores</Text>
+              <Text
+                style={
+                  this.state.searchType === 'all'
+                    ? styles.searchTypeTextActive
+                    : styles.searchTypeText
+                }>
+                All stores
+              </Text>
             </Button>
           </View>
         </View>
@@ -622,7 +680,14 @@ class SearchProduct extends Component {
               onPress={() =>
                 this.setState({searchType: 'current', show_full: false})
               }>
-              <Text>Current</Text>
+              <Text
+                style={
+                  this.state.searchType === 'current'
+                    ? styles.searchTypeTextActive
+                    : styles.searchTypeText
+                }>
+                Current
+              </Text>
             </Button>
             <Button
               style={
@@ -634,7 +699,14 @@ class SearchProduct extends Component {
               onPress={() =>
                 this.setState({searchType: 'all', show_full: true})
               }>
-              <Text>All stores</Text>
+              <Text
+                style={
+                  this.state.searchType === 'all'
+                    ? styles.searchTypeTextActive
+                    : styles.searchTypeText
+                }>
+                All stores
+              </Text>
             </Button>
           </View>
         </View>
@@ -686,9 +758,19 @@ const styles = StyleSheet.create({
   },
   scrollViewH2: {
     position: 'absolute',
-    bottom: _defz.height / 3.9,
+    bottom: _defz.height / 5,
     left: 0,
     zIndex: 99999999,
+  },
+  searchTypeText: {
+    fontFamily: 'FuturaPT-Medium',
+    fontSize: 18,
+    color: '#707070',
+  },
+  searchTypeTextActive: {
+    fontFamily: 'FuturaPT-Medium',
+    fontSize: 18,
+    color: '#3D80F2',
   },
   touch_style_close: {
     backgroundColor: '#F0F0F0',
@@ -751,10 +833,11 @@ const styles = StyleSheet.create({
   },
 
   map: {
-    marginTop: _defz.height / 20,
+    marginTop: _defz.height / 15,
     width: _defz.width,
     borderRadius: 100,
     position: 'relative',
+    flex: 1,
   },
   transparentHeader: {
     zIndex: 999999,
@@ -825,6 +908,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#000',
     borderRadius: 50,
     marginTop: '6%',
+    alignSelf: 'center',
+  },
+  mapHeaderBackButton: {
+    width: '40%',
+    height: 10,
+    backgroundColor: '#000',
+    borderRadius: 50,
+    marginTop: '12%',
     alignSelf: 'center',
   },
   content: {
@@ -901,9 +992,11 @@ const styles = StyleSheet.create({
     paddingLeft: '3%',
     paddingRight: '3%',
     width: _defz.width / 5,
+    height: _defz.height / 28,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: _defz.height / 150,
   },
   header: {
     backgroundColor: 'transparent',
