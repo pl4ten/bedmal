@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Button, Text} from 'native-base';
 
-import {ArrowBack} from './svg-files';
+import {ArrowBack, Massage} from './svg-files';
 
 let route = '';
 let _defz = require('../com/def');
@@ -23,6 +23,17 @@ class Headers extends React.Component {
         </Button>
 
         <Text style={styles.headerText}>{route}</Text>
+
+        {this.props.message ? (
+          <Button
+            transparent
+            style={styles.msg}
+            onPress={() => this.props.navigation.goBack()}>
+            <Massage />
+          </Button>
+        ) : (
+          <Button transparent style={styles.msg} />
+        )}
       </View>
     );
   }
@@ -30,6 +41,7 @@ class Headers extends React.Component {
 
 const styles = StyleSheet.create({
   headerContainer: {
+    minHeight: _defz.height / 15,
     marginTop: _defz.height / 50,
     backgroundColor: '#FAFAFA',
     borderTopLeftRadius: 25,
@@ -37,23 +49,28 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    position: 'relative',
-    paddingBottom: _defz.height / 100,
+    alignContent: 'center',
+    justifyContent: 'space-between',
+    padding: '2%',
   },
   arrowBack: {
-    position: 'absolute',
-    top: 10,
-    left: _defz.width / 18,
+    flex: 1,
   },
   headerText: {
     color: 'gray',
     fontSize: 35,
     alignSelf: 'center',
-    marginTop: '1%',
+    marginTop: 10 ,
     textTransform: 'capitalize',
     textAlign: 'center',
     fontFamily: 'FuturaPT-Medium',
+    flex: 1,
+  },
+  msg: {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
   },
 });
 
