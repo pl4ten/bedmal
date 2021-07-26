@@ -27,12 +27,13 @@ import RadioForm from 'react-native-simple-radio-button';
 import Loader from '../com/loader';
 
 import {connect} from 'react-redux';
-import {addToBag} from '../../redux/store/store.actions';
+import {addToBag, clearBag} from '../../redux/store/store.actions';
 import {selectUserToken} from '../../redux/user/user.selectors';
 import {selectBagItems} from '../../redux/store/store.selectors';
 
 import OptionsBG from '../../asset/img/productOptions.png';
 import BorrowTrue from '../../asset/img/borrowTrue.png';
+import AddedToBag from '../../asset/img/addedToBag.png';
 
 var radio_props = [];
 let price;
@@ -44,27 +45,71 @@ class Product extends Component {
     super(props);
     this.state = {
       isLoading: false,
-      images: [],
       borrowCop: false,
-      quantity: 1,
-      orderType: null,
-      product: '',
-      finallPrice: null,
-      modalVisible: false,
       modalPickUp: false,
+      modalVisible: false,
       modalDelivery: false,
+      packingOptions: false,
       modalNewAddress: false,
-      newAddress: '',
-      newAddressPostalCode: '',
-      buyType: null,
-      fulfillment: '',
-      selectedDeliveryAddres: 0,
-      serverDeliveryInfo: '',
+      addedToBagModalVisible: false,
+      orderType: null,
+      finallPrice: null,
       borrowPartnerCup: null,
+      quantity: 1,
       vendorID: 0,
+      selectedDeliveryAddres: 0,
+      images: [],
+      buyType: '',
+      product: '',
+      newAddress: '',
+      fulfillment: '',
+      selectedOption: '',
+      serverDeliveryInfo: '',
+      activePackingOption: '',
+      newAddressPostalCode: '',
     };
   }
 
+  async getProduct(id) {
+    try {
+      this.setState({isLoading: true});
+      await _defz
+        .get_via_token(
+          `user/store-front/product/info/${id}`,
+          'GET',
+          this.props.token,
+        )
+        .then(response => {
+          // console.log(jsonBeautify(response));
+          if (response.status === 400) {
+            Alert.alert('Error', response.errors[0].message, [{text: 'ok'}], {
+              cancelable: true,
+            });
+            this.props.navigation.goBack();
+            return false;
+          }
+          this.setState({
+            product: response.product,
+            finallPrice: response.product.price,
+            fulfillment: response.fulfillment,
+            borrowPartnerCup: response.vendor_info.borrow_partner_cup,
+            vendorID: response.vendor_info.id,
+            isLoading: false,
+          });
+          price = response.product.price;
+          response.product.images.forEach(item => {
+            this.state.images.push(`http://bedmal-core.aralstudio.top${item}`);
+          });
+          if (!this.state.images) {
+            this.state.images.push(
+              require('../../asset/img/bedmal-place-holder.jpg'),
+            );
+          }
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  }
   async saveAdderss(address, postalCode) {
     let formData = new FormData();
     formData.append('address', address);
@@ -106,46 +151,6 @@ class Product extends Component {
       console.log(error);
     }
   }
-  async getProduct(id) {
-    try {
-      this.setState({isLoading: true});
-      await _defz
-        .get_via_token(
-          `user/store-front/product/info/${id}`,
-          'GET',
-          this.props.token,
-        )
-        .then(response => {
-          console.log(jsonBeautify(response));
-          if (response.status === 400) {
-            Alert.alert('Error', response.errors[0].message, [{text: 'ok'}], {
-              cancelable: true,
-            });
-            this.props.navigation.goBack();
-            return false;
-          }
-          this.setState({
-            product: response.product,
-            finallPrice: response.product.price,
-            fulfillment: response.fulfillment,
-            borrowPartnerCup: response.vendor_info.borrow_partner_cup,
-            vendorID: response.vendor_info.id,
-            isLoading: false,
-          });
-          price = response.product.price;
-          let imgArray = [];
-          response.product.images.forEach(item => {
-            this.state.images.push(`http://bedmal-core.aralstudio.top${item}`);
-          });
-          if (!this.state.images){
-            this.state.images.push(require('../../asset/img/bedmal-place-holder.jpg'),);
-          }
-
-        });
-    } catch (error) {
-      console.log(error);
-    }
-  }
   async getDeliveryInfo(productID, addressID) {
     try {
       await _defz
@@ -173,6 +178,238 @@ class Product extends Component {
     }
   }
 
+  componentDidMount() {
+    let itemID = this.props.navigation.state.params.itemId;
+    this.getProduct(itemID);
+    // console.log('---------------bag Start---------------');
+    // console.log(jsonBeautify(this.props.bag));
+    // console.log('---------------bag End---------------');
+  }
+  renderOptions(options) {
+    options.map(item => {
+      radio_props = [];
+      return (
+        <View>
+          <Text style={styles.optionsTitle}>{item.title}</Text>
+          <View style={styles.optionSize}>
+            <View style={styles.radioButtons}>
+              {item.values.forEach(val => {
+                radio_props.push({
+                  label: val.name,
+                  value: val.price,
+                });
+              })}
+              <RadioForm
+                radio_props={radio_props}
+                initial={null}
+                onPress={value => {
+                  this.setState({
+                    finallPrice: parseFloat(price) + parseFloat(value),
+                  });
+                  radio_props.forEach(item => {
+                    if (parseFloat(item.value) === parseFloat(value)) {
+                      this.setState({selectedOption: item.label});
+                    }
+                  });
+                }}
+              />
+            </View>
+          </View>
+        </View>
+      );
+    });
+  }
+  renderFooter() {
+    const {pickup, delivery} = this.state.fulfillment;
+    return (
+      <View style={styles.productBuyFooter}>
+        <View style={styles.footerItem}>
+          <TextInput
+            keyboardType={'number-pad'}
+            value={String(this.state.quantity)}
+            style={styles.footerItemInput}
+            onChangeText={quantity => this.setState({quantity: quantity})}
+          />
+          <Text style={styles.footerItemText}>Quantity</Text>
+        </View>
+        <View style={styles.footerItem}>
+          <Button
+            transparent
+            onPress={() =>
+              pickup && delivery
+                ? this.setState({modalVisible: true})
+                : Alert.alert('No fulfillment')
+            }
+            style={styles.footerItemLocation}>
+            {this.state.buyType ? (
+              <Text style={styles.footerItemText}>{this.state.buyType}</Text>
+            ) : (
+              <Location />
+            )}
+          </Button>
+          <Text style={styles.footerItemText}>Add to bag</Text>
+        </View>
+        <View style={styles.footerItem}>
+          <Button
+            transparent
+            style={styles.footerItemBuy}
+            onPress={() => {
+              this.setState({addedToBagModalVisible: true}, () => {
+                setTimeout(() => {
+                  this.props.navigation.goBack();
+                }, 1000);
+              });
+            }}>
+            {this.state.buyType ? <BuyButtonBlue /> : <BuyButton />}
+          </Button>
+          <Text style={styles.footerItemText}>Add to bag</Text>
+        </View>
+      </View>
+    );
+  }
+  handleAddToBag() {
+    let itemToAdd = {
+      vendorID: this.state.vendorID,
+      productInCart: [
+        {
+          product: this.state.product,
+          quantity: this.state.quantity,
+          addressID: this.state.selectedDeliveryAddres,
+          buyType: this.state.buyType,
+          price: this.state.finallPrice,
+          orderType: this.state.orderType,
+        },
+      ],
+    };
+    this.props.addToBag(itemToAdd);
+  }
+  renderPickUpModal() {
+    const {pickup} = this.state.fulfillment;
+    return (
+      <View style={{width: '100%'}}>
+        <View style={styles.pickupHeading}>
+          <Text>{pickup.vendor_name}</Text>
+          <Text>{pickup.vendor_address}</Text>
+          <Text>{pickup.vendor_postal_code}</Text>
+        </View>
+        <View style={styles.pickupInfo}>
+          <Text style={styles.pickupInfoTitle}>
+            {pickup.pickup_info.data.estimated_time}
+          </Text>
+          <View style={styles.workTimes}>
+            <View style={styles.workTime}>
+              <Text style={styles.workTimeText}>Monday</Text>
+              <Text style={styles.workTimeText}>
+                {pickup.vendor_opening_hours.mon.join('-')}
+              </Text>
+            </View>
+            <View style={styles.workTime}>
+              <Text style={styles.workTimeText}>Tuesday</Text>
+              <Text style={styles.workTimeText}>
+                {pickup.vendor_opening_hours.tue.join('-')}
+              </Text>
+            </View>
+            <View style={styles.workTime}>
+              <Text style={styles.workTimeText}>Wednesday</Text>
+              <Text style={styles.workTimeText}>
+                {pickup.vendor_opening_hours.wed.join('-')}
+              </Text>
+            </View>
+            <View style={styles.workTime}>
+              <Text style={styles.workTimeText}>Thursday</Text>
+              <Text style={styles.workTimeText}>
+                {pickup.vendor_opening_hours.thu.join('-')}
+              </Text>
+            </View>
+            <View style={styles.workTime}>
+              <Text style={styles.workTimeText}>Friday</Text>
+              <Text style={styles.workTimeText}>
+                {pickup.vendor_opening_hours.fri.join('-')}
+              </Text>
+            </View>
+            <View style={styles.workTime}>
+              <Text style={styles.workTimeText}>Saturday</Text>
+              <Text style={styles.workTimeText}>
+                {pickup.vendor_opening_hours.sat.join('-')}
+              </Text>
+            </View>
+            <View style={styles.workTime}>
+              <Text style={styles.workTimeText}>Sunday</Text>
+              <Text style={styles.workTimeText}>
+                {pickup.vendor_opening_hours.sun.join('-')}
+              </Text>
+            </View>
+          </View>
+        </View>
+
+        <View style={styles.pickupOptionsContainer}>
+          <Text style={{marginLeft: '7%'}}>Available options</Text>
+          <ImageBackground
+            source={OptionsBG}
+            style={styles.modalOptionBackground}>
+            <View style={styles.pickupOptions}>
+              {this.state.fulfillment.pickup.pickup_info
+                .return_borrow_products === 1 ? (
+                <View style={styles.pickupOption}>
+                  <Icon
+                    name="check"
+                    type="AntDesign"
+                    style={styles.checkButton}
+                  />
+                  <Text>Return BorrowBags</Text>
+                </View>
+              ) : (
+                <View style={styles.pickupOption}>
+                  <Icon
+                    name="close"
+                    type="AntDesign"
+                    style={styles.checkButton}
+                  />
+                  <Text>Return BorrowBags</Text>
+                </View>
+              )}
+              {this.state.fulfillment.pickup.pickup_info.pack_in_borrow_bags ===
+              1 ? (
+                <View style={styles.pickupOption}>
+                  <Icon
+                    name="check"
+                    type="AntDesign"
+                    style={styles.checkButton}
+                  />
+                  <Text>Packed in BorrowBags</Text>
+                </View>
+              ) : (
+                <View style={styles.pickupOption}>
+                  <Icon
+                    name="close"
+                    type="AntDesign"
+                    style={styles.checkButton}
+                  />
+                  <Text>Packed in BorrowBags</Text>
+                </View>
+              )}
+            </View>
+          </ImageBackground>
+        </View>
+
+        <Button
+          transparent
+          onPress={() =>
+            this.setState({
+              buyType: 'Pick Up',
+              modalVisible: false,
+              modalPickUp: false,
+              modalDelivery: false,
+              modalNewAddress: false,
+              packingOptions: true,
+            })
+          }
+          style={styles.acceptModalButton}>
+          <CheckButton />
+        </Button>
+      </View>
+    );
+  }
   renderDeliveryModal() {
     const {delivery} = this.state.fulfillment;
     return (
@@ -321,6 +558,7 @@ class Product extends Component {
                 modalPickUp: false,
                 modalDelivery: false,
                 modalNewAddress: false,
+                packingOptions: true,
               })
             }
             style={styles.acceptModalButtonDelivery}>
@@ -330,129 +568,105 @@ class Product extends Component {
       </View>
     );
   }
-  renderPickUpModal() {
-    const {pickup} = this.state.fulfillment;
+  renderPackingOptions() {
     return (
-      <View style={{width: '100%'}}>
-        <View style={styles.pickupHeading}>
-          <Text>{pickup.vendor_name}</Text>
-          <Text>{pickup.vendor_address}</Text>
-          <Text>{pickup.vendor_postal_code}</Text>
-        </View>
-        <View style={styles.pickupInfo}>
-          <Text style={styles.pickupInfoTitle}>
-            {pickup.pickup_info.data.estimated_time}
+      <View style={styles.packingOptionsContainer}>
+        <Text style={styles.packingOptionsTitle}>Options</Text>
+        <View style={styles.packingOptionsContent}>
+          <Text style={styles.packingOptionsHead}>Choose your packaging *</Text>
+          <View style={styles.packingOptions}>
+            <Button
+              transparent
+              style={
+                this.state.activePackingOption === 'Own cup'
+                  ? styles.packingOptionActive
+                  : styles.packingOption
+              }
+              onPress={() => this.setState({activePackingOption: 'Own cup'})}>
+              <Text
+                style={
+                  this.state.activePackingOption === 'Own cup'
+                    ? styles.packingOptionTextActive
+                    : styles.packingOptionText
+                }>
+                Own cup
+              </Text>
+              <Text
+                style={
+                  this.state.activePackingOption === 'Own cup'
+                    ? styles.packingOptionGreenActive
+                    : styles.packingOptionGreen
+                }>
+                Green
+              </Text>
+            </Button>
+            <Button
+              transparent
+              style={
+                this.state.activePackingOption === 'BorrowCup'
+                  ? styles.packingOptionActive
+                  : styles.packingOption
+              }
+              onPress={() => this.setState({activePackingOption: 'BorrowCup'})}>
+              <Text
+                style={
+                  this.state.activePackingOption === 'BorrowCup'
+                    ? styles.packingOptionTextActive
+                    : styles.packingOptionText
+                }>
+                BorrowCup
+              </Text>
+              <Text
+                style={
+                  this.state.activePackingOption === 'BorrowCup'
+                    ? styles.packingOptionGreenActive
+                    : styles.packingOptionGreen
+                }>
+                Green
+              </Text>
+            </Button>
+            <Button
+              transparent
+              style={
+                this.state.activePackingOption === 'Single-use'
+                  ? styles.packingOptionActive
+                  : styles.packingOption
+              }
+              onPress={() =>
+                this.setState({activePackingOption: 'Single-use'})
+              }>
+              <Text
+                style={
+                  this.state.activePackingOption === 'Single-use'
+                    ? styles.packingOptionTextActive
+                    : styles.packingOptionText
+                }>
+                Single-use
+              </Text>
+              <Text
+                style={
+                  this.state.activePackingOption === 'Single-use'
+                    ? styles.packingOptionWasteActive
+                    : styles.packingOptionWaste
+                }>
+                Waste
+              </Text>
+            </Button>
+          </View>
+          <Text style={styles.packingOptionsFooterText}>
+            BorrowCups are free.
           </Text>
-          <View style={styles.workTimes}>
-            <View style={styles.workTime}>
-              <Text style={styles.workTimeText}>Monday</Text>
-              <Text style={styles.workTimeText}>
-                {pickup.vendor_opening_hours.mon.join('-')}
-              </Text>
-            </View>
-            <View style={styles.workTime}>
-              <Text style={styles.workTimeText}>Tuesday</Text>
-              <Text style={styles.workTimeText}>
-                {pickup.vendor_opening_hours.tue.join('-')}
-              </Text>
-            </View>
-            <View style={styles.workTime}>
-              <Text style={styles.workTimeText}>Wednesday</Text>
-              <Text style={styles.workTimeText}>
-                {pickup.vendor_opening_hours.wed.join('-')}
-              </Text>
-            </View>
-            <View style={styles.workTime}>
-              <Text style={styles.workTimeText}>Thursday</Text>
-              <Text style={styles.workTimeText}>
-                {pickup.vendor_opening_hours.thu.join('-')}
-              </Text>
-            </View>
-            <View style={styles.workTime}>
-              <Text style={styles.workTimeText}>Friday</Text>
-              <Text style={styles.workTimeText}>
-                {pickup.vendor_opening_hours.fri.join('-')}
-              </Text>
-            </View>
-            <View style={styles.workTime}>
-              <Text style={styles.workTimeText}>Saturday</Text>
-              <Text style={styles.workTimeText}>
-                {pickup.vendor_opening_hours.sat.join('-')}
-              </Text>
-            </View>
-            <View style={styles.workTime}>
-              <Text style={styles.workTimeText}>Sunday</Text>
-              <Text style={styles.workTimeText}>
-                {pickup.vendor_opening_hours.sun.join('-')}
-              </Text>
-            </View>
+          <View style={styles.packingOptionsFooter}>
+            <Text style={styles.packingOptionsFooterText}>
+              Return to any participating store within 5 days.
+            </Text>
+            <Button
+              transparent
+              onPress={() => this.props.navigation.navigate('Terms')}>
+              <Text style={styles.packingOptionsFooterLink}>Read Terms</Text>
+            </Button>
           </View>
         </View>
-
-        <View style={styles.pickupOptionsContainer}>
-          <Text style={{marginLeft: '7%'}}>Available options</Text>
-          <ImageBackground
-            source={OptionsBG}
-            style={styles.modalOptionBackground}>
-            <View style={styles.pickupOptions}>
-              {this.state.fulfillment.pickup.pickup_info
-                .return_borrow_products === 1 ? (
-                <View style={styles.pickupOption}>
-                  <Icon
-                    name="check"
-                    type="AntDesign"
-                    style={styles.checkButton}
-                  />
-                  <Text>Return BorrowBags</Text>
-                </View>
-              ) : (
-                <View style={styles.pickupOption}>
-                  <Icon
-                    name="close"
-                    type="AntDesign"
-                    style={styles.checkButton}
-                  />
-                  <Text>Return BorrowBags</Text>
-                </View>
-              )}
-              {this.state.fulfillment.pickup.pickup_info.pack_in_borrow_bags ===
-              1 ? (
-                <View style={styles.pickupOption}>
-                  <Icon
-                    name="check"
-                    type="AntDesign"
-                    style={styles.checkButton}
-                  />
-                  <Text>Packed in BorrowBags</Text>
-                </View>
-              ) : (
-                <View style={styles.pickupOption}>
-                  <Icon
-                    name="close"
-                    type="AntDesign"
-                    style={styles.checkButton}
-                  />
-                  <Text>Packed in BorrowBags</Text>
-                </View>
-              )}
-            </View>
-          </ImageBackground>
-        </View>
-
-        <Button
-          transparent
-          onPress={() =>
-            this.setState({
-              buyType: 'Pick Up',
-              modalVisible: false,
-              modalPickUp: false,
-              modalDelivery: false,
-              modalNewAddress: false,
-            })
-          }
-          style={styles.acceptModalButton}>
-          <CheckButton />
-        </Button>
       </View>
     );
   }
@@ -485,35 +699,12 @@ class Product extends Component {
       </View>
     );
   }
-  componentDidMount() {
-    let itemID = this.props.navigation.state.params.itemId;
-    this.getProduct(itemID);
-    // console.log('---------------bag---------------');
-    // console.log(jsonBeautify(this.props.bag));
-    // console.log('---------------bag---------------');
-  }
-
-  handleAddToBag() {
-    let itemToAdd = {
-      vendorID: this.state.vendorID,
-      productInCart: [
-        {
-          product: this.state.product,
-          quantity: this.state.quantity,
-          addressID: this.state.selectedDeliveryAddres,
-          buyType: this.state.buyType,
-          price: this.state.finallPrice,
-          orderType: this.state.orderType,
-        },
-      ],
-    };
-    this.props.addToBag(itemToAdd);
-  }
-
   render() {
     const {name, description, sections, options} = this.state.product;
-    const {pickup, delivery} = this.state.fulfillment;
-    return !this.state.isLoading ? (
+    const {pickup} = this.state.fulfillment;
+    return this.state.isLoading ? (
+      <Loader />
+    ) : (
       <View style={styles.productContainer}>
         <ScrollView>
           <View style={styles.header}>
@@ -569,12 +760,16 @@ class Product extends Component {
                     source={BorrowTrue}
                     style={styles.optionBackgroundTrue}>
                     <View style={styles.BorrowTrueHeading}>
-                      <Text>In a free BorrowCup?</Text>
+                      <Text style={styles.optionsTitleText}>
+                        In a free BorrowCup?
+                      </Text>
                       <Button
                         transparent
                         style={styles.borrowCopButtonTrue}
                         onPress={() =>
-                          this.setState({borrowCop: !this.state.borrowCop})
+                          this.setState({
+                            borrowCop: !this.state.borrowCop,
+                          })
                         }>
                         {this.state.borrowCop ? <SwitchOn /> : <SwitchOff />}
                       </Button>
@@ -633,13 +828,17 @@ class Product extends Component {
                   <ImageBackground
                     source={OptionsBG}
                     style={styles.optionBackgroundFalse}>
-                    <Text>In a free BorrowCup?</Text>
+                    <Text style={styles.optionsTitleText}>
+                      In a free BorrowCup?
+                    </Text>
                     <BorrowCupSmall />
                     <Button
                       transparent
                       style={styles.borrowCopButtonFalse}
                       onPress={() =>
-                        this.setState({borrowCop: !this.state.borrowCop})
+                        this.setState({
+                          borrowCop: !this.state.borrowCop,
+                        })
                       }>
                       {this.state.borrowCop ? <SwitchOn /> : <SwitchOff />}
                     </Button>
@@ -649,79 +848,15 @@ class Product extends Component {
             </View>
           ) : null}
 
-          {options
-            ? options.map(item => {
-                radio_props = [];
-                return (
-                  <View>
-                    <Text style={styles.optionsTitle}>{item.title}</Text>
-                    <View style={styles.optionSize}>
-                      <View style={styles.radioButtons}>
-                        {item.values.forEach(val => {
-                          radio_props.push({label: val.name, value: val.price});
-                        })}
-                        <RadioForm
-                          radio_props={radio_props}
-                          initial={null}
-                          onPress={value => {
-                            this.setState({
-                              finallPrice:
-                                parseFloat(price) + parseFloat(value),
-                            });
-                          }}
-                        />
-                      </View>
-                    </View>
-                  </View>
-                );
-              })
-            : null}
+          {/* render packing options */}
+          {this.state.packingOptions ? this.renderPackingOptions() : null}
 
-          <View style={{marginTop: 200}} />
+          {/* render options */}
+          {options ? this.renderOptions(options) : null}
+
+          <View style={{marginTop: 120}} />
         </ScrollView>
-
-        <View style={styles.productBuyFooter}>
-          <View style={styles.footerItem}>
-            <TextInput
-              keyboardType={'number-pad'}
-              value={String(this.state.quantity)}
-              style={styles.footerItemInput}
-              onChangeText={quantity => this.setState({quantity: quantity})}
-            />
-            <Text style={styles.footerItemText}>Quantity</Text>
-          </View>
-          <View style={styles.footerItem}>
-            <Button
-              transparent
-              onPress={() =>
-                pickup && delivery
-                  ? this.setState({modalVisible: true})
-                  : alert('No fulfillment')
-              }
-              style={styles.footerItemLocation}>
-              {this.state.buyType ? (
-                <Text>{this.state.buyType}</Text>
-              ) : (
-                <Location />
-              )}
-            </Button>
-            <Text style={styles.footerItemText}>Add to bag</Text>
-          </View>
-          <View style={styles.footerItem}>
-            <Button
-              transparent
-              style={styles.footerItemBuy}
-              onPress={() => {
-                this.state.buyType
-                  ? this.handleAddToBag()
-                  : Alert.alert('Fulfilment not selected');
-              }}>
-              {this.state.buyType ? <BuyButtonBlue /> : <BuyButton />}
-            </Button>
-            <Text style={styles.footerItemText}>Add to bag</Text>
-          </View>
-        </View>
-
+        {this.renderFooter()}
         <View style={styles.centeredView}>
           <Modal
             animationType="fade"
@@ -797,9 +932,22 @@ class Product extends Component {
             </View>
           </Modal>
         </View>
+        <View style={styles.centeredView}>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={this.state.addedToBagModalVisible}
+            onRequestClose={() => {
+              this.setState({addedToBagModalVisible: false});
+            }}>
+            <View style={styles.centeredView}>
+              <View style={styles.modalViewBag}>
+                <Image source={AddedToBag} />
+              </View>
+            </View>
+          </Modal>
+        </View>
       </View>
-    ) : (
-      <Loader />
     );
   }
 }
@@ -807,6 +955,8 @@ class Product extends Component {
 const styles = StyleSheet.create({
   productContainer: {
     width: '100%',
+    minHeight: '100%',
+    backgroundColor: '#fff',
   },
   header: {
     width: '102%',
@@ -849,32 +999,44 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   productTitle: {
+    fontFamily: 'FuturaPT-Medium',
     fontSize: 30,
-    fontWeight: '500',
+    textTransform: 'capitalize',
   },
   productSubTitle: {
     color: '#707070',
-    fontSize: 20,
+    fontSize: 15,
     marginLeft: 5,
+    fontFamily: 'FuturaPT-Book',
   },
   productPrice: {
     color: '#707070',
+    fontSize: 20,
+    fontFamily: 'FuturaPT-Book',
   },
   rowInfo: {
     marginTop: 15,
   },
   infoTitle: {
-    fontSize: 17,
-    fontWeight: '600',
+    fontFamily: 'FuturaPT-Medium',
+    fontSize: 18,
   },
   infoSubTitle: {
     color: '#707070',
+    fontSize: 16,
+    fontFamily: 'FuturaPT-Book',
   },
   optionsTitle: {
     color: '#F79F28',
-    fontSize: 18,
     paddingLeft: 30,
     marginTop: 50,
+    fontFamily: 'FuturaPT-Medium',
+    fontSize: 18,
+  },
+  optionsTitleText: {
+    fontSize: 18,
+    fontFamily: 'FuturaPT-Book',
+    color: '#707070',
   },
   options: {
     width: '100%',
@@ -929,7 +1091,8 @@ const styles = StyleSheet.create({
   BorrowTrueContentText: {
     paddingLeft: 1,
     paddingRight: 1,
-    fontSize: 12,
+    fontSize: 14,
+    fontFamily: 'FuturaPT-Book',
   },
   borrowCopButtonTrue: {
     marginTop: _defz.height / 70,
@@ -957,7 +1120,7 @@ const styles = StyleSheet.create({
     height: _defz.height / 10,
     backgroundColor: '#fff',
     position: 'absolute',
-    bottom: _defz.height / 30,
+    bottom: 30,
     alignSelf: 'center',
     display: 'flex',
     flexDirection: 'row',
@@ -977,8 +1140,10 @@ const styles = StyleSheet.create({
     borderBottomColor: '#707070',
     borderBottomWidth: 1,
     textAlign: 'center',
-    fontSize: 25,
+    fontSize: 27,
     width: 100,
+    fontFamily: 'FuturaPT-Medium',
+    color: '#020202',
   },
   footerItemLocation: {
     paddingBottom: 10,
@@ -999,6 +1164,8 @@ const styles = StyleSheet.create({
   },
   footerItemText: {
     color: '#707070',
+    fontFamily: 'FuturaPTLight',
+    fontSize: 17,
   },
   radioButtons: {
     width: '20%',
@@ -1027,6 +1194,14 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
+    position: 'relative',
+  },
+  modalViewBag: {
+    width: '90%',
+    margin: 20,
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
     position: 'relative',
   },
   modalButtons: {
@@ -1214,8 +1389,171 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
   },
+  packingOptionsContainer: {
+    fontFamily: 'FuturaPT-Medium',
+  },
+  packingOptionsTitle: {
+    fontFamily: 'FuturaPT-Medium',
+    fontSize: 18,
+    width: '90%',
+    marginTop: _defz.height / 20,
+    alignSelf: 'center',
+  },
+  packingOptionsContent: {
+    width: '90%',
+    padding: '2%',
+    backgroundColor: '#FAFAFA',
+    alignSelf: 'center',
+    borderColor: '#707070',
+    borderWidth: 0.1,
+    borderRadius: 10,
+  },
+  packingOptionsHead: {
+    fontFamily: 'FuturaPT-Book',
+    fontSize: 16,
+    color: '#707070',
+  },
+  packingOptions: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingLeft: '1%',
+    paddingRight: '1%',
+    marginTop: _defz.height / 50,
+    marginBottom: 10,
+  },
+  packingOption: {
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#C3BCBC',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+    marginRight: 5,
+    marginLeft: 5,
+    position: 'relative',
+    minHeight: _defz.height / 11,
+  },
+  packingOptionActive: {
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#3D80F2',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+    marginRight: 5,
+    marginLeft: 5,
+    position: 'relative',
+    minHeight: _defz.height / 11,
+  },
+  packingOptionText: {
+    color: '#707070',
+    fontFamily: 'FuturaPT-Medium',
+    fontSize: 14,
+  },
+  packingOptionTextActive: {
+    color: '#3D80F2',
+    fontFamily: 'FuturaPT-Medium',
+    fontSize: 14,
+  },
+  packingOptionGreen: {
+    position: 'absolute',
+    bottom: 5,
+    color: '#fff',
+    backgroundColor: '#66B556',
+    borderRadius: 40,
+    paddingLeft: '5%',
+    paddingRight: '5%',
+    paddingTop: '2%',
+    paddingBottom: '2%',
+    fontSize: 14,
+    fontFamily: 'FuturaPT-Medium',
+  },
+  packingOptionGreenActive: {
+    position: 'absolute',
+    top: 5,
+    left: 5,
+    color: '#fff',
+    backgroundColor: '#66B556',
+    borderRadius: 40,
+    paddingLeft: '5%',
+    paddingRight: '5%',
+    paddingTop: '2%',
+    paddingBottom: '2%',
+    fontSize: 14,
+    fontFamily: 'FuturaPT-Medium',
+  },
+  packingOptionWaste: {
+    position: 'absolute',
+    bottom: 5,
+    color: '#fff',
+    backgroundColor: '#F2105E',
+    borderRadius: 40,
+    paddingLeft: '5%',
+    paddingRight: '5%',
+    paddingTop: '2%',
+    paddingBottom: '2%',
+    fontSize: 14,
+    fontFamily: 'FuturaPT-Medium',
+  },
+  packingOptionWasteActive: {
+    position: 'absolute',
+    top: 5,
+    left: 5,
+    color: '#fff',
+    backgroundColor: '#F2105E',
+    borderRadius: 40,
+    paddingLeft: '5%',
+    paddingRight: '5%',
+    paddingTop: '2%',
+    paddingBottom: '2%',
+    fontSize: 14,
+    fontFamily: 'FuturaPT-Medium',
+  },
+  packingOptionsFooterText: {
+    fontFamily: 'FuturaPT-Book',
+    fontSize: 14,
+    color: '#707070',
+  },
+  packingOptionsFooterLink: {
+    fontFamily: 'FuturaPT-Book',
+    fontSize: 14,
+    color: '#3D80F2',
+  },
+  packingOptionsFooter: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  addedToBagModalContainer: {
+    width: _defz.width,
+    height: _defz.height,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    backgroundColor: 'red',
+    top: 0,
+    left: 0,
+    flex: 1,
+    marginTop: 22,
+  },
+  addedToBagModal: {
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+  },
 });
-
 const mapStateToProps = state => ({
   token: selectUserToken(state),
   bag: selectBagItems(state),
@@ -1223,6 +1561,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   addToBag: item => dispatch(addToBag(item)),
+  clearBag: () => dispatch(clearBag()),
 });
 
 export default connect(
