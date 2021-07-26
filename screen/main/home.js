@@ -369,8 +369,7 @@ class home extends Component {
           <View style={styles.main}>
             <Header style={styles.header} searchBar rounded>
               <Item style={{backgroundColor: '#FDFDFD'}}>
-
-                  <Button
+                <Button
                   transparent
                   onPress={() =>
                     this.get_store('?search=' + this.state.serach_txt)
@@ -456,6 +455,7 @@ class home extends Component {
                       img_arr.push(
                         require('../../asset/img/bedmal-place-holder.jpg'),
                       );
+                    }
 
                     return (
                       <TouchableOpacity
