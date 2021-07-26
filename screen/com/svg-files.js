@@ -39,6 +39,8 @@ import LocationWhiteSvg from '../../asset/svg/location-white.svg';
 import BuyButtonSvg from '../../asset/svg/Buy button.svg';
 import BuyButtonBlueSvg from '../../asset/svg/Buybutton-blue.svg';
 import CheckButtonSvg from '../../asset/svg/checkButton.svg';
+import CameraSvg from '../../asset/svg/camera.svg';
+import SendSvg from '../../asset/svg/Send.svg';
 
 // footer items
 export class FooterActive extends React.Component {
@@ -133,7 +135,9 @@ export class BagInActive extends React.Component {
     return (
       <View style={styles.logoContainer}>
         <BagInActiveSvg width={_defz.width / 10} height={_defz.width / 12} />
-        <Text style={styles.text}>Bag</Text>
+        <Text numberOfLines={1} style={styles.text}>
+          Bag
+        </Text>
       </View>
     );
   }
@@ -143,7 +147,9 @@ export class BagActive extends React.Component {
     return (
       <View style={styles.logoContainer}>
         <BagActiveSvg width={_defz.width / 10} height={_defz.width / 12} />
-        <Text style={styles.activeText}>Bag</Text>
+        <Text numberOfLines={1} style={styles.activeText}>
+          Bag
+        </Text>
       </View>
     );
   }
@@ -232,7 +238,6 @@ export class LocationWhite extends React.Component {
     );
   }
 }
-
 export class BuyButton extends React.Component {
   render() {
     return <BuyButtonSvg width={_defz.width / 6} height={_defz.height / 6} />;
@@ -252,6 +257,17 @@ export class CheckButton extends React.Component {
     );
   }
 }
+export class Camera extends React.Component {
+  render() {
+    return <CameraSvg width={this.props.width} height={this.props.height} />;
+  }
+}
+export class Send extends React.Component {
+  render() {
+    return <SendSvg width={this.props.width} height={this.props.height} />;
+  }
+}
+
 const styles = StyleSheet.create({
   logoContainer: {
     display: 'flex',
@@ -262,8 +278,10 @@ const styles = StyleSheet.create({
   activeText: {
     color: '#3D80F2',
     fontSize: 12,
+    fontFamily: 'FuturaPT-Medium',
   },
   text: {
     fontSize: 12,
-  }
+    fontFamily: 'FuturaPT-Medium',
+  },
 });
