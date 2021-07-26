@@ -1,3 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="20.005" height="15.229" viewBox="0 0 20.005 15.229">
-  <path id="Icon_feather-message-square" data-name="Icon feather-message-square" d="M23.305,13.853c0,.861-.935,1.559-2.089,1.559H8.679L4.5,18.529V6.059C4.5,5.2,5.435,4.5,6.589,4.5H21.216c1.154,0,2.089.7,2.089,1.559Z" transform="translate(-3.9 -3.9)" fill="none" stroke="#707070" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2"/>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="48.805" height="41.743" viewBox="0 0 48.805 41.743">
+  <defs>
+    <filter id="Icon_feather-message-square" x="0" y="0" width="48.805" height="41.743" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#Icon_feather-message-square)">
+    <path id="Icon_feather-message-square-2" data-name="Icon feather-message-square" d="M32.305,18.329c0,1.273-1.383,2.3-3.089,2.3H10.679L4.5,25.243V6.8c0-1.273,1.383-2.3,3.089-2.3H29.216c1.706,0,3.089,1.032,3.089,2.3Z" transform="translate(6 3)" fill="none" stroke="#707070" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+  </g>
 </svg>
