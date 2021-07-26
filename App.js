@@ -26,7 +26,12 @@ import Bag from './screen/shop/bag';
 import verify from './screen/user/verify';
 import password from './screen/user/password';
 
-import Transactions from './screen/transactions/transactions';
+import Transactions from './screen/account/transactions';
+import Transaction from './screen/account/transaction';
+import Orders from './screen/account/orders';
+import Order from './screen/account/order';
+import Active from './screen/account/active';
+
 
 import Addresses from './screen/user/addresses';
 let _defz = require('./screen/com/def');
@@ -52,10 +57,14 @@ const RootStack = createStackNavigator(
     verify: verify,
     password: password,
     transactions: Transactions,
+    transaction: Transaction,
+    orders: Orders,
+    order: Order,
+    active: Active,
   },
   {
     headerMode: 'none',
-    initialRouteName: 'transactions',
+    initialRouteName: 'active',
   },
 );
 
