@@ -34,28 +34,54 @@ import ProductTypes from '../shop/product-types';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Keyboard} from 'react-native';
 let _defz = require('../com/def');
-let marker_count=1
+
+const marker_Local_Image = [
+  require('../../asset/marker/1.png'),
+  require('../../asset/marker/2.png'),
+  require('../../asset/marker/3.png'),
+  require('../../asset/marker/4.png'),
+  require('../../asset/marker/5.png'),
+  require('../../asset/marker/6.png'),
+  require('../../asset/marker/7.png'),
+  require('../../asset/marker/8.png'),
+  require('../../asset/marker/9.png'),
+  require('../../asset/marker/10.png'),
+  require('../../asset/marker/11.png'),
+  require('../../asset/marker/12.png'),
+  require('../../asset/marker/13.png'),
+  require('../../asset/marker/14.png'),
+  require('../../asset/marker/15.png'),
+  require('../../asset/marker/16.png'),
+  require('../../asset/marker/17.png'),
+  require('../../asset/marker/18.png'),
+  require('../../asset/marker/19.png'),
+  require('../../asset/marker/20.png'),
+  require('../../asset/marker/21.png'),
+  require('../../asset/marker/22.png'),
+  require('../../asset/marker/23.png'),
+  require('../../asset/marker/24.png'),
+  require('../../asset/marker/25.png'),
+  require('../../asset/marker/26.png'),
+];
+let marker_count = 1;
 MapboxGL.setAccessToken(
   'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',
 );
 MapboxGL.setTelemetryEnabled(false);
 const Marker = ({coordinate, id, color, label}) => {
-marker_count=marker_count+1
-const xx=marker_count
   return coordinate[0] && coordinate[1] ? (
-
     <MarkerView coordinate={coordinate} id={id}>
       <View style={[styles.markerView, {}]} />
       <View>
         <Image
+          resizeMode={'contain'}
           width={25}
           height={25}
-          source={require("../../asset/marker/"+ 1 +".png")}
+          source={marker_Local_Image[id]}
         />
       </View>
     </MarkerView>
   ) : null;
-
 };
 class home extends Component {
   constructor() {
@@ -91,8 +117,8 @@ class home extends Component {
         latitude: 53.4808,
         longitude: 2.2426,
       },
-      user_lat: "",
-      user_log: "",
+      user_lat: '',
+      user_log: '',
       centerCoordinate: [53.4808, 2.2426],
       renderMode: this._renderModeOptions[0].data,
       followUserLocation: true,
@@ -204,14 +230,13 @@ class home extends Component {
     }
   }
 
-
-  async get_store_via_location(x,y) {
+  async get_store_via_location(x, y) {
     this.setState({loading: true});
     const {navigate} = this.props.navigation;
     try {
       let params = '';
 
-        params +="&latitude="+x+" &longitude="+y;
+      params += '&latitude=' + x + ' &longitude=' + y;
 
       await _defz
         .get_via_token('user/home?range=40' + params, 'GET', _defz._token)
@@ -235,13 +260,12 @@ class home extends Component {
     }
   }
 
-location_seter(x,y){
-  if (x!==this.state.user_lat && y!==this.state.user_log){
-    this.setState({user_lat: x});
-    this.setState({user_log: y});
+  location_seter(x, y) {
+    if (x !== this.state.user_lat && y !== this.state.user_log) {
+      this.setState({user_lat: x});
+      this.setState({user_log: y});
+    }
   }
-
-}
   select_btn(b) {
     if (this.state.selected_btn == b) {
       this.get_store('new');
@@ -308,18 +332,20 @@ location_seter(x,y){
       return items;
     }
   }
-   checkImageURL(url){
-     fetch(url)
-       .then(res => {
-         console.log(res.status)
-       if(res.status == 404){
-         return require('../../asset/img/bedmal-place-holder.jpg')
-       }else{
-         return url
-      }
-    })
-   .catch(err=>{return require('../../asset/img/bedmal-place-holder.jpg')})
-   }
+  checkImageURL(url) {
+    fetch(url)
+      .then(res => {
+        console.log(res.status);
+        if (res.status == 404) {
+          return require('../../asset/img/bedmal-place-holder.jpg');
+        } else {
+          return url;
+        }
+      })
+      .catch(err => {
+        return require('../../asset/img/bedmal-place-holder.jpg');
+      });
+  }
   render() {
     const {navigate} = this.props.navigation;
     const {
@@ -343,17 +369,14 @@ location_seter(x,y){
           <View style={styles.main}>
             <Header style={styles.header} searchBar rounded>
               <Item style={{backgroundColor: '#FDFDFD'}}>
-            
+
                   <Button
-                    transparent
-                    onPress={() =>
-                      this.get_store('?search=' + this.state.serach_txt)
-                    }>
-                    <Icon name="ios-search" style={{color: 'black'}} />
-                  </Button>
-             
-
-
+                  transparent
+                  onPress={() =>
+                    this.get_store('?search=' + this.state.serach_txt)
+                  }>
+                  <Icon name="ios-search" style={{color: 'black'}} />
+                </Button>
 
                 <Input
                   placeholder="ُSearch for a store or Product"
@@ -394,14 +417,13 @@ location_seter(x,y){
                         parseFloat(item.longitude),
                         parseFloat(item.latitude),
                       ];
-
                       return (
                         <View>
                           <Marker
                             id={index}
                             coordinate={coordinate_item}
                             label={index}
-                            color={"red"}
+                            color={'red'}
                           />
                         </View>
                       );
@@ -428,14 +450,13 @@ location_seter(x,y){
                   {this.state.vendors.map((item, index) => {
                     let img_arr = [];
                     item.image_gallery.forEach(item => {
+                      img_arr.push(`https://bedmal-core.aralstudio.top${item}`);
+                    });
+                    if (!img_arr) {
+                      img_arr.push(
+                        require('../../asset/img/bedmal-place-holder.jpg'),
+                      );
 
-
-                       img_arr.push(`https://bedmal-core.aralstudio.top${item}`)
-                    })
-                    if (!img_arr){
-                      img_arr.push(require('../../asset/img/bedmal-place-holder.jpg'),);
-                    }
-                    
                     return (
                       <TouchableOpacity
                         activeOpacity={1}
@@ -443,7 +464,7 @@ location_seter(x,y){
                         onPress={() => {
                           this.state.acctive_shop !== item.id
                             ? this.shop_selecter(item.id)
-                            : (this.setState({acctive_shop: ''}));
+                            : this.setState({acctive_shop: ''});
                         }}
                         style={[
                           this.state.acctive_shop !== item.id
@@ -727,6 +748,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: 'gray',
     marginLeft: '9%',
+    fontFamily: 'FuturaPT-Medium',
   },
   sliderImages: {
     borderTopLeftRadius: 10,
@@ -738,6 +760,7 @@ const styles = StyleSheet.create({
     marginLeft: '5%',
     marginTop: 2,
     fontSize: 10,
+    fontFamily: 'FuturaPT-Medium',
   },
   text_title_shop: {
     marginLeft: 5,
@@ -748,6 +771,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     marginTop: 8,
     fontSize: 14,
+    fontFamily: 'FuturaPT-Medium',
   },
   view_line: {
     width: '70%',
@@ -765,8 +789,8 @@ const styles = StyleSheet.create({
     marginTop: 5,
     backgroundColor: 'black',
     position: 'absolute',
-    flex:1,
-    zIndex:999,
+    flex: 1,
+    zIndex: 999,
   },
 
   scrollViewH2: {
@@ -782,8 +806,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#FDFDFD',
   },
   search_input: {
-    color: 'silver',
-    fontFamily: 'FuturaPTDemi',
+    color: 'black',
+    fontFamily: 'FuturaPT-Medium',
     fontSize: 13,
   },
 
@@ -875,12 +899,12 @@ const styles = StyleSheet.create({
   unselectb_data: {
     color: 'gray',
     textTransform: 'capitalize',
-    fontFamily: 'FuturaPTDemi',
+    fontFamily: 'FuturaPT-Medium',
   },
   selectb_data: {
     color: 'white',
     textTransform: 'capitalize',
-    fontFamily: 'FuturaPTDemi',
+    fontFamily: 'FuturaPT-Medium',
   },
   markerView: {
     width: 20,
