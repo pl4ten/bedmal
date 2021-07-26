@@ -23,8 +23,10 @@ import Terms from './screen/user/terms';
 import Term from './screen/user/term';
 import SearchProduct from './screen/shop/search-product';
 import Bag from './screen/shop/bag';
-import verify from './screen/user/verify'
-import password  from './screen/user/password';
+import verify from './screen/user/verify';
+import password from './screen/user/password';
+
+import Transactions from './screen/transactions/transactions';
 
 import Addresses from './screen/user/addresses';
 let _defz = require('./screen/com/def');
@@ -47,13 +49,13 @@ const RootStack = createStackNavigator(
     searchProduct: SearchProduct,
     Addresses: Addresses,
     bag: Bag,
-    verify:verify,
-
-    password:password
+    verify: verify,
+    password: password,
+    transactions: Transactions,
   },
   {
     headerMode: 'none',
-    initialRouteName: 'usermain',
+    initialRouteName: 'transactions',
   },
 );
 
@@ -133,6 +135,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginTop: '35%',
     alignSelf: 'center',
+    fontFamily: 'FuturaPT-Bold',
   },
   text2: {
     color: 'white',
@@ -140,6 +143,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginTop: '3%',
     alignSelf: 'center',
+    fontFamily: 'FuturaPT-Bold',
   },
   splashImage: {
     alignSelf: 'center',
