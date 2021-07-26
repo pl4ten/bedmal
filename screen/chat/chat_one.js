@@ -19,12 +19,11 @@ import {
   Root,
   List,
   Icon,
-  Spinner,
 } from 'native-base';
+import {Camera, Send} from '../com/svg-files';
 import ImagePicker from 'react-native-image-crop-picker';
 import {Keyboard} from 'react-native';
 import Loader from '../com/loader';
-const {jsonBeautify} = require('beautify-json');
 
 let img_temp = '';
 
@@ -54,8 +53,7 @@ class Chat_one extends Component {
       number_image: 0,
       chatdata: null,
       isLoading: false,
-      chat_time:[],
-      
+      chat_time: [],
     };
   }
   forceUpdateHandler() {
@@ -173,9 +171,7 @@ class Chat_one extends Component {
         this.setState({isLoading: false});
         if (response.status === 200) {
           this.setState({chatdata: response.messages});
-          this.state.chatdata.reverse().map((dataItem, i) => {
-
-          });
+          this.state.chatdata.reverse().map((dataItem, i) => {});
           console.log(chat_time);
           this.textInput.clear();
         }
@@ -213,76 +209,73 @@ class Chat_one extends Component {
   }
   renderItems() {
     const {navigate} = this.props.navigation;
-    if (this.state.chatdata != null ) {
+    if (this.state.chatdata != null) {
       let items = [];
 
       this.state.chatdata.reverse().map((dataItem, i) => {
-        let all=1
-          if(!this.finder(dataItem.created_at.slice(0, 10))){
-            this.state.chat_time.push(dataItem.created_at.slice(0, 10));
-          }else{
-            all=2
-          }
-          
-          items.push(
-            <View>
-              {all!==2? (
-                <Text style={styles.createdAt}>
-                  {dataItem.created_at.slice(0, 10)}
-                </Text>
-              ) : null}
-            </View>,
+        let all = 1;
+        if (!this.finder(dataItem.created_at.slice(0, 10))) {
+          this.state.chat_time.push(dataItem.created_at.slice(0, 10));
+        } else {
+          all = 2;
+        }
 
-            <List style={styles.chatContainer}>
-              {dataItem.sender === 'user' ? (
-                <View style={styles.userChatBox}>
-                  {dataItem.type === 'text' ? (
-                    <View>
-                      <Text style={styles.chatText}>{dataItem.message} </Text>
-                      <Text style={styles.cahtBoxDateTime} note>
-                        {dataItem.updated_at.slice(11, 16)}
-                      </Text>
-                    </View>
-                  ) : (
-                    <Image
-                      style={{width: _defz.width / 2, height: _defz.height / 4}}
-                      source={{
-                        uri:
-                          'https://bedmal-core.aralstudio.top' +
-                          dataItem.message,
-                      }}
-                    />
-                  )}
-                </View>
-              ) : null}
-              {dataItem.sender === 'not_user' ? (
-                <View style={styles.notUserChatBox}>
-                  {dataItem.type === 'text' ? (
-                    <View>
-                      <Text style={styles.chatText}>{dataItem.message} </Text>
-                      <Text style={styles.cahtBoxDateTime} note>
-                        {dataItem.updated_at.slice(11, 16)}
-                      </Text>
-                    </View>
-                  ) : (
-                    <Image
-                      style={{
-                        width: _defz.width / 2,
-                        height: _defz.height / 4,
-                        alignSelf: 'center',
-                      }}
-                      source={{
-                        uri:
-                          'https://bedmal-core.aralstudio.top' +
-                          dataItem.message,
-                      }}
-                    />
-                  )}
-                </View>
-              ) : null}
-            </List>,
-          );
+        items.push(
+          <View>
+            {all !== 2 ? (
+              <Text style={styles.createdAt}>
+                {dataItem.created_at.slice(0, 10)}
+              </Text>
+            ) : null}
+          </View>,
 
+          <List style={styles.chatContainer}>
+            {dataItem.sender === 'user' ? (
+              <View style={styles.userChatBox}>
+                {dataItem.type === 'text' ? (
+                  <View>
+                    <Text style={styles.chatText}>{dataItem.message} </Text>
+                    <Text style={styles.cahtBoxDateTime} note>
+                      {dataItem.updated_at.slice(11, 16)}
+                    </Text>
+                  </View>
+                ) : (
+                  <Image
+                    style={{width: _defz.width / 2, height: _defz.height / 4}}
+                    source={{
+                      uri:
+                        'https://bedmal-core.aralstudio.top' + dataItem.message,
+                    }}
+                  />
+                )}
+              </View>
+            ) : null}
+            {dataItem.sender === 'not_user' ? (
+              <View style={styles.notUserChatBox}>
+                {dataItem.type === 'text' ? (
+                  <View>
+                    <Text style={styles.chatText}>{dataItem.message} </Text>
+                    <Text style={styles.cahtBoxDateTime} note>
+                      {dataItem.updated_at.slice(11, 16)}
+                    </Text>
+                  </View>
+                ) : (
+                  <Image
+                    style={{
+                      width: _defz.width / 2,
+                      height: _defz.height / 4,
+                      alignSelf: 'center',
+                    }}
+                    source={{
+                      uri:
+                        'https://bedmal-core.aralstudio.top' + dataItem.message,
+                    }}
+                  />
+                )}
+              </View>
+            ) : null}
+          </List>,
+        );
       });
 
       return items;
@@ -360,9 +353,9 @@ class Chat_one extends Component {
                             transparent
                             style={styles.b1}
                             onPress={() => this.image_select()}>
-                            <Image
-                              source={require('../../asset/img/img.png')}
-                              resizeMode="stretch"
+                            <Camera
+                              width={_defz.width / 15}
+                              height={_defz.height / 15}
                             />
                           </Button>
                         </Left>
@@ -389,9 +382,9 @@ class Chat_one extends Component {
                             transparent
                             style={styles.b1}
                             onPress={() => this.send_chat()}>
-                            <Image
-                              source={require('../../asset/img/send_b.png')}
-                              resizeMode="stretch"
+                            <Send
+                              width={_defz.width / 7}
+                              height={_defz.height / 7}
                             />
                           </Button>
                         </Right>
