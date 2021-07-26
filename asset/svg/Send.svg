@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="54" height="54" viewBox="0 0 54 54">
+  <defs>
+    <filter id="Curved_Rectangle" x="0" y="0" width="54" height="54" filterUnits="userSpaceOnUse">
+      <feOffset dy="1" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Send_button" data-name="Send button" transform="translate(-309 -766)">
+    <g transform="matrix(1, 0, 0, 1, 309, 766)" filter="url(#Curved_Rectangle)">
+      <rect id="Curved_Rectangle-2" data-name="Curved Rectangle" width="30" height="30" rx="15" transform="translate(12 11)" fill="#707070"/>
+    </g>
+    <path id="Send" d="M25.826,14.674H10.746l6.927-6.927L15.913,6,6,15.913l9.913,9.913,1.747-1.747-6.914-6.927h15.08Z" transform="translate(351.913 776.087) rotate(90)" fill="rgba(216,255,170,0.95)"/>
+  </g>
+</svg>
