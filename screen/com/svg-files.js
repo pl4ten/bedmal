@@ -41,6 +41,10 @@ import BuyButtonBlueSvg from '../../asset/svg/Buybutton-blue.svg';
 import CheckButtonSvg from '../../asset/svg/checkButton.svg';
 import CameraSvg from '../../asset/svg/camera.svg';
 import SendSvg from '../../asset/svg/Send.svg';
+import BagSvg from '../../asset/svg/bag.svg';
+import LidCupSvg from '../../asset/svg/lid_cup.svg';
+import LidSvg from '../../asset/svg/lid.svg';
+import LidSleeveCupSvg from '../../asset/svg/lid_sleeve_cup.svg';
 
 // footer items
 export class FooterActive extends React.Component {
@@ -265,6 +269,28 @@ export class Camera extends React.Component {
 export class Send extends React.Component {
   render() {
     return <SendSvg width={this.props.width} height={this.props.height} />;
+  }
+}
+export class Bag extends React.Component {
+  render() {
+    return <BagSvg width={this.props.width} height={this.props.height} />;
+  }
+}
+export class LidCup extends React.Component {
+  render() {
+    return <LidCupSvg width={this.props.width} height={this.props.height} />;
+  }
+}
+export class Lid extends React.Component {
+  render() {
+    return <LidSvg width={this.props.width} height={this.props.height} />;
+  }
+}
+export class LidSleeveCup extends React.Component {
+  render() {
+    return (
+      <LidSleeveCupSvg width={this.props.width} height={this.props.height} />
+    );
   }
 }
 
