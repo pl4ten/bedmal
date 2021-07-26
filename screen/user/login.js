@@ -21,15 +21,15 @@ let _defz = require('../com/def');
 import Loader from '../com/loader';
 let _names = '';
 let _pass = '',
-code="",
+  code = '',
   _token = '';
 
 import {
   GoogleSignin,
   statusCodes,
-  GoogleSigninButton
+  GoogleSigninButton,
 } from '@react-native-google-signin/google-signin';
-import PhoneInput from 'react-native-phone-input'
+import PhoneInput from 'react-native-phone-input';
 import RNExitApp from 'react-native-exit-app';
 import RNPickerDialog from 'rn-modal-picker';
 const DismissKeyboard = ({children}) => (
@@ -129,16 +129,13 @@ class login extends Component {
       GoogleSignin.configure({
         scopes: ['https://www.googleapis.com/auth/drive.readonly'],
         scopes: ['profile', 'email'],
-        offlineAccess :false,
+        offlineAccess: false,
         webClientId:
           '726577649573-ln72gpmn99fignugjnjts3tedrn9r0im.apps.googleusercontent.com',
       });
       const userInfo = await GoogleSignin.signIn();
       console.log(userInfo);
-      this.login_via_google(userInfo.idToken)
-
-
-
+      this.login_via_google(userInfo.idToken);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         alert('error occured SIGN_IN_CANCELLED');
@@ -158,8 +155,8 @@ class login extends Component {
     this.setState({loading: true});
     const {navigate} = this.props.navigation;
     let formData = new FormData();
-    if (code!==''){
-      _names=code+ "-"+_names
+    if (code !== '') {
+      _names = code + '-' + _names;
     }
     formData.append('username', _names);
     formData.append('password', _pass);
@@ -188,9 +185,8 @@ class login extends Component {
     const {navigate} = this.props.navigation;
     let formData = new FormData();
 
-
     await _defz
-      .send('user/login/google?idToken='+x, 'GET', "0", formData)
+      .send('user/login/google?idToken=' + x, 'GET', '0', formData)
       .then(response => {
         console.log(response);
         this.setState({loading: false});
@@ -202,13 +198,12 @@ class login extends Component {
           this.storeData();
           navigate('home');
         } else {
-           Alert.alert('Error', response.errors[0].message, [{text: 'ok'}], {
+          Alert.alert('Error', response.errors[0].message, [{text: 'ok'}], {
             cancelable: true,
-          }); 
+          });
         }
       });
   };
-
 
   render() {
     const {navigate} = this.props.navigation;
@@ -219,35 +214,31 @@ class login extends Component {
             <Loader navigation={this.props.navigation} loading={true} />
           ) : (
             <View>
-
               <Image
                 source={require('../../asset/logo_black.png')}
                 resizeMode="stretch"
                 style={styles.logoImage}
               />
               <Text style={styles.text1}>Login</Text>
-              <View style={{flexDirection: "row"}}>
-
-
-
-              <TextInput
-                placeholder="+1"
-                placeholderTextColor="silver"
-                onChangeText={text => {
-                  code = text;
-                }}
-                maxLength={50}
-                style={styles.textInput2}
-              />
-              <TextInput
-                placeholder=" Phone number"
-                placeholderTextColor="silver"
-                onChangeText={text => {
-                  _names = text;
-                }}
-                maxLength={50}
-                style={styles.textInput3}
-              />
+              <View style={{flexDirection: 'row'}}>
+                <TextInput
+                  placeholder="+1"
+                  placeholderTextColor="silver"
+                  onChangeText={text => {
+                    code = text;
+                  }}
+                  maxLength={50}
+                  style={styles.textInput2}
+                />
+                <TextInput
+                  placeholder=" Phone number"
+                  placeholderTextColor="silver"
+                  onChangeText={text => {
+                    _names = text;
+                  }}
+                  maxLength={50}
+                  style={styles.textInput3}
+                />
               </View>
 
               <TextInput
@@ -269,12 +260,11 @@ class login extends Component {
                 <View style={styles.splitterRightLine} />
               </View>
 
-
               <Button rounded style={styles.b2} onPress={() => this.signIn()}>
                 <Image
                   source={require('../../asset/google.png')}
                   resizeMode="stretch"
-                  style={{marginRight: "10%"}}
+                  style={{marginRight: '10%'}}
                 />
                 <Text style={styles.textb3}>Continue with google</Text>
               </Button>
@@ -286,18 +276,16 @@ class login extends Component {
                 onPress={() => this.login()}>
                 <Text style={styles.textb1}>Login</Text>
               </Button>
-
-
             </View>
           )}
-                        <Button
-                transparent
-                rounded
-                iconLeft
-                style={styles.b3}
-                onPress={() => navigate('signup')}>
-                <Text style={styles.textsignup}>Do not have an account?</Text>
-              </Button>
+          <Button
+            transparent
+            rounded
+            iconLeft
+            style={styles.b3}
+            onPress={() => navigate('signup')}>
+            <Text style={styles.textsignup}>Do not have an account?</Text>
+          </Button>
         </View>
       </DismissKeyboard>
     );
@@ -322,6 +310,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'black',
     textTransform: 'capitalize',
+    fontFamily: 'FuturaPT-Medium',
   },
   textsignup: {
     alignContent: 'center',
@@ -330,6 +319,7 @@ const styles = StyleSheet.create({
     color: 'black',
     bottom: 20,
     textTransform: 'capitalize',
+    fontFamily: 'FuturaPT-Medium',
   },
   textb3: {
     alignContent: 'center',
@@ -337,6 +327,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: 'black',
     textTransform: 'capitalize',
+    fontFamily: 'FuturaPT-Medium',
   },
   b3: {
     alignSelf: 'center',
@@ -362,8 +353,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     fontSize: 16,
     color: 'white',
-    width: "100%",
-    textAlign: "center",
+    width: '100%',
+    textAlign: 'center',
     textTransform: 'capitalize',
   },
   text1: {
@@ -380,6 +371,7 @@ const styles = StyleSheet.create({
     marginLeft: '7%',
     marginTop: '3%',
     textTransform: 'capitalize',
+    fontFamily: 'FuturaPT-Book',
   },
   textInput: {
     width: '90%',
@@ -393,6 +385,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     marginTop: '5%',
     padding: 13,
+    fontFamily: 'FuturaPT-Medium',
   },
   textInput3: {
     width: '75%',
@@ -409,13 +402,14 @@ const styles = StyleSheet.create({
     marginTop: '5%',
     padding: 13,
     marginLeft: 1,
+    fontFamily: 'FuturaPT-Medium',
   },
   textInput2: {
     width: '10%',
     alignSelf: 'center',
     borderTopLeftRadius: 25,
-    borderBottomLeftRadius:25,
-    height: 30,
+    borderBottomLeftRadius: 25,
+    height: 29,
     elevation: 3,
     backgroundColor: 'white',
     color: 'black',
@@ -423,7 +417,8 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     marginTop: '5%',
     padding: 13,
-    marginLeft: "5%"
+    marginLeft: '5%',
+    fontFamily: 'FuturaPT-Medium',
   },
   logoImage: {
     alignSelf: 'center',

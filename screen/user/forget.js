@@ -2,12 +2,12 @@
 import React, {Component} from 'react';
 import {View} from 'react-native';
 
-import {StyleSheet, Image, TextInput,Alert} from 'react-native';
+import {StyleSheet, Image, TextInput, Alert} from 'react-native';
 import {Button, Text} from 'native-base';
 
 import {Keyboard, TouchableWithoutFeedback} from 'react-native';
 let _phone = '';
-let code="";
+let code = '';
 let _defz = require('../com/def');
 import Loader from '../com/loader';
 const DismissKeyboard = ({children}) => (
@@ -23,23 +23,22 @@ class forget extends Component {
     };
   }
 
-
   forget = async x => {
     this.setState({loading: true});
     const {navigate} = this.props.navigation;
     let formData = new FormData();
-    if (code!==''){
-      _phone=code+ "-"+_phone
+    if (code !== '') {
+      _phone = code + '-' + _phone;
     }
     formData.append('username', _phone);
 
     await _defz
-      .send('user/forgot-password', 'POST', "0", formData)
+      .send('user/forgot-password', 'POST', '0', formData)
       .then(response => {
         console.log(response);
         this.setState({loading: false});
         if (response.status === 200) {
-          navigate("verify" , {data: _phone})
+          navigate('verify', {data: _phone});
         } else {
           Alert.alert('Error', response.errors[0].message, [{text: 'ok'}], {
             cancelable: true,
@@ -53,60 +52,57 @@ class forget extends Component {
     return (
       <DismissKeyboard>
         <View style={styles.container}>
-        {this.state.loading === true ? (
+          {this.state.loading === true ? (
             <Loader navigation={this.props.navigation} loading={true} />
           ) : (
             <View>
-          <Image
-            source={require('../../asset/logo_black.png')}
-            resizeMode="stretch"
-            style={styles.logoImg}
-          />
-          <Text style={styles.text1}>Forgot your password?</Text>
-          <Text style={styles.text2}>
-            To reset your password , please enter the Phone number
-          </Text>
-          <View style={{flexDirection: "row",marginTop: _defz.height/10}}>
+              <Image
+                source={require('../../asset/logo_black.png')}
+                resizeMode="stretch"
+                style={styles.logoImg}
+              />
+              <Text style={styles.text1}>Forgot your password?</Text>
+              <Text style={styles.text2}>
+                To reset your password , please enter the Phone number
+              </Text>
+              <View
+                style={{flexDirection: 'row', marginTop: _defz.height / 10}}>
+                <TextInput
+                  placeholder="+1"
+                  placeholderTextColor="silver"
+                  onChangeText={text => {
+                    code = text;
+                  }}
+                  maxLength={50}
+                  style={styles.textInput2}
+                />
+                <TextInput
+                  placeholder=" Phone number"
+                  placeholderTextColor="silver"
+                  onChangeText={text => {
+                    _names = text;
+                  }}
+                  maxLength={50}
+                  style={styles.textInput3}
+                />
+              </View>
 
+              <Button
+                rounded
+                iconLeft
+                style={styles.b1}
+                onPress={() => this.forget()}>
+                <Text style={styles.textb1}>Login</Text>
+              </Button>
 
-
-<TextInput
-  placeholder="+1"
-  placeholderTextColor="silver"
-  onChangeText={text => {
-    code = text;
-  }}
-  maxLength={50}
-  style={styles.textInput2}
-/>
-<TextInput
-  placeholder=" Phone number"
-  placeholderTextColor="silver"
-  onChangeText={text => {
-    _names = text;
-  }}
-  maxLength={50}
-  style={styles.textInput3}
-/>
-</View>
-
-          <Button
-            rounded
-            iconLeft
-            style={styles.b1}
-            onPress={() => this.forget()}>
-            <Text style={styles.textb1}>Login</Text>
-          </Button>
-
-          <Button
-            transparent
-            style={styles.goToLoginButton}
-            onPress={() => navigate('login')}>
-            <Text style={styles.textsignup}>Go To Login</Text>
-          </Button>
+              <Button
+                transparent
+                style={styles.goToLoginButton}
+                onPress={() => navigate('login')}>
+                <Text style={styles.textsignup}>Go To Login</Text>
+              </Button>
             </View>
-            )}
-
+          )}
         </View>
       </DismissKeyboard>
     );
@@ -124,6 +120,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: 'gray',
     textTransform: 'capitalize',
+    fontFamily: 'FuturaPT-Medium',
   },
   textb3: {
     alignContent: 'center',
@@ -133,9 +130,9 @@ const styles = StyleSheet.create({
   },
   b1: {
     alignSelf: 'center',
-    marginTop: _defz.height/3,
+    marginTop: _defz.height / 3,
     height: 50,
-    bottom: '17%',
+    bottom: '22%',
     color: '#3D80F2',
     backgroundColor: '#3D80F2',
     width: '90%',
@@ -147,12 +144,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'white',
     textTransform: 'capitalize',
+    fontFamily: 'FuturaPT-Medium',
   },
   text1: {
     color: 'black',
     fontSize: 16,
     alignSelf: 'center',
     marginTop: '3%',
+    fontFamily: 'FuturaPT-Medium',
   },
   text2: {
     color: 'grey',
@@ -160,6 +159,9 @@ const styles = StyleSheet.create({
     width: '90%',
     alignSelf: 'center',
     marginTop: '3%',
+    alignSelf: 'center',
+    textAlign: 'center',
+    fontFamily: 'FuturaPT-Medium',
   },
   textb2: {
     color: 'black',
@@ -183,12 +185,13 @@ const styles = StyleSheet.create({
     marginTop: '5%',
     padding: 13,
     marginLeft: 1,
+    fontFamily: 'FuturaPT-Medium',
   },
   textInput2: {
     width: '10%',
     alignSelf: 'center',
     borderTopLeftRadius: 25,
-    borderBottomLeftRadius:25,
+    borderBottomLeftRadius: 25,
     height: 30,
     elevation: 3,
     backgroundColor: 'white',
@@ -197,7 +200,8 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     marginTop: '5%',
     padding: 13,
-    marginLeft: "5%"
+    marginLeft: '5%',
+    fontFamily: 'FuturaPT-Medium',
   },
   textInput: {
     width: '90%',
@@ -210,7 +214,8 @@ const styles = StyleSheet.create({
     borderColor: '#000000',
     textAlign: 'left',
     marginTop: '25%',
-    padding: 15
+    padding: 15,
+    fontFamily: 'FuturaPT-Medium',
   },
   logoImg: {
     alignSelf: 'center',
@@ -219,9 +224,10 @@ const styles = StyleSheet.create({
     marginTop: '20%',
   },
   goToLoginButton: {
-    bottom: '10%',
+    bottom: '12%',
     alignSelf: 'center',
     backgroundColor: _defz.main_color,
+    fontFamily: 'FuturaPT-Medium',
   },
 });
 

@@ -322,6 +322,7 @@ const styles = StyleSheet.create({
     marginTop: '3%',
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
+    height: '90%',
   },
   b1: {
     backgroundColor: '#C3BCBC',
@@ -368,6 +369,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
 
     textTransform: 'capitalize',
+    fontFamily: 'FuturaPT-Medium',
   },
   text1: {
     color: '#000',
@@ -376,6 +378,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     textTransform: 'capitalize',
     width: '120%',
+    fontFamily: 'FuturaPT-Medium',
   },
   headerXbutton: {
     alignSelf: 'flex-end',
@@ -391,10 +394,12 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
+    fontFamily: 'FuturaPT-Medium',
   },
   cardLeftLarge: {
     flexDirection: 'column',
     width: '100%',
+    fontFamily: 'FuturaPT-Medium',
   },
   editButton: {
     color: 'white',

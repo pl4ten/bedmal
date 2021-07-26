@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     position: 'relative',
+    paddingBottom: _defz.height / 100,
   },
   arrowBack: {
     position: 'absolute',
@@ -52,6 +53,7 @@ const styles = StyleSheet.create({
     marginTop: '1%',
     textTransform: 'capitalize',
     textAlign: 'center',
+    fontFamily: 'FuturaPT-Medium',
   },
 });
 

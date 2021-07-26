@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {
   StyleSheet,
   View,
-  Image,
   TouchableOpacity,
   ScrollView,
   Alert,
@@ -269,7 +268,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  text_card: {color: 'gray'},
+  text_card: {
+    color: 'gray',
+    fontFamily: 'FuturaPT-Medium',
+  },
   card: {
     marginTop: _defz.height / 50,
   },
@@ -283,10 +285,11 @@ const styles = StyleSheet.create({
   },
   text1: {
     color: 'gray',
-    fontSize: 28,
+    fontSize: 40,
     alignSelf: 'center',
-    marginTop: '9%',
+    marginTop: '5%',
     textTransform: 'capitalize',
+    fontFamily: 'FuturaPT-Medium',
   },
   header: {
     backgroundColor: 'black',
@@ -306,10 +309,12 @@ const styles = StyleSheet.create({
     width: '90%',
     alignSelf: 'center',
     marginTop: '3%',
+    fontFamily: 'FuturaPT-Medium',
   },
   headingRowText: {
     color: '#4380F2',
     textTransform: 'capitalize',
+    fontFamily: 'FuturaPT-Medium',
   },
 });
 

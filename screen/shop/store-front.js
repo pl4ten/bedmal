@@ -42,6 +42,7 @@ class StoreFront extends React.Component {
       modalVisible: false,
       selectedCollection: 0,
       isLoading: false,
+      vendorID: 0,
     };
   }
 
@@ -100,8 +101,12 @@ class StoreFront extends React.Component {
     }
   }
   componentDidMount() {
-    let vendorID = this.props.navigation.state.params.id;
-    this.getStoreFront(vendorID);
+    this.setState({vendorID: this.props.navigation.state.params.id}, () => {
+      this.getStoreFront(this.state.vendorID);
+    });
+  }
+  componentWillUnmount() {
+    this.setState({});
   }
 
   render() {
@@ -116,7 +121,7 @@ class StoreFront extends React.Component {
             <ArrowBack />
           </Button>
           <View>
-            <Text>{this.state.vendorInfo.name}</Text>
+            <Text style={styles.vendorName}>{this.state.vendorInfo.name}</Text>
           </View>
           <View style={styles.headerRigth}>
             <Button
@@ -128,7 +133,7 @@ class StoreFront extends React.Component {
               transparent
               onPress={() =>
                 this.props.navigation.navigate('chat_one', {
-                  id:vendorID,
+                  id: vendorID,
                   type: 'vendor_id',
                 })
               }>
@@ -170,7 +175,7 @@ class StoreFront extends React.Component {
                     style={
                       this.state.selectedCollection === item.id
                         ? styles.activeText
-                        : null
+                        : styles.text
                     }>
                     {item.name}
                   </Text>
@@ -479,8 +484,12 @@ const styles = StyleSheet.create({
   },
   activeText: {
     color: '#3D80F2',
-    fontWeight: 'bold',
     fontSize: 15,
+    fontFamily: 'FuturaPT-Medium',
+  },
+  text: {
+    fontSize: 15,
+    fontFamily: 'FuturaPT-Medium',
   },
   centeredView: {
     flex: 1,
@@ -576,6 +585,10 @@ const styles = StyleSheet.create({
   },
   optionText: {
     color: '#000',
+  },
+  vendorName: {
+    fontFamily: 'FuturaPTDemi',
+    fontSize: 22,
   },
 });
 const mapStateToProps = state => ({

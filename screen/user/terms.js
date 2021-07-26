@@ -72,7 +72,7 @@ class Terms extends Component {
                       <Left>
                         <TouchableOpacity
                           onPress={() => navigate('Term', {termId: item.id})}>
-                          <Text>{item.title}</Text>
+                          <Text style={{    fontFamily: "FuturaPT-Medium"}}>{item.title}</Text>
                         </TouchableOpacity>
                       </Left>
 

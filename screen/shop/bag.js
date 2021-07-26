@@ -26,13 +26,18 @@ class Bag extends React.Component {
     this.state = {
       packInBorrowBags: false,
       returnBorrows: false,
+      bag: [],
+      activeVendorBag: 0,
+      activeBag: 1,
+      totalPrice: 0,
     };
   }
 
   componentDidMount() {
-    console.log(jsonBeautify(this.props.bag));
+    this.setState({bag: this.props.bag});
   }
   render() {
+    console.log(jsonBeautify(this.state.bag));
     return (
       <View style={styles.container}>
         <View style={styles.bag}>
@@ -41,9 +46,11 @@ class Bag extends React.Component {
               <Text style={styles.bagHeadingTitle}>
                 Starbucks of Belsize Park
               </Text>
-              <View style={styles.pagination}>
-                <View style={styles.paginationSmallBox} />
-                <Text style={styles.paginationText}>1</Text>
+              <View style={styles.paginationActive}>
+                <View style={styles.paginationSmallBoxActive} />
+                <Text style={styles.paginationTextActive}>
+                  {this.state.activeBag}
+                </Text>
               </View>
             </View>
             <View style={styles.headingBottom}>
@@ -51,7 +58,9 @@ class Bag extends React.Component {
                 style={styles.optionBackground}
                 source={OptionBG}>
                 <View style={styles.optionRow}>
-                  <Text>Pack order in BorrowBags?</Text>
+                  <Text style={styles.headingText}>
+                    Pack order in BorrowBags?
+                  </Text>
                   <Button
                     transparent
                     onPress={() =>
@@ -63,7 +72,7 @@ class Bag extends React.Component {
                   </Button>
                 </View>
                 <View style={styles.optionRow2}>
-                  <Text>Returning any Borrows?</Text>
+                  <Text style={styles.headingText}>Returning any Borrows?</Text>
                   <Button
                     transparent
                     onPress={() =>
@@ -92,82 +101,101 @@ class Bag extends React.Component {
               style={styles.scrollView}
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{alignItems: 'center'}}>
-              <View style={styles.bagCardBg}>
-                <View style={styles.bagCardLeft}>
-                  <Text>Espresso coffee </Text>
-                  <Text style={styles.subTtitle}>Large + 50p</Text>
-                  <Text style={styles.subTtitle}>Extra Syrup</Text>
-                </View>
-                <View style={styles.bagCardRigth}>
-                  <View style={styles.cardImage}>
-                    <EmptyGlass
-                      width={_defz.width / 9}
-                      height={_defz.height / 10}
-                    />
-                  </View>
-                  <View style={styles.counter}>
-                    <Button transparent style={styles.counterButton}>
-                      <Text style={styles.counterButtonText}>-</Text>
-                    </Button>
-                    <Text>2</Text>
-                    <Button transparent style={styles.counterButton}>
-                      <Text style={styles.counterButtonText}>+</Text>
-                    </Button>
-                  </View>
-                </View>
-              </View>
-              <View style={styles.bagCard}>
-                <View style={styles.bagCardLeft}>
-                  <Text>Espresso coffee </Text>
-                  <Text style={styles.subTtitle}>Large + 50p</Text>
-                  <Text style={styles.subTtitle}>Extra Syrup</Text>
-                </View>
-                <View style={styles.bagCardRigth}>
-                  <View style={styles.cardImage}>
-                    <EmptyGlass
-                      width={_defz.width / 9}
-                      height={_defz.height / 10}
-                    />
-                  </View>
-                  <View style={styles.counter}>
-                    <Button transparent style={styles.counterButton}>
-                      <Text style={styles.counterButtonText}>-</Text>
-                    </Button>
-                    <Text>2</Text>
-                    <Button transparent style={styles.counterButton}>
-                      <Text style={styles.counterButtonText}>+</Text>
-                    </Button>
-                  </View>
-                </View>
-              </View>
+              {this.state.bag
+                ? this.state.bag.map((item, idx = 1) =>
+                    item.productInCart.map(card => {
+                      return (
+                        <View
+                          style={
+                            idx % 2 === 0 ? styles.bagCard : styles.bagCardBg
+                          }>
+                          <View style={styles.bagCardLeft}>
+                            <Text style={styles.title}>
+                              {card.product.name}
+                            </Text>
+                            <Text style={styles.subTtitle}>Large + 50p</Text>
+                            <Text style={styles.subTtitle}>Extra Syrup</Text>
+                          </View>
+                          <View style={styles.bagCardRigth}>
+                            <View style={styles.cardImage}>
+                              <EmptyGlass
+                                width={_defz.width / 9}
+                                height={_defz.height / 10}
+                              />
+                            </View>
+                            <View style={styles.counter}>
+                              <Button transparent style={styles.counterButton}>
+                                <Text style={styles.counterButtonText}>-</Text>
+                              </Button>
+                              <Text style={styles.quantity}>
+                                {card.quantity}
+                              </Text>
+                              <Button transparent style={styles.counterButton}>
+                                <Text style={styles.counterButtonText}>+</Text>
+                              </Button>
+                            </View>
+                          </View>
+                        </View>
+                      );
+                    }),
+                  )
+                : null}
             </ScrollView>
           </View>
         </View>
         <View style={styles.paginationContainer}>
-          <Text style={{fontSize: 20}}>Bags</Text>
+          <Text
+            style={{
+              fontSize: 30,
+              fontFamily: 'FuturaPT-Medium',
+              color: '#707070',
+            }}>
+            Bags
+          </Text>
           <View style={styles.paginationContainerCenter}>
-            <View style={styles.pagination}>
-              <View style={styles.paginationSmallBox} />
-              <Text style={styles.paginationText}>1</Text>
-            </View>
-            <View style={styles.pagination}>
-              <View style={styles.paginationSmallBox} />
-              <Text style={styles.paginationText}>2</Text>
-            </View>
-            <View style={styles.pagination}>
-              <View style={styles.paginationSmallBox} />
-              <Text style={styles.paginationText}>3</Text>
-            </View>
-            <View style={styles.pagination}>
-              <View style={styles.paginationSmallBox} />
-              <Text style={styles.paginationText}>4</Text>
-            </View>
-            <View style={styles.pagination}>
-              <View style={styles.paginationSmallBox} />
-              <Text style={styles.paginationText}>5</Text>
-            </View>
+            {this.state.bag
+              ? this.state.bag.map((item, idx) => (
+                  <Button
+                    transparent
+                    style={[
+                      this.state.activeBag === idx + 1
+                        ? styles.paginationActive
+                        : styles.pagination,
+                      styles.paginationButton,
+                    ]}
+                    onPress={() =>
+                      this.setState({
+                        activeVendorBag: item.vendorID,
+                        activeBag: idx + 1,
+                      })
+                    }>
+                    <View
+                      style={
+                        this.state.activeBag === idx + 1
+                          ? styles.paginationSmallBoxActive
+                          : styles.paginationSmallBox
+                      }
+                    />
+                    <Text
+                      style={
+                        this.state.activeBag === idx + 1
+                          ? styles.paginationTextActive
+                          : styles.paginationText
+                      }>
+                      {idx + 1}
+                    </Text>
+                  </Button>
+                ))
+              : null}
           </View>
-          <Text style={{fontSize: 15}}>£56.12</Text>
+          <Text
+            style={{
+              fontSize: 16,
+              fontFamily: 'FuturaPT-Medium',
+              color: '#707070',
+            }}>
+            £{this.state.totalPrice}
+          </Text>
         </View>
         <Button transparent style={styles.checkOutButton}>
           <Text style={styles.checkOutButtonText}>Checkout</Text>
@@ -180,6 +208,7 @@ class Bag extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
+    fontFamily: 'FuturaPT-Medium',
     width: _defz.width,
     height: '100%',
     display: 'flex',
@@ -211,6 +240,8 @@ const styles = StyleSheet.create({
   },
   bagHeadingTitle: {
     color: '#3D80F2',
+    fontFamily: 'FuturaPT-Medium',
+    fontSize: 25,
   },
   pagination: {
     width: 20,
@@ -252,9 +283,11 @@ const styles = StyleSheet.create({
   },
   paginationText: {
     color: '#C3BCBC',
+    fontFamily: 'FuturaPT-Medium',
   },
   paginationTextActive: {
     color: '#3D80F2',
+    fontFamily: 'FuturaPT-Medium',
   },
   headingBottom: {
     width: '100%',
@@ -305,11 +338,13 @@ const styles = StyleSheet.create({
   contentHeadingLeftText: {
     color: '#fff',
     marginLeft: '3%',
-    fontSize: 15,
+    fontSize: 14,
+    fontFamily: 'FuturaPT-Book',
   },
   contentHeadingRigthText: {
     color: '#fff',
-    fontSize: 18,
+    fontSize: 16,
+    fontFamily: 'FuturaPT-Medium',
   },
   bagCard: {
     width: '90%',
@@ -383,8 +418,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    width: '90%',
+    justifyContent: 'space-around',
+    width: '100%',
     marginTop: _defz.height / 40,
   },
   paginationContainerCenter: {
@@ -408,11 +443,32 @@ const styles = StyleSheet.create({
   },
   checkOutButtonText: {
     color: '#fff',
-    fontSize: 20,
+    fontSize: 25,
     textAlign: 'center',
+    fontFamily: 'FuturaPT-Medium',
+  },
+  title: {
+    fontSize: 17,
+    fontFamily: 'FuturaPT-Book',
   },
   subTtitle: {
     color: '#F79F28',
+    fontFamily: 'FuturaPT-Book',
+    fontSize: 15,
+  },
+  paginationButton: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  headingText: {
+    fontFamily: 'FuturaPT-Book',
+    fontSize: 18,
+    fontWeight: '100',
+    color: '#707070',
+  },
+  quantity: {
+    fontFamily: 'FuturaPT-Book',
+    fontSize: 15,
   },
 });
 

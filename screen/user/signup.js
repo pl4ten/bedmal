@@ -9,19 +9,19 @@ import {Keyboard, TouchableWithoutFeedback} from 'react-native';
 import {
   GoogleSignin,
   statusCodes,
-  GoogleSigninButton
+  GoogleSigninButton,
 } from '@react-native-google-signin/google-signin';
 import {connect} from 'react-redux';
 import {setUserToken} from '../../redux/user/user.actions';
 let _defz = require('../com/def');
 
-import Loader from '../com/loader'
+import Loader from '../com/loader';
 let _names = '';
 let _pass = '';
 let _phone = '';
 let _email = '';
 let _token = '';
-let code="";
+let code = '';
 const DismissKeyboard = ({children}) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
     {children}
@@ -30,7 +30,7 @@ const DismissKeyboard = ({children}) => (
 class signup extends Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
       loading: false,
       visible: true,
@@ -42,17 +42,16 @@ class signup extends Component {
       GoogleSignin.configure({
         scopes: ['https://www.googleapis.com/auth/drive.readonly'],
         scopes: ['profile', 'email'],
-        offlineAccess :false,
+        offlineAccess: false,
         webClientId:
           '726577649573-ln72gpmn99fignugjnjts3tedrn9r0im.apps.googleusercontent.com',
       });
 
       const userInfo = await GoogleSignin.signIn();
-      this.login_via_google(userInfo.idToken)
-        console.log(userInfo)
-
+      this.login_via_google(userInfo.idToken);
+      console.log(userInfo);
     } catch (error) {
-      console.log(error)
+      console.log(error);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         alert('error occured SIGN_IN_CANCELLED');
         // user cancelled the login flow
@@ -70,7 +69,7 @@ class signup extends Component {
   storeData = async () => {
     try {
       await AsyncStorage.setItem('token', _token);
-      _defz._token=_token
+      _defz._token = _token;
     } catch (e) {
       console.log('error save token ', e);
     }
@@ -78,8 +77,8 @@ class signup extends Component {
   login = async x => {
     const {navigate} = this.props.navigation;
     let formData = new FormData();
-    if (code!==''){
-      _phone=code+ "-"+_phone
+    if (code !== '') {
+      _phone = code + '-' + _phone;
     }
     formData.append('username', _phone);
     formData.append('password', _pass);
@@ -88,13 +87,12 @@ class signup extends Component {
       .send('user/login', 'POST', _defz._token, formData)
       .then(response => {
         console.log(response);
-        this.setState({loading:false})
+        this.setState({loading: false});
         if (response.status === 200) {
           this.props.navigation.pop();
           _token = response.token;
           this.storeData();
-          navigate('home' ,{"mod": "new"});
-
+          navigate('home', {mod: 'new'});
         }
         if (response.status === 400) {
           Alert.alert('Error', response.errors[0].message, [{text: 'ok'}], {
@@ -108,9 +106,8 @@ class signup extends Component {
     const {navigate} = this.props.navigation;
     let formData = new FormData();
 
-
     await _defz
-      .send('user/login/google?idToken='+x, 'GET', "0", )
+      .send('user/login/google?idToken=' + x, 'GET', '0')
       .then(response => {
         console.log(response);
         this.setState({loading: false});
@@ -122,17 +119,17 @@ class signup extends Component {
           this.storeData();
           navigate('home');
         } else {
-           Alert.alert('Error', response.errors[0].message, [{text: 'ok'}], {
+          Alert.alert('Error', response.errors[0].message, [{text: 'ok'}], {
             cancelable: true,
-          }); 
+          });
         }
       });
   };
 
   sigup = async x => {
-   this.setState({loading:true})
+    this.setState({loading: true});
     let formData = new FormData();
-    if (code!==''){
+    if (code !== '') {
       formData.append('country_code', code);
     }
     formData.append('name', _names);
@@ -150,7 +147,7 @@ class signup extends Component {
           Alert.alert('Error', response.errors[0].message, [{text: 'ok'}], {
             cancelable: true,
           });
-          this.setState({loading:false})
+          this.setState({loading: false});
         }
       });
   };
@@ -159,92 +156,91 @@ class signup extends Component {
     return (
       <DismissKeyboard>
         <View style={styles.container}>
-        {this.state.loading === true ? (
-                   <Loader navigation={this.props.navigation} loading={true} />
+          {this.state.loading === true ? (
+            <Loader navigation={this.props.navigation} loading={true} />
           ) : (
             <View>
-<Image
-            source={require('../../asset/logo_black.png')}
-            resizeMode="stretch"
-            style={styles.logoImage}
-          />
-          <Text style={styles.textsub}>Sign up</Text>
-          <TextInput
-            placeholder="  Name"
-            placeholderTextColor="silver"
-            onChangeText={text => {
-              _names = text;
-            }}
-            maxLength={50}
-            style={styles.textInput}
-          />
-              <View style={{flexDirection: "row"}}>
-              <TextInput
-                placeholder="+1"
-                placeholderTextColor="silver"
-                onChangeText={text => {
-                  code = text;
-                }}
-                maxLength={50}
-                style={styles.textInput2}
+              <Image
+                source={require('../../asset/logo_black.png')}
+                resizeMode="stretch"
+                style={styles.logoImage}
               />
+              <Text style={styles.textsub}>Sign up</Text>
               <TextInput
-                placeholder=" Phone number"
+                placeholder="  Name"
                 placeholderTextColor="silver"
                 onChangeText={text => {
                   _names = text;
                 }}
                 maxLength={50}
-                style={styles.textInput3}
+                style={styles.textInput}
               />
+              <View style={{flexDirection: 'row'}}>
+                <TextInput
+                  placeholder="+1"
+                  placeholderTextColor="silver"
+                  onChangeText={text => {
+                    code = text;
+                  }}
+                  maxLength={50}
+                  style={styles.textInput2}
+                />
+                <TextInput
+                  placeholder=" Phone number"
+                  placeholderTextColor="silver"
+                  onChangeText={text => {
+                    _names = text;
+                  }}
+                  maxLength={50}
+                  style={styles.textInput3}
+                />
               </View>
-          <TextInput
-            placeholder="  Email"
-            placeholderTextColor="silver"
-            keyboardType={'email-address'}
-            onChangeText={text => {
-              _email = text;
-            }}
-            maxLength={50}
-            style={styles.textInput}
-          />
-          <TextInput
-            placeholder="  Password"
-            secureTextEntry={true} 
-            placeholderTextColor="silver"
-            onChangeText={text => {
-              _pass = text;
-            }}
-            maxLength={50}
-            style={styles.textInput}
-          />
+              <TextInput
+                placeholder="  Email"
+                placeholderTextColor="silver"
+                keyboardType={'email-address'}
+                onChangeText={text => {
+                  _email = text;
+                }}
+                maxLength={50}
+                style={styles.textInput}
+              />
+              <TextInput
+                placeholder="  Password"
+                secureTextEntry={true}
+                placeholderTextColor="silver"
+                onChangeText={text => {
+                  _pass = text;
+                }}
+                maxLength={50}
+                style={styles.textInput}
+              />
 
-          <View style={styles.splitter}>
-            <View style={styles.splitterLine} />
-            <Text style={styles.splitterText}>Or</Text>
-            <View style={styles.splitterLine} />
-          </View>
-          <Button rounded style={styles.b2} onPress={() =>    this.signIn()}>
-            <Image
-              source={require('../../asset/google.png')}
-              resizeMode="stretch"
-            />
-            <Text style={styles.textb3}>Continue with google</Text>
-          </Button>
-          <Text style={styles.textfooter}>
-            By continuing with Google, Apple, or Email, you agree to bedmal
-            Terms of Service and Privacy Policy.
-          </Text>
-          <Button
-            rounded
-            iconLeft
-            style={styles.b1}
-            onPress={() => this.sigup()}>
-            <Text style={styles.textb1}>greate an account</Text>
-          </Button>
+              <View style={styles.splitter}>
+                <View style={styles.splitterLine} />
+                <Text style={styles.splitterText}>Or</Text>
+                <View style={styles.splitterLine} />
+              </View>
+              <Button rounded style={styles.b2} onPress={() => this.signIn()}>
+                <Image
+                  source={require('../../asset/google.png')}
+                  resizeMode="stretch"
+                />
+                <Text style={styles.textb3}>Continue with google</Text>
+              </Button>
+              <Text style={styles.textfooter}>
+                By continuing with Google, Apple, or Email, you agree to bedmal
+                Terms of Service and Privacy Policy.
+              </Text>
+              <Button
+                rounded
+                iconLeft
+                style={styles.b1}
+                onPress={() => this.sigup()}>
+                <Text style={styles.textb1}>create an account</Text>
+              </Button>
             </View>
           )}
-          
         </View>
       </DismissKeyboard>
     );
@@ -257,7 +253,7 @@ const styles = StyleSheet.create({
   },
   b2: {
     alignSelf: 'center',
-    marginTop: '3%',
+    marginTop: 15,
     height: 40,
     backgroundColor: 'white',
     width: '90%',
@@ -288,14 +284,16 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: 'black',
     textTransform: 'capitalize',
+    fontFamily: 'FuturaPT-Medium',
   },
   textfooter: {
     alignContent: 'center',
     alignSelf: 'center',
-    fontSize: 13,
+    fontSize: 15,
     color: 'gray',
     width: '90%',
     marginTop: '2%',
+    fontFamily: 'FuturaPT-Medium',
   },
   b1: {
     alignSelf: 'center',
@@ -310,9 +308,10 @@ const styles = StyleSheet.create({
   textb1: {
     alignContent: 'center',
     alignSelf: 'center',
-    fontSize: 16,
+    fontSize: 18,
     color: 'white',
     textTransform: 'capitalize',
+    fontFamily: 'FuturaPT-Medium',
   },
   text1: {
     color: 'black',
@@ -332,7 +331,8 @@ const styles = StyleSheet.create({
     borderColor: '#000000',
     textAlign: 'left',
     marginTop: '5%',
-    padding:13
+    padding: 13,
+    fontFamily: 'FuturaPT-Medium',
   },
   logoImage: {
     alignSelf: 'center',
@@ -359,13 +359,14 @@ const styles = StyleSheet.create({
     marginTop: '5%',
     padding: 13,
     marginLeft: 1,
+    fontFamily: 'FuturaPT-Medium',
   },
   textInput2: {
     width: '10%',
     alignSelf: 'center',
     borderTopLeftRadius: 25,
-    borderBottomLeftRadius:25,
-    height: 30,
+    borderBottomLeftRadius: 25,
+    height: 29,
     elevation: 3,
     backgroundColor: 'white',
     color: 'black',
@@ -373,7 +374,8 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     marginTop: '5%',
     padding: 13,
-    marginLeft: "5%"
+    marginLeft: '5%',
+    fontFamily: 'FuturaPT-Medium',
   },
   splitterText: {
     margin: 10,
@@ -397,4 +399,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps,
 )(signup);
-

@@ -55,6 +55,11 @@ const styles = StyleSheet.create({
   },
   new: {
     color: '#F79F28',
+    fontFamily: 'FuturaPT-Medium',
+  },
+  productTitle: {
+    fontFamily: 'FuturaPT-Medium',
+    fontSize: 20,
   },
   productImg: {
     position: 'absolute',
@@ -67,6 +72,8 @@ const styles = StyleSheet.create({
   },
   price: {
     color: '#707070',
+    fontFamily: 'FuturaPT-Medium',
+    fontSize: 14,
   },
 });
 
