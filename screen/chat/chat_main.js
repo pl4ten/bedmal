@@ -26,6 +26,7 @@ import {
 
 import {connect} from 'react-redux';
 import {selectUserToken} from '../../redux/user/user.selectors';
+import {jsonBeautify} from 'beautify-json';
 
 import AsyncStorage from '@react-native-community/async-storage';
 let lodings = false;
@@ -66,7 +67,11 @@ class chat_main extends Component {
     if (x.receiver.type == 'super_admin') {
       navigate('chat_one', {id: x.id, type: 'admin'});
     } else {
-      navigate('chat_one', {id: x.receiver.id, type: 'vendor_chat'});
+      navigate('chat_one', {
+        id: x.receiver.id,
+        type: 'vendor_chat',
+        name: x.receiver.name,
+      });
     }
   }
   renderItems() {
@@ -74,6 +79,7 @@ class chat_main extends Component {
     if (this.state.chatdata) {
       let items = [];
       this.state.chatdata.map((dataItem, i) => {
+        console.log(jsonBeautify(dataItem));
         items.push(
           <List style={{}}>
             <ListItem noBorder avatar style={styles.cartItem}>
@@ -82,7 +88,7 @@ class chat_main extends Component {
                 style={styles.chatAvatar}
                 onPress={() => this.nav(dataItem)}>
                 <Left style={{}}>
-                  {dataItem.new_message==true ? (
+                  {dataItem.new_message ? (
                     <Icon
                       name="circle"
                       type="FontAwesome"
@@ -90,10 +96,10 @@ class chat_main extends Component {
                     />
                   ) : (
                     <Icon
-                    name="circle"
-                    type="FontAwesome"
-                    style={styles.avatarBadge2}
-                  />
+                      name="circle"
+                      type="FontAwesome"
+                      style={styles.avatarBadge2}
+                    />
                   )}
                   {dataItem.receiver.type == 'super_admin' ? (
                     <Thumbnail
@@ -141,7 +147,7 @@ class chat_main extends Component {
     const {navigate} = this.props.navigation;
     try {
       await _defz
-        .get_via_token('user/chats?limit=15&offset=0', 'GET', _defz._token)
+        .get_via_token('user/chats?limit=15&offset=0', 'GET', this.props.token)
         .then(response => {
           console.log(response);
           if (response.status == 200) {
@@ -241,8 +247,7 @@ const styles = StyleSheet.create({
   cartItem: {
     borderBottomColor: '#F0F0F0',
     borderBottomWidth: 2,
-    marginTop: 2
-
+    marginTop: 2,
   },
   b1: {
     width: _defz.width / 4,
