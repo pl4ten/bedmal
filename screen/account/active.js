@@ -164,9 +164,7 @@ class Active extends Component {
               <CardItem style={styles.card}>
                 <Left style={styles.cardLeft}>
                   <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('transaction')
-                    }>
+                    onPress={() => this.props.navigation.navigate('order')}>
                     <Text style={styles.cardTitle}>
                       Tulip Cafe of Hampstead
                     </Text>
@@ -210,9 +208,7 @@ class Active extends Component {
                     <Text style={styles.statusText}>pick-up now</Text>
                   </View>
                   <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('transaction')
-                    }>
+                    onPress={() => this.props.navigation.navigate('order')}>
                     <Icon
                       type="AntDesign"
                       name="arrowright"
