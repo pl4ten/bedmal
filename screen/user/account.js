@@ -104,7 +104,10 @@ class account extends Component {
             <Text style={styles.text1}>Account</Text>
 
             <View style={styles.headingRow}>
-              <Button iconRight style={styles.b1} onPress={() => navigate('x')}>
+              <Button
+                iconRight
+                style={styles.b1}
+                onPress={() => navigate('orders')}>
                 <Text style={styles.headingRowText}>orders</Text>
               </Button>
               <Button
@@ -119,7 +122,7 @@ class account extends Component {
               <Button
                 iconRight
                 style={styles.b1}
-                onPress={() => navigate('Profile')}>
+                onPress={() => navigate('transactions')}>
                 <Text style={styles.headingRowText}>Transaction</Text>
               </Button>
               <Button
