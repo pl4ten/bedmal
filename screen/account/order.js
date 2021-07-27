@@ -17,7 +17,11 @@ class Order extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Headers route={'Order'} message />
+        <Headers
+          route={'Order'}
+          message={'chat_main'}
+          navigation={this.props.navigation}
+        />
         <View style={styles.content}>
           <View style={styles.info}>
             <View style={styles.infoLeft}>
