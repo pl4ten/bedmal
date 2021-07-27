@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   Text,
   StyleSheet,
@@ -6,7 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import { CardItem, Right, Left, Body, Icon } from 'native-base';
+import {CardItem, Right, Left, Icon} from 'native-base';
 
 import Headers from '../com/header';
 import Footers from '../com/footer';
@@ -16,16 +16,18 @@ class Orders extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Headers route={'Orders'} message />
+        <Headers
+          route={'Orders'}
+          message={'chat_main'}
+          navigation={this.props.navigation}
+        />
         <View style={styles.content}>
           <ScrollView>
             <View>
               <CardItem style={styles.card}>
                 <Left style={styles.cardLeft}>
                   <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('transaction')
-                    }>
+                    onPress={() => this.props.navigation.navigate('order')}>
                     <Text style={styles.cardTitle}>
                       Tulip Cafe of Hampstead
                     </Text>
@@ -41,9 +43,7 @@ class Orders extends Component {
                     <Text style={styles.statusText}>picked-up</Text>
                   </View>
                   <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('transaction')
-                    }>
+                    onPress={() => this.props.navigation.navigate('order')}>
                     <Icon
                       type="AntDesign"
                       name="arrowright"
@@ -55,9 +55,7 @@ class Orders extends Component {
               <CardItem style={styles.card}>
                 <Left style={styles.cardLeft}>
                   <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('transaction')
-                    }>
+                    onPress={() => this.props.navigation.navigate('order')}>
                     <Text style={styles.cardTitle}>
                       Tulip Cafe of Hampstead
                     </Text>
@@ -73,9 +71,7 @@ class Orders extends Component {
                     <Text style={styles.statusText}>pick-up now</Text>
                   </View>
                   <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('transaction')
-                    }>
+                    onPress={() => this.props.navigation.navigate('order')}>
                     <Icon
                       type="AntDesign"
                       name="arrowright"
@@ -87,9 +83,7 @@ class Orders extends Component {
               <CardItem style={styles.card}>
                 <Left style={styles.cardLeft}>
                   <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('transaction')
-                    }>
+                    onPress={() => this.props.navigation.navigate('order')}>
                     <Text style={styles.cardTitle}>
                       Tulip Cafe of Hampstead
                     </Text>
@@ -105,9 +99,7 @@ class Orders extends Component {
                     <Text style={styles.statusText}>preparing</Text>
                   </View>
                   <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('transaction')
-                    }>
+                    onPress={() => this.props.navigation.navigate('order')}>
                     <Icon
                       type="AntDesign"
                       name="arrowright"
@@ -119,9 +111,7 @@ class Orders extends Component {
               <CardItem style={styles.card}>
                 <Left style={styles.cardLeft}>
                   <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('transaction')
-                    }>
+                    onPress={() => this.props.navigation.navigate('order')}>
                     <Text style={styles.cardTitle}>
                       Tulip Cafe of Hampstead
                     </Text>
@@ -137,9 +127,7 @@ class Orders extends Component {
                     <Text style={styles.statusText}>picked-up</Text>
                   </View>
                   <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('transaction')
-                    }>
+                    onPress={() => this.props.navigation.navigate('order')}>
                     <Icon
                       type="AntDesign"
                       name="arrowright"
@@ -151,9 +139,7 @@ class Orders extends Component {
               <CardItem style={styles.card}>
                 <Left style={styles.cardLeft}>
                   <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('transaction')
-                    }>
+                    onPress={() => this.props.navigation.navigate('order')}>
                     <Text style={styles.cardTitle}>
                       Tulip Cafe of Hampstead
                     </Text>
@@ -169,9 +155,7 @@ class Orders extends Component {
                     <Text style={styles.statusText}>pick-up now</Text>
                   </View>
                   <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('transaction')
-                    }>
+                    onPress={() => this.props.navigation.navigate('order')}>
                     <Icon
                       type="AntDesign"
                       name="arrowright"
@@ -183,9 +167,7 @@ class Orders extends Component {
               <CardItem style={styles.card}>
                 <Left style={styles.cardLeft}>
                   <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('transaction')
-                    }>
+                    onPress={() => this.props.navigation.navigate('order')}>
                     <Text style={styles.cardTitle}>
                       Tulip Cafe of Hampstead
                     </Text>
@@ -201,9 +183,7 @@ class Orders extends Component {
                     <Text style={styles.statusText}>preparing</Text>
                   </View>
                   <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('transaction')
-                    }>
+                    onPress={() => this.props.navigation.navigate('order')}>
                     <Icon
                       type="AntDesign"
                       name="arrowright"
@@ -215,9 +195,7 @@ class Orders extends Component {
               <CardItem style={styles.card}>
                 <Left style={styles.cardLeft}>
                   <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('transaction')
-                    }>
+                    onPress={() => this.props.navigation.navigate('order')}>
                     <Text style={styles.cardTitle}>
                       Tulip Cafe of Hampstead
                     </Text>
@@ -233,9 +211,7 @@ class Orders extends Component {
                     <Text style={styles.statusText}>picked-up</Text>
                   </View>
                   <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('transaction')
-                    }>
+                    onPress={() => this.props.navigation.navigate('order')}>
                     <Icon
                       type="AntDesign"
                       name="arrowright"
@@ -247,9 +223,7 @@ class Orders extends Component {
               <CardItem style={styles.card}>
                 <Left style={styles.cardLeft}>
                   <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('transaction')
-                    }>
+                    onPress={() => this.props.navigation.navigate('order')}>
                     <Text style={styles.cardTitle}>
                       Tulip Cafe of Hampstead
                     </Text>
@@ -265,9 +239,7 @@ class Orders extends Component {
                     <Text style={styles.statusText}>pick-up now</Text>
                   </View>
                   <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('transaction')
-                    }>
+                    onPress={() => this.props.navigation.navigate('order')}>
                     <Icon
                       type="AntDesign"
                       name="arrowright"
@@ -279,9 +251,7 @@ class Orders extends Component {
               <CardItem style={styles.card}>
                 <Left style={styles.cardLeft}>
                   <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('transaction')
-                    }>
+                    onPress={() => this.props.navigation.navigate('order')}>
                     <Text style={styles.cardTitle}>
                       Tulip Cafe of Hampstead
                     </Text>
@@ -297,9 +267,7 @@ class Orders extends Component {
                     <Text style={styles.statusText}>preparing</Text>
                   </View>
                   <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('transaction')
-                    }>
+                    onPress={() => this.props.navigation.navigate('order')}>
                     <Icon
                       type="AntDesign"
                       name="arrowright"
@@ -311,9 +279,7 @@ class Orders extends Component {
               <CardItem style={styles.card}>
                 <Left style={styles.cardLeft}>
                   <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('transaction')
-                    }>
+                    onPress={() => this.props.navigation.navigate('order')}>
                     <Text style={styles.cardTitle}>
                       Tulip Cafe of Hampstead
                     </Text>
@@ -329,9 +295,7 @@ class Orders extends Component {
                     <Text style={styles.statusText}>picked-up</Text>
                   </View>
                   <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('transaction')
-                    }>
+                    onPress={() => this.props.navigation.navigate('order')}>
                     <Icon
                       type="AntDesign"
                       name="arrowright"
@@ -343,9 +307,7 @@ class Orders extends Component {
               <CardItem style={styles.card}>
                 <Left style={styles.cardLeft}>
                   <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('transaction')
-                    }>
+                    onPress={() => this.props.navigation.navigate('order')}>
                     <Text style={styles.cardTitle}>
                       Tulip Cafe of Hampstead
                     </Text>
@@ -361,9 +323,7 @@ class Orders extends Component {
                     <Text style={styles.statusText}>pick-up now</Text>
                   </View>
                   <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('transaction')
-                    }>
+                    onPress={() => this.props.navigation.navigate('order')}>
                     <Icon
                       type="AntDesign"
                       name="arrowright"
@@ -375,9 +335,7 @@ class Orders extends Component {
               <CardItem style={styles.card}>
                 <Left style={styles.cardLeft}>
                   <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('transaction')
-                    }>
+                    onPress={() => this.props.navigation.navigate('order')}>
                     <Text style={styles.cardTitle}>
                       Tulip Cafe of Hampstead
                     </Text>
@@ -393,9 +351,7 @@ class Orders extends Component {
                     <Text style={styles.statusText}>preparing</Text>
                   </View>
                   <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('transaction')
-                    }>
+                    onPress={() => this.props.navigation.navigate('order')}>
                     <Icon
                       type="AntDesign"
                       name="arrowright"
@@ -405,7 +361,7 @@ class Orders extends Component {
                 </Right>
               </CardItem>
             </View>
-            <View style={{ marginTop: 200 }} />
+            <View style={{marginTop: 200}} />
           </ScrollView>
         </View>
         <Footers navigation={this.props.navigation} route={'account'} />
