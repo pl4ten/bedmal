@@ -20,11 +20,14 @@ import {
   List,
   Icon,
 } from 'native-base';
-import {Camera, Send} from '../com/svg-files';
+import {connect} from 'react-redux';
+import {selectUserToken} from '../../redux/user/user.selectors';
+
+import {Camera, Send, LogoChat} from '../com/svg-files';
 import ImagePicker from 'react-native-image-crop-picker';
 import {Keyboard} from 'react-native';
 import Loader from '../com/loader';
-
+import {jsonBeautify} from 'beautify-json';
 let img_temp = '';
 
 let msg = '';
@@ -41,15 +44,9 @@ class Chat_one extends Component {
     this.forceUpdateHandler = this.forceUpdateHandler.bind(this);
 
     this.state = {
-      profile: null,
-      editname: false,
-      editemail: false,
-      editmobile: false,
-      editpass: false,
+      vendorName: '',
+      vendorID: 0,
       name: '',
-      email: '',
-      pass: '',
-      mobile: '',
       number_image: 0,
       chatdata: null,
       isLoading: false,
@@ -69,7 +66,11 @@ class Chat_one extends Component {
 
     type_chat = navigation.getParam('type', 'bedmal');
     id_chat = navigation.getParam('id', 'bedmal');
-    console.log(id_chat);
+    this.setState({
+      vendorName: navigation.getParam('name', 'admin'),
+      vendorID: id_chat,
+    });
+    console.log(type_chat, id_chat)
     this.forceUpdateHandler();
     this.get_chat();
   }
@@ -94,7 +95,7 @@ class Chat_one extends Component {
     formData.append('image', photo);
 
     await _defz
-      .send('user/chats/upload-image', 'POST', _defz._token, formData)
+      .send('user/chats/upload-image', 'POST', this.props.token, formData)
       .then(response => {
         console.log(response);
         if (response.status === 200) {
@@ -136,7 +137,7 @@ class Chat_one extends Component {
       url = 'user/chats/send-message';
     }
 
-    await _defz.send(url, 'POST', _defz._token, formData).then(response => {
+    await _defz.send(url, 'POST', this.props.token, formData).then(response => {
       console.log(response);
       this.setState({isLoading: false});
       if (response.chat) {
@@ -166,8 +167,8 @@ class Chat_one extends Component {
     }
 
     try {
-      await _defz.get_via_token(url, 'GET', _defz._token).then(response => {
-        //console.log(jsonBeautify(response));
+      await _defz.get_via_token(url, 'GET', this.props.token).then(response => {
+        console.log(jsonBeautify(response));
         this.setState({isLoading: false});
         if (response.status === 200) {
           this.setState({chatdata: response.messages});
@@ -312,16 +313,38 @@ class Chat_one extends Component {
               </Button>
             </View>
             <View style={styles.heading}>
-              <Image
-                source={require('../../asset/img/Message.png')}
-                resizeMode="stretch"
-                style={styles.headingImg}
-              />
+              {this.state.vendorName !== 'admin' ? (
+                <View>
+                  <Text style={styles.headingVendorName}>
+                    {this.state.vendorName}
+                  </Text>
+                  <View style={styles.headingVendorInfo}>
+                    <Text style={styles.vendorResponse}>
+                      Typically replies in 20 minutes
+                    </Text>
+                    <Button
+                      transparent
+                      style={styles.headingButton}
+                      onPress={() =>
+                        this.props.navigation.navigate('storeFront', {
+                          id: this.state.vendorID,
+                        })
+                      }>
+                      <Text style={styles.headingButtonText}>Shop</Text>
+                    </Button>
+                  </View>
+                </View>
+              ) : (
+                <>
+                  <View style={{marginLeft: 20}}>
+                    <LogoChat width={_defz.width / 5} height={30} />
+                  </View>
 
-              <Text style={styles.text1}>
-                {' '}
-                App or borrow product issues? We’re here to help.
-              </Text>
+                  <Text style={styles.text1}>
+                    App or borrow product issues? We’re here to help.
+                  </Text>
+                </>
+              )}
             </View>
 
             <ScrollView
@@ -516,6 +539,7 @@ const styles = StyleSheet.create({
     width: '90%',
     alignSelf: 'center',
     elevation: 3,
+    paddingHorizontal: 10,
   },
   headingImg: {
     marginLeft: '10%',
@@ -542,6 +566,39 @@ const styles = StyleSheet.create({
     width: '80%',
     flex: 6,
   },
+  headingVendorName: {
+    fontFamily: 'FuturaPT-Medium',
+    fontSize: 20,
+    color: '#020202',
+  },
+  headingVendorInfo: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  vendorResponse: {
+    fontFamily: 'FuturaPT-Book',
+    fontSize: 14,
+    color: '#C3BCBC',
+  },
+  headingButton: {
+    backgroundColor: '#3D80F2',
+    borderRadius: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 20,
+    marginBottom: 5,
+    marginLeft: 'auto',
+  },
+  headingButtonText: {
+    color: '#fff',
+    fontFamily: 'FuturaPT-Medium',
+    fontSize: 14,
+  },
 });
 
-export default Chat_one;
+const mapStateToProps = state => ({
+  token: selectUserToken(state),
+});
+
+export default connect(mapStateToProps)(Chat_one);

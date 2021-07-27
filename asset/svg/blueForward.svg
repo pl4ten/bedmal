@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="76" height="76" viewBox="0 0 76 76">
+  <defs>
+    <filter id="Curved_Rectangle" x="0" y="0" width="76" height="76" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Forward" transform="translate(90.947 178.173) rotate(180)">
+    <g id="Departments_Button" data-name="Departments Button" transform="translate(23.947 114.173)">
+      <g id="Curved_Rectangle-2" data-name="Curved Rectangle">
+        <g transform="matrix(-1, 0, 0, -1, 67, 64)" filter="url(#Curved_Rectangle)">
+          <rect id="Curved_Rectangle-3" data-name="Curved Rectangle" width="58" height="58" rx="29" transform="translate(67 64) rotate(180)" fill="#3d80f2"/>
+        </g>
+      </g>
+      <path id="Back" d="M38.877,20.384H13.87L25.356,8.9,22.439,6,6,22.439,22.439,38.877l2.9-2.9L13.87,24.493H38.877Z" transform="translate(6.735 6.735)" fill="#fafafa"/>
+    </g>
+  </g>
+</svg>
