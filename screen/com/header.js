@@ -28,7 +28,7 @@ class Headers extends React.Component {
           <Button
             transparent
             style={styles.msg}
-            onPress={() => this.props.navigation.goBack()}>
+            onPress={() => this.props.navigation.navigate(this.props.message)}>
             <Massage />
           </Button>
         ) : (
