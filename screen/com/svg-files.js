@@ -45,6 +45,9 @@ import BagSvg from '../../asset/svg/bag.svg';
 import LidCupSvg from '../../asset/svg/lid_cup.svg';
 import LidSvg from '../../asset/svg/lid.svg';
 import LidSleeveCupSvg from '../../asset/svg/lid_sleeve_cup.svg';
+import BlueForwardSvg from '../../asset/svg/blueForward.svg';
+import EmptyGlassNoBGSvg from '../../asset/svg/emptyGlass-noBg.svg';
+import LogoChatSvg from '../../asset/svg/logoChat.svg';
 
 // footer items
 export class FooterActive extends React.Component {
@@ -291,6 +294,25 @@ export class LidSleeveCup extends React.Component {
     return (
       <LidSleeveCupSvg width={this.props.width} height={this.props.height} />
     );
+  }
+}
+export class BlueForward extends React.Component {
+  render() {
+    return (
+      <BlueForwardSvg width={this.props.width} height={this.props.height} />
+    );
+  }
+}
+export class EmptyGlassNoBG extends React.Component {
+  render() {
+    return (
+      <EmptyGlassNoBGSvg width={this.props.width} height={this.props.height} />
+    );
+  }
+}
+export class LogoChat extends React.Component {
+  render() {
+    return <LogoChatSvg width={this.props.width} height={this.props.height} />;
   }
 }
 
