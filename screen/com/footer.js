@@ -42,12 +42,12 @@ class Footers extends React.Component {
                 {route === 'account' ? <MeActive /> : <MeInActive />}
               </View>
             </Button>
-            <Button vertical onPress={() => navigate('bashgah')}>
+            <Button vertical onPress={() => navigate('onDemand')}>
               <View style={styles.footerItem}>
                 {route === 'demand' ? <OnDemandActive /> : <OnDemandInActive />}
               </View>
             </Button>
-            <Button vertical onPress={() => navigate('StoreFront')}>
+            <Button vertical onPress={() => navigate('active')}>
               <View style={styles.footerItem}>
                 {route === 'active' ? <FooterActive /> : <FooterInActive />}
               </View>
