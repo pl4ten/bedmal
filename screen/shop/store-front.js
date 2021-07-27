@@ -135,6 +135,7 @@ class StoreFront extends React.Component {
                 this.props.navigation.navigate('chat_one', {
                   id: vendorID,
                   type: 'vendor_id',
+                  name: this.state.vendorInfo.name,
                 })
               }>
               <Massage />
