@@ -68,25 +68,30 @@ class Terms extends Component {
             <View>
               {this.state.terms
                 ? this.state.terms.map(item => (
-                    <CardItem style={styles.cardItem}>
-                      <Left>
-                        <TouchableOpacity
-                          onPress={() => navigate('Term', {termId: item.id})}>
-                          <Text style={{    fontFamily: "FuturaPT-Medium"}}>{item.title}</Text>
-                        </TouchableOpacity>
-                      </Left>
+                    <TouchableOpacity
+                      onPress={() => navigate('Term', {termId: item.id})}>
+                      <CardItem style={styles.cardItem}>
+                        <Left>
+                          <TouchableOpacity
+                            onPress={() => navigate('Term', {termId: item.id})}>
+                            <Text style={{fontFamily: 'FuturaPT-Medium'}}>
+                              {item.title}
+                            </Text>
+                          </TouchableOpacity>
+                        </Left>
 
-                      <Right>
-                        <TouchableOpacity
-                          onPress={() => navigate('Term', {termId: item.id})}>
-                          <Icon
-                            type="AntDesign"
-                            name="arrowright"
-                            style={{color: "#707070"}}
-                          />
-                        </TouchableOpacity>
-                      </Right>
-                    </CardItem>
+                        <Right>
+                          <TouchableOpacity
+                            onPress={() => navigate('Term', {termId: item.id})}>
+                            <Icon
+                              type="AntDesign"
+                              name="arrowright"
+                              style={{color: '#707070'}}
+                            />
+                          </TouchableOpacity>
+                        </Right>
+                      </CardItem>
+                    </TouchableOpacity>
                   ))
                 : null}
             </View>
