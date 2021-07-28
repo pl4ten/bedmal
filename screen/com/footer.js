@@ -76,12 +76,11 @@ const styles = StyleSheet.create({
     borderColor: 'silver',
     height: heights / 10,
     borderWidth: 1,
-
   },
   footerTab: {
     backgroundColor: '#FAFAFA',
     alignSelf: 'flex-start',
-    marginTop:"3%"
+    marginTop: '3%',
   },
   footerItem: {
     justifyContent: 'center',

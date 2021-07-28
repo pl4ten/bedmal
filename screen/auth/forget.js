@@ -2,9 +2,9 @@
 import React, {Component} from 'react';
 import {View} from 'react-native';
 
-import {StyleSheet, Image, TextInput, Alert} from 'react-native';
+import {Image, TextInput, Alert} from 'react-native';
 import {Button, Text} from 'native-base';
-
+import {styles} from './styles/forget.styles';
 import {Keyboard, TouchableWithoutFeedback} from 'react-native';
 let _phone = '';
 let code = '';
@@ -108,127 +108,5 @@ class forget extends Component {
     );
   }
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: _defz.main_color,
-  },
-
-  textsignup: {
-    alignContent: 'center',
-    alignSelf: 'center',
-    fontSize: 13,
-    color: 'gray',
-    textTransform: 'capitalize',
-    fontFamily: 'FuturaPT-Medium',
-  },
-  textb3: {
-    alignContent: 'center',
-    alignSelf: 'center',
-    fontSize: 13,
-    color: 'black',
-  },
-  b1: {
-    alignSelf: 'center',
-    marginTop: _defz.height / 3,
-    height: 50,
-    bottom: '22%',
-    color: '#3D80F2',
-    backgroundColor: '#3D80F2',
-    width: '90%',
-    justifyContent: 'center',
-  },
-  textb1: {
-    alignContent: 'center',
-    alignSelf: 'center',
-    fontSize: 16,
-    color: 'white',
-    textTransform: 'capitalize',
-    fontFamily: 'FuturaPT-Medium',
-  },
-  text1: {
-    color: 'black',
-    fontSize: 16,
-    alignSelf: 'center',
-    marginTop: '3%',
-    fontFamily: 'FuturaPT-Medium',
-  },
-  text2: {
-    color: 'grey',
-    fontSize: 13,
-    width: '90%',
-    alignSelf: 'center',
-    marginTop: '3%',
-    alignSelf: 'center',
-    textAlign: 'center',
-    fontFamily: 'FuturaPT-Medium',
-  },
-  textb2: {
-    color: 'black',
-    fontSize: 12,
-    alignSelf: 'flex-start',
-    marginLeft: '7%',
-    marginTop: '3%',
-  },
-  textInput3: {
-    width: '75%',
-    alignSelf: 'center',
-
-    borderTopRightRadius: 20,
-    borderBottomRightRadius: 20,
-    height: 41,
-    elevation: 3,
-    backgroundColor: 'white',
-    color: 'black',
-    borderColor: '#000000',
-    textAlign: 'left',
-    marginTop: '5%',
-    padding: 13,
-    marginLeft: 1,
-    fontFamily: 'FuturaPT-Medium',
-  },
-  textInput2: {
-    width: '10%',
-    alignSelf: 'center',
-    borderTopLeftRadius: 25,
-    borderBottomLeftRadius: 25,
-    height: 30,
-    elevation: 3,
-    backgroundColor: 'white',
-    color: 'black',
-    borderColor: '#000000',
-    textAlign: 'left',
-    marginTop: '5%',
-    padding: 13,
-    marginLeft: '5%',
-    fontFamily: 'FuturaPT-Medium',
-  },
-  textInput: {
-    width: '90%',
-    alignSelf: 'center',
-    borderRadius: 25,
-    height: 41,
-    elevation: 3,
-    backgroundColor: 'white',
-    color: 'black',
-    borderColor: '#000000',
-    textAlign: 'left',
-    marginTop: '25%',
-    padding: 15,
-    fontFamily: 'FuturaPT-Medium',
-  },
-  logoImg: {
-    alignSelf: 'center',
-    height: '10%',
-    width: '50%',
-    marginTop: '20%',
-  },
-  goToLoginButton: {
-    bottom: '12%',
-    alignSelf: 'center',
-    backgroundColor: _defz.main_color,
-    fontFamily: 'FuturaPT-Medium',
-  },
-});
 
 export default forget;

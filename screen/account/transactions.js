@@ -1,13 +1,7 @@
 import React, {Component} from 'react';
-import {
-  Text,
-  StyleSheet,
-  View,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
+import {Text, View, ScrollView, TouchableOpacity} from 'react-native';
 import {CardItem, Right, Left, Icon} from 'native-base';
-
+import {styles} from './styles/transactions.styles';
 import Headers from '../com/header';
 import Footers from '../com/footer';
 
@@ -263,32 +257,5 @@ class Transactions extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: '#000',
-  },
-  content: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: '#FAFAFA',
-  },
-  card: {
-    marginTop: _defz.height / 50,
-    minHeight: _defz.height / 10,
-  },
-  cardTitle: {
-    fontFamily: 'FuturaPT-Book',
-    fontSize: 18,
-    color: '#707070',
-  },
-  cardFooter: {
-    fontFamily: 'FuturaPT-Book',
-    fontSize: 18,
-    color: '#C3BCBC',
-  },
-});
 
 export default Transactions;

@@ -7,24 +7,24 @@ import {Root} from 'popup-ui';
 import AsyncStorage from '@react-native-community/async-storage';
 import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
-import signup from './screen/user/signup';
-import userprofile from './screen/user/Profile';
-import usermain from './screen/user/usermain';
-import login from './screen/user/login';
-import forget from './screen/user/forget';
+import signup from './screen/auth/signup';
+import userprofile from './screen/profile/Profile';
+import usermain from './screen/main/usermain';
+import login from './screen/auth/login';
+import forget from './screen/auth/forget';
 import home from './screen/main/home';
-import account from './screen/user/account';
+import account from './screen/profile/account';
 import chat_main from './screen/chat/chat_main';
 import chat_one from './screen/chat/chat_one';
-import wallet from './screen/user/wallet';
+import wallet from './screen/profile/wallet';
 import StoreFront from './screen/shop/store-front';
 import Product from './screen/shop/product';
-import Terms from './screen/user/terms';
-import Term from './screen/user/term';
+import Terms from './screen/terms/terms';
+import Term from './screen/terms/term';
 import SearchProduct from './screen/shop/search-product';
 import Bag from './screen/shop/bag';
-import verify from './screen/user/verify';
-import password from './screen/user/password';
+import verify from './screen/auth/verify';
+import password from './screen/profile/password';
 
 import Transactions from './screen/account/transactions';
 import Transaction from './screen/account/transaction';
@@ -33,7 +33,7 @@ import Order from './screen/account/order';
 import Active from './screen/account/active';
 import OnDemand from './screen/account/onDemand';
 
-import Addresses from './screen/user/addresses';
+import Addresses from './screen/profile/addresses';
 let _defz = require('./screen/com/def');
 const RootStack = createStackNavigator(
   {
@@ -65,7 +65,7 @@ const RootStack = createStackNavigator(
   },
   {
     headerMode: 'none',
-    initialRouteName: 'usermain',
+    initialRouteName: 'home',
   },
 );
 

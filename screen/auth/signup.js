@@ -2,10 +2,11 @@
 import React, {Component} from 'react';
 import {View} from 'react-native';
 
-import {StyleSheet, Image, TextInput, Alert} from 'react-native';
+import {Image, TextInput, Alert} from 'react-native';
 import {Button, Text} from 'native-base';
 import AsyncStorage from '@react-native-community/async-storage';
 import {Keyboard, TouchableWithoutFeedback} from 'react-native';
+import {styles} from './styles/signup.styles';
 import {
   GoogleSignin,
   statusCodes,
@@ -246,148 +247,7 @@ class signup extends Component {
     );
   }
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: _defz.main_color,
-  },
-  b2: {
-    alignSelf: 'center',
-    marginTop: 15,
-    height: 40,
-    backgroundColor: 'white',
-    width: '90%',
-    justifyContent: 'center',
-  },
-  textb2: {
-    alignContent: 'center',
-    alignSelf: 'center',
-    fontSize: 16,
-    color: 'black',
-  },
-  textsub: {
-    alignContent: 'center',
-    alignSelf: 'center',
-    fontSize: 15,
-    color: 'gray',
-  },
-  textsignup: {
-    alignContent: 'center',
-    alignSelf: 'center',
-    fontSize: 13,
-    color: 'black',
-    bottom: 20,
-  },
-  textb3: {
-    alignContent: 'center',
-    alignSelf: 'center',
-    fontSize: 13,
-    color: 'black',
-    textTransform: 'capitalize',
-    fontFamily: 'FuturaPT-Medium',
-  },
-  textfooter: {
-    alignContent: 'center',
-    alignSelf: 'center',
-    fontSize: 15,
-    color: 'gray',
-    width: '90%',
-    marginTop: '2%',
-    fontFamily: 'FuturaPT-Medium',
-  },
-  b1: {
-    alignSelf: 'center',
-    marginTop: _defz.height / 15,
-    height: 50,
-    bottom: '4%',
-    color: '#3D80F2',
-    backgroundColor: '#3D80F2',
-    width: '90%',
-    justifyContent: 'center',
-  },
-  textb1: {
-    alignContent: 'center',
-    alignSelf: 'center',
-    fontSize: 18,
-    color: 'white',
-    textTransform: 'capitalize',
-    fontFamily: 'FuturaPT-Medium',
-  },
-  text1: {
-    color: 'black',
-    fontSize: 16,
-    alignSelf: 'center',
-    marginTop: '3%',
-  },
 
-  textInput: {
-    width: '90%',
-    alignSelf: 'center',
-    borderRadius: 25,
-    height: 41,
-    elevation: 3,
-    backgroundColor: 'white',
-    color: 'black',
-    borderColor: '#000000',
-    textAlign: 'left',
-    marginTop: '5%',
-    padding: 13,
-    fontFamily: 'FuturaPT-Medium',
-  },
-  logoImage: {
-    alignSelf: 'center',
-    height: '10%',
-    width: '50%',
-    marginTop: '10%',
-  },
-  splitter: {
-    flexDirection: 'row',
-    marginTop: 30,
-  },
-  textInput3: {
-    width: '75%',
-    alignSelf: 'center',
-
-    borderTopRightRadius: 20,
-    borderBottomRightRadius: 20,
-    height: 41,
-    elevation: 3,
-    backgroundColor: 'white',
-    color: 'black',
-    borderColor: '#000000',
-    textAlign: 'left',
-    marginTop: '5%',
-    padding: 13,
-    marginLeft: 1,
-    fontFamily: 'FuturaPT-Medium',
-  },
-  textInput2: {
-    width: '10%',
-    alignSelf: 'center',
-    borderTopLeftRadius: 25,
-    borderBottomLeftRadius: 25,
-    height: 29,
-    elevation: 3,
-    backgroundColor: 'white',
-    color: 'black',
-    borderColor: '#000000',
-    textAlign: 'left',
-    marginTop: '5%',
-    padding: 13,
-    marginLeft: '5%',
-    fontFamily: 'FuturaPT-Medium',
-  },
-  splitterText: {
-    margin: 10,
-    color: 'gray',
-  },
-  splitterLine: {
-    alignSelf: 'center',
-    width: '45%',
-    height: 1,
-    backgroundColor: 'silver',
-  },
-});
 const mapStateToProps = state => ({
   state: state,
 });

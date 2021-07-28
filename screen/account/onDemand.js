@@ -1,11 +1,5 @@
 import React, {Component} from 'react';
-import {
-  Text,
-  StyleSheet,
-  View,
-  ScrollView,
-  ImageBackground,
-} from 'react-native';
+import {Text, View, ScrollView, ImageBackground} from 'react-native';
 import {Button, Icon} from 'native-base';
 import {
   EmptyGlass,
@@ -15,7 +9,7 @@ import {
   BlueForward,
   EmptyGlassNoBG,
 } from '../com/svg-files';
-
+import {styles} from './styles/onDemand.styles';
 import BorrowBG from '../../asset/img/borrowBg.png';
 
 import Footers from '../com/footer';
@@ -102,7 +96,7 @@ class OnDemand extends Component {
             </View>
 
             <View style={styles.card}>
-              <LidCup width={_defz.width / 1} height={_defz.height / 7} /> 
+              <LidCup width={_defz.width / 1} height={_defz.height / 7} />
               <Text style={styles.cardBorrowItemsText}>lid + cup</Text>
               <View style={styles.cardInfo}>
                 <Text style={styles.cardInfoTextTop}>5-days free</Text>
@@ -163,155 +157,4 @@ class OnDemand extends Component {
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-    height: '100%',
-  },
-  header: {
-    width: '100%',
-    height: 500,
-    backgroundColor: '#000',
-  },
-  content: {
-    position: 'absolute',
-    top: _defz.height / 15,
-    backgroundColor: '#FAFAFA',
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25,
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  headerXbutton: {
-    alignSelf: 'flex-end',
-    marginTop: _defz.height / 50,
-  },
-  headerXIcon: {
-    alignSelf: 'center',
-    color: 'silver',
-    fontSize: 35,
-    margin: 5,
-  },
-  heading: {
-    marginTop: _defz.height / 15,
-  },
-  title: {
-    fontFamily: 'FuturaPT-Medium',
-    fontSize: 40,
-  },
-  subTitle: {
-    fontFamily: 'FuturaPT-Book',
-    fontSize: 25,
-    color: '#707070',
-  },
-  scrollViewH: {
-    width: '100%',
-    marginTop: _defz.height / 25,
-  },
-  card: {
-    backgroundColor: '#fff',
-    width: _defz.width / 3,
-    height: _defz.height / 3.5,
-    borderRadius: 10,
-    elevation: 4,
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginHorizontal: 10,
-    marginBottom: 10,
-  },
-  cardBorrowItemsText: {
-    fontFamily: 'FuturaPT-Book',
-    fontSize: 14,
-    color: '#707070',
-  },
-  cardInfo: {
-    marginTop: 10,
-  },
-  cardInfoTextTop: {
-    fontFamily: 'FuturaPT-Book',
-    fontSize: 14,
-    color: '#08D18C',
-  },
-  cardInfoTextBottom: {
-    fontFamily: 'FuturaPT-Book',
-    fontSize: 13,
-    color: '#E03174',
-  },
-  counter: {
-    width: '90%',
-    alignSelf: 'center',
-    backgroundColor: '#FAFAFA',
-    borderRadius: 10,
-    elevation: 5,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  counterButtonPlus: {
-    fontSize: 45,
-    color: '#707070',
-  },
-  counterButtonMines: {
-    fontSize: 75,
-    marginBottom: 10,
-    color: '#707070',
-  },
-  count: {
-    fontFamily: 'FuturaPT-Book',
-    fontSize: 25,
-    color: '#707070',
-  },
-  tip: {
-    backgroundColor: '#F0F0F0',
-    marginTop: 10,
-    alignSelf: 'flex-start',
-    marginLeft: _defz.width / 30,
-    borderRadius: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-  },
-  tipHead: {
-    fontFamily: 'FuturaPT-Book',
-    fontSize: 16,
-    color: '#707070',
-  },
-  tipTerms: {
-    fontFamily: 'FuturaPT-Book',
-    fontSize: 16,
-    color: '#3D80F2',
-  },
-  borrowBG: {
-    width: '100%',
-    height: _defz.height / 7,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-  },
-  BorrowBGItems: {
-    flexDirection: 'row',
-  },
-  BorrowBGItem: {
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  BorrowBGItemText: {
-    position: 'relative',
-    bottom: 20,
-    borderTopColor: '#C3BCBC',
-    borderTopWidth: 1,
-    fontSize: 25,
-    width: _defz.width / 20,
-    textAlign: 'center',
-    color: '#707070',
-    fontFamily: 'FuturaPT-Book',
-  },
-});
-// fontFamily: 'FuturaPT-Medium',
-// fontFamily: 'FuturaPT-Book',
 export default OnDemand;
