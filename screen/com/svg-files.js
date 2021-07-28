@@ -175,12 +175,12 @@ export class NoMassage extends React.Component {
 }
 export class Massage extends React.Component {
   render() {
-    return <MassageSvg width={_defz.width / 10} />;
+    return <MassageSvg width={this.props.width} height={this.props.height} />;
   }
 }
 export class Info extends React.Component {
   render() {
-    return <InfoSvg width={_defz.width / 25} />;
+    return <InfoSvg width={this.props.width} height={this.props.height} />;
   }
 }
 
