@@ -60,11 +60,10 @@ const styles = StyleSheet.create({
     color: 'gray',
     fontSize: 35,
     alignSelf: 'center',
-    marginTop: 10 ,
     textTransform: 'capitalize',
     textAlign: 'center',
     fontFamily: 'FuturaPT-Medium',
-    flex: 1,
+    flex: 3,
   },
   msg: {
     flex: 1,
