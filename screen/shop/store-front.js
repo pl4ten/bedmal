@@ -127,10 +127,11 @@ class StoreFront extends React.Component {
             <Button
               transparent
               onPress={() => this.setState({modalVisible: true})}>
-              <Info />
+              <Info width={_defz.width / 20} height={_defz.height / 20} />
             </Button>
             <Button
               transparent
+              style={styles.msgButton}
               onPress={() =>
                 this.props.navigation.navigate('chat_one', {
                   id: vendorID,
@@ -138,7 +139,7 @@ class StoreFront extends React.Component {
                   name: this.state.vendorInfo.name,
                 })
               }>
-              <Massage />
+              <Massage width={_defz.width / 12} height={_defz.height / 5} />
             </Button>
           </View>
         </View>
@@ -363,8 +364,10 @@ class StoreFront extends React.Component {
 const styles = StyleSheet.create({
   sotreFront: {
     padding: '2%',
+    paddingTop: 30,
     flex: 1,
     width: '100%',
+    backgroundColor: '#FAFAFA',
   },
   header: {
     width: '100%',
@@ -378,10 +381,10 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
   },
-  infoIcon: {
-    marginRight: '2%',
+  msgButton: {
+    marginTop: '2%',
   },
   backButton: {
     marginBottom: _defz.height / 80,
@@ -462,8 +465,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 45,
-    width: _defz.width / 3,
+    height: 35,
+    width: _defz.width / 3.5,
     elevation: 5,
     backgroundColor: '#fff',
   },
@@ -478,19 +481,20 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 45,
-    width: _defz.width / 3,
+    height: 35,
+    width: _defz.width / 3.5,
     elevation: 5,
     backgroundColor: '#fff',
   },
   activeText: {
     color: '#3D80F2',
-    fontSize: 15,
+    fontSize: 14,
     fontFamily: 'FuturaPT-Medium',
   },
   text: {
-    fontSize: 15,
+    fontSize: 14,
     fontFamily: 'FuturaPT-Medium',
+    color: '#707070',
   },
   centeredView: {
     flex: 1,
@@ -569,7 +573,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   modalOptions: {
-    width: _defz.width,
+    width: _defz.width / 1.3,
     height: _defz.height / 15,
     display: 'flex',
     alignItems: 'center',
