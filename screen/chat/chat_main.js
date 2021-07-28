@@ -23,6 +23,7 @@ import {
   Spinner,
   Badge,
 } from 'native-base';
+import {LogoChat} from '../com/svg-files';
 
 import {connect} from 'react-redux';
 import {selectUserToken} from '../../redux/user/user.selectors';
@@ -201,17 +202,16 @@ class chat_main extends Component {
                 <Text style={styles.text1}> App or borrow product issues?</Text>
               </Left>
 
-              <Right>
+              <Right style={styles.headingButton}>
                 <Button
                   transparent
                   style={styles.b1}
                   onPress={() =>
                     navigate('chat_one', {id: '0', type: 'admin'})
                   }>
-                  <Image
-                    source={require('../../asset/img/Message.png')}
-                    resizeMode="stretch"
-                  />
+                  <View style={styles.logoContainer}>
+                    <LogoChat width={_defz.width / 7} height={30} />
+                  </View>
                 </Button>
               </Right>
             </CardItem>
@@ -273,6 +273,9 @@ const styles = StyleSheet.create({
     elevation: 5,
     height: _defz.height / 20,
     backgroundColor: '#F0F0F0',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
   },
   icon: {
     color: 'black',
@@ -362,6 +365,20 @@ const styles = StyleSheet.create({
   headingText: {
     width: _defz.width / 1.3,
     flexDirection: 'column',
+    flex: 3,
+  },
+  headingButton: {
+    flex: 1,
+  },
+  logoContainer: {
+    backgroundColor: '#fff',
+    borderRadius: 30,
+    paddingHorizontal: 10,
+    height: _defz.height / 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 4,
+    elevation: 5,
   },
 });
 
