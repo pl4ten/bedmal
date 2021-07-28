@@ -38,7 +38,7 @@ class ProductCard extends React.Component {
 const styles = StyleSheet.create({
   card: {
     borderColor: '#707070',
-    borderWidth: 1,
+    borderWidth: 0.3,
     borderRadius: 10,
     height: _def.height / 3.8,
     width: '48%',
