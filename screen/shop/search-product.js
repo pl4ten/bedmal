@@ -252,8 +252,6 @@ class SearchProduct extends Component {
                 }
               />
             </Item>
-
-            <Button />
           </Header>
 
           <View style={styles.searchTypeButtons}>
@@ -261,7 +259,7 @@ class SearchProduct extends Component {
               style={
                 this.state.searchType === 'current'
                   ? styles.searchTypeButtonActive
-                  : null
+                  : styles.searchTypeButton
               }
               transparent
               onPress={() =>
@@ -280,7 +278,7 @@ class SearchProduct extends Component {
               style={
                 this.state.searchType === 'all'
                   ? styles.searchTypeButtonActive
-                  : null
+                  : styles.searchTypeButton
               }
               transparent
               onPress={() =>
@@ -659,7 +657,6 @@ class SearchProduct extends Component {
                 style={styles.search_input}
                 autoFocus
                 onChangeText={text => this.setState({searchText: text})}
-                value={this.state.searchText}
                 onEndEditing={() =>
                   this.searchProducts(this.state.searchText, vendorID)
                 }
@@ -668,13 +665,12 @@ class SearchProduct extends Component {
 
             <Button />
           </Header>
-
           <View style={styles.searchTypeButtons}>
             <Button
               style={
                 this.state.searchType === 'current'
                   ? styles.searchTypeButtonActive
-                  : null
+                  : styles.searchTypeButton
               }
               transparent
               onPress={() =>
@@ -693,7 +689,7 @@ class SearchProduct extends Component {
               style={
                 this.state.searchType === 'all'
                   ? styles.searchTypeButtonActive
-                  : null
+                  : styles.searchTypeButton
               }
               transparent
               onPress={() =>
@@ -758,7 +754,7 @@ const styles = StyleSheet.create({
   },
   scrollViewH2: {
     position: 'absolute',
-    bottom: _defz.height / 5,
+    bottom: _defz.height / 8,
     left: 0,
     zIndex: 99999999,
   },
@@ -981,22 +977,25 @@ const styles = StyleSheet.create({
     backgroundColor: '#F0F0F0',
     elevation: 3,
     marginTop: '4%',
-    paddingLeft: '3%',
-    paddingRight: '3%',
+    paddingHorizontal: '1%',
     borderRadius: 50,
+    height: _defz.height / 27,
+  },
+  searchTypeButton: {
+    marginTop: -5,
   },
   searchTypeButtonActive: {
     borderWidth: 1.5,
     borderColor: '#3D80F2',
     borderRadius: 50,
-    paddingLeft: '3%',
-    paddingRight: '3%',
+    paddingHorizontal: '3%',
     width: _defz.width / 5,
-    height: _defz.height / 28,
+    height: _defz.height / 30,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: _defz.height / 150,
+    marginTop: 2,
+    backgroundColor: '#fff',
   },
   header: {
     backgroundColor: 'transparent',
