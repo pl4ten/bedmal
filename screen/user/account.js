@@ -135,113 +135,129 @@ class account extends Component {
 
             <ScrollView>
               <View>
-                <CardItem style={styles.card}>
-                  <Left>
-                    <TouchableOpacity onPress={() => navigate('userprofile')}>
-                      <Text style={styles.text_card}>Profile</Text>
-                    </TouchableOpacity>
-                  </Left>
+                <TouchableOpacity onPress={() => navigate('userprofile')}>
+                  <CardItem style={styles.card}>
+                    <Left>
+                      <TouchableOpacity onPress={() => navigate('userprofile')}>
+                        <Text style={styles.text_card}>Profile</Text>
+                      </TouchableOpacity>
+                    </Left>
 
-                  <Right>
-                    <TouchableOpacity onPress={() => navigate('userprofile')}>
-                      <Icon
-                        type="AntDesign"
-                        name="arrowright"
-                        style={styles.icon}
-                      />
-                    </TouchableOpacity>
-                  </Right>
-                </CardItem>
+                    <Right>
+                      <TouchableOpacity onPress={() => navigate('userprofile')}>
+                        <Icon
+                          type="AntDesign"
+                          name="arrowright"
+                          style={styles.icon}
+                        />
+                      </TouchableOpacity>
+                    </Right>
+                  </CardItem>
+                </TouchableOpacity>
 
-                <CardItem style={styles.card}>
-                  <Left>
-                    <TouchableOpacity onPress={() => navigate('Addresses')}>
-                      <Text style={styles.text_card}>Address</Text>
-                    </TouchableOpacity>
-                  </Left>
+                <TouchableOpacity onPress={() => navigate('Addresses')}>
+                  <CardItem style={styles.card}>
+                    <Left>
+                      <TouchableOpacity onPress={() => navigate('Addresses')}>
+                        <Text style={styles.text_card}>Address</Text>
+                      </TouchableOpacity>
+                    </Left>
 
-                  <Right>
-                    <TouchableOpacity onPress={() => navigate('Addresses')}>
-                      <Icon
-                        type="AntDesign"
-                        name="arrowright"
-                        style={styles.icon}
-                      />
-                    </TouchableOpacity>
-                  </Right>
-                </CardItem>
+                    <Right>
+                      <TouchableOpacity onPress={() => navigate('Addresses')}>
+                        <Icon
+                          type="AntDesign"
+                          name="arrowright"
+                          style={styles.icon}
+                        />
+                      </TouchableOpacity>
+                    </Right>
+                  </CardItem>
+                </TouchableOpacity>
 
-                <CardItem style={styles.card}>
-                  <Left>
-                    <TouchableOpacity onPress={() => navigate('wallet')}>
-                      <Text style={styles.text_card}>Wallet</Text>
-                    </TouchableOpacity>
-                  </Left>
+                <TouchableOpacity onPress={() => navigate('wallet')}>
+                  <CardItem style={styles.card}>
+                    <Left>
+                      <TouchableOpacity onPress={() => navigate('wallet')}>
+                        <Text style={styles.text_card}>Wallet</Text>
+                      </TouchableOpacity>
+                    </Left>
 
-                  <Right>
-                    <TouchableOpacity onPress={() => navigate('wallet')}>
-                      <Icon
-                        type="AntDesign"
-                        name="arrowright"
-                        style={styles.icon}
-                      />
-                    </TouchableOpacity>
-                  </Right>
-                </CardItem>
+                    <Right>
+                      <TouchableOpacity onPress={() => navigate('wallet')}>
+                        <Icon
+                          type="AntDesign"
+                          name="arrowright"
+                          style={styles.icon}
+                        />
+                      </TouchableOpacity>
+                    </Right>
+                  </CardItem>
+                </TouchableOpacity>
 
-                <CardItem style={styles.card}>
-                  <Left>
-                    <TouchableOpacity onPress={() => navigate('Terms')}>
-                      <Text style={styles.text_card}>Terms</Text>
-                    </TouchableOpacity>
-                  </Left>
+                <TouchableOpacity onPress={() => navigate('Terms')}>
+                  <CardItem style={styles.card}>
+                    <Left>
+                      <TouchableOpacity onPress={() => navigate('Terms')}>
+                        <Text style={styles.text_card}>Terms</Text>
+                      </TouchableOpacity>
+                    </Left>
 
-                  <Right>
-                    <TouchableOpacity onPress={() => navigate('Terms')}>
-                      <Icon
-                        type="AntDesign"
-                        name="arrowright"
-                        style={styles.icon}
-                      />
-                    </TouchableOpacity>
-                  </Right>
-                </CardItem>
+                    <Right>
+                      <TouchableOpacity onPress={() => navigate('Terms')}>
+                        <Icon
+                          type="AntDesign"
+                          name="arrowright"
+                          style={styles.icon}
+                        />
+                      </TouchableOpacity>
+                    </Right>
+                  </CardItem>
+                </TouchableOpacity>
 
-                <CardItem style={styles.card}>
-                  <Left>
-                    <TouchableOpacity onPress={() => navigate('userprofxxile')}>
-                      <Text style={styles.text_card}>Notifications</Text>
-                    </TouchableOpacity>
-                  </Left>
+                <TouchableOpacity onPress={() => navigate('userprofilexx')}>
+                  <CardItem style={styles.card}>
+                    <Left>
+                      <TouchableOpacity
+                        onPress={() => navigate('userprofxxile')}>
+                        <Text style={styles.text_card}>Notifications</Text>
+                      </TouchableOpacity>
+                    </Left>
 
-                  <Right>
-                    <TouchableOpacity onPress={() => navigate('userpxxrofile')}>
-                      <Icon
-                        type="AntDesign"
-                        name="arrowright"
-                        style={styles.icon}
-                      />
-                    </TouchableOpacity>
-                  </Right>
-                </CardItem>
+                    <Right>
+                      <TouchableOpacity
+                        onPress={() => navigate('userpxxrofile')}>
+                        <Icon
+                          type="AntDesign"
+                          name="arrowright"
+                          style={styles.icon}
+                        />
+                      </TouchableOpacity>
+                    </Right>
+                  </CardItem>
+                </TouchableOpacity>
 
-                <CardItem style={styles.card}>
-                  <Left>
-                    <TouchableOpacity onPress={() => navigate('userproxxfile')}>
-                      <Text style={styles.text_card}>Location</Text>
-                    </TouchableOpacity>
-                  </Left>
+                <TouchableOpacity onPress={() => navigate('userprofilexx')}>
+                  <CardItem style={styles.card}>
+                    <Left>
+                      <TouchableOpacity
+                        onPress={() => navigate('userproxxfile')}>
+                        <Text style={styles.text_card}>Location</Text>
+                      </TouchableOpacity>
+                    </Left>
 
-                  <Right>
-                    <TouchableOpacity onPress={() => navigate('userprofxxile')}>
-                      <Icon
-                        type="AntDesign"
-                        name="arrowright"
-                        style={styles.icon}
-                      />
-                    </TouchableOpacity>
-                  </Right>
-                </CardItem>
+                    <Right>
+                      <TouchableOpacity
+                        onPress={() => navigate('userprofxxile')}>
+                        <Icon
+                          type="AntDesign"
+                          name="arrowright"
+                          style={styles.icon}
+                        />
+                      </TouchableOpacity>
+                    </Right>
+                  </CardItem>
+                </TouchableOpacity>
               </View>
               <View style={{marginTop: 800}} />
             </ScrollView>
