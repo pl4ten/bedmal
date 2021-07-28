@@ -23,7 +23,7 @@ import {
 import {connect} from 'react-redux';
 import {selectUserToken} from '../../redux/user/user.selectors';
 
-import {Camera, Send, LogoChat} from '../com/svg-files';
+import {Camera, Send, LogoChat, ArrowBack} from '../com/svg-files';
 import ImagePicker from 'react-native-image-crop-picker';
 import {Keyboard} from 'react-native';
 import Loader from '../com/loader';
@@ -70,7 +70,6 @@ class Chat_one extends Component {
       vendorName: navigation.getParam('name', 'admin'),
       vendorID: id_chat,
     });
-    console.log(type_chat, id_chat)
     this.forceUpdateHandler();
     this.get_chat();
   }
@@ -296,10 +295,7 @@ class Chat_one extends Component {
                 transparent
                 style={{marginLeft: '3%', marginTop: _defz.height / 100}}
                 onPress={() => this.props.navigation.goBack()}>
-                <Image
-                  source={require('../../asset/img/back_b.png')}
-                  resizeMode="stretch"
-                />
+                <ArrowBack />
               </Button>
               <Button
                 transparent
