@@ -21,7 +21,21 @@ import ProductTypes from '../shop/product-types';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Keyboard} from 'react-native';
 let _defz = require('../com/def');
+import Mapbox, { Logger } from '@react-native-mapbox-gl/maps';
 
+// edit logging messages
+Logger.setLogCallback(log => {
+  const { message } = log;
+
+  // expected warnings - see https://github.com/mapbox/mapbox-gl-native/issues/15341#issuecomment-522889062
+  if (
+    message.match('Request failed due to a permanent error: Canceled') ||
+    message.match('Request failed due to a permanent error: Socket Closed')
+  ) {
+    return true;
+  }
+  return false;
+});
 const marker_Local_Image = [
   require('../../asset/marker/1.png'),
   require('../../asset/marker/2.png'),
@@ -49,12 +63,39 @@ const marker_Local_Image = [
   require('../../asset/marker/24.png'),
   require('../../asset/marker/25.png'),
   require('../../asset/marker/26.png'),
+  require('../../asset/marker/27.png'),
+  require('../../asset/marker/28.png'),
+  require('../../asset/marker/29.png'),
+  require('../../asset/marker/30.png'),
+  require('../../asset/marker/31.png'),
+  require('../../asset/marker/32.png'),
+  require('../../asset/marker/33.png'),
+  require('../../asset/marker/34.png'),
+  require('../../asset/marker/35.png'),
+  require('../../asset/marker/36.png'),
+  require('../../asset/marker/37.png'),
+  require('../../asset/marker/38.png'),
+  require('../../asset/marker/39.png'),
+  require('../../asset/marker/40.png'),
+  require('../../asset/marker/41.png'),
+  require('../../asset/marker/42.png'),
+  require('../../asset/marker/43.png'),
+  require('../../asset/marker/44.png'),
+  require('../../asset/marker/45.png'),
+  require('../../asset/marker/46.png'),
+  require('../../asset/marker/47.png'),
+  require('../../asset/marker/48.png'),
+  require('../../asset/marker/49.png'),
+  require('../../asset/marker/50.png'),
 ];
 let marker_count = 1;
 MapboxGL.setAccessToken(
   'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',
 );
 MapboxGL.setTelemetryEnabled(false);
+
+
+
 const Marker = ({coordinate, id, color, label}) => {
   return coordinate[0] && coordinate[1] ? (
     <MarkerView coordinate={coordinate} id={id}>
@@ -136,11 +177,13 @@ class home extends Component {
       console.log(e);
     }
   };
-  shop_selecter = async x => {
+  shop_selecter = async (x,lng, lat) => {
     if (this.state.acctive_shop == x) {
       this.setState({acctive_shop: ''});
     } else {
       this.setState({acctive_shop: x});
+      this.camera_map.flyTo([lng, lat], 1000)
+
     }
   };
   componentDidMount() {
@@ -393,6 +436,7 @@ class home extends Component {
             ) : null}
 
             <MapboxGL.MapView
+              styleURL={'mapbox://styles/mapbox/light-v10'}
               ref={c => (this._map = c)}
               zoomLevel={2}
               style={styles.map}>
@@ -419,13 +463,13 @@ class home extends Component {
               <MapboxGL.Camera
                 ref={c => (this.camera_map = c)}
                 zoomLevel={10}
-                followUserLocation
                 animationMode={'flyTo'}
               />
-
+<MapboxGL.Light />
               <MapboxGL.UserLocation
                 ref={location => {
-                  /* console.warn(location.coordinate); */
+                  console.log("----*****************************************")
+                   console.warn(location); 
                 }}
               />
             </MapboxGL.MapView>
@@ -443,14 +487,14 @@ class home extends Component {
                         require('../../asset/img/bedmal-place-holder.jpg'),
                       );
                     }
-
+                    console.log(item)
                     return (
                       <TouchableOpacity
                         activeOpacity={1}
                         key={index}
                         onPress={() => {
                           this.state.acctive_shop !== item.id
-                            ? this.shop_selecter(item.id)
+                            ? this.shop_selecter(item.id,item.longitude,item.latitude)
                             : this.setState({acctive_shop: ''});
                         }}
                         style={[
