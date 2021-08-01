@@ -34,8 +34,8 @@ import OptionsBG from '../../asset/img/productOptions.png';
 import BorrowTrue from '../../asset/img/borrowTrue.png';
 import AddedToBag from '../../asset/img/addedToBag.png';
 
-var radio_props = [];
 let price;
+let radio_props = [];
 
 const {jsonBeautify} = require('beautify-json');
 let _defz = require('../com/def');
@@ -159,7 +159,7 @@ class Product extends Component {
           this.props.token,
         )
         .then(response => {
-          console.log(jsonBeautify(response));
+          // console.log(jsonBeautify(response));
           if (response.status === 400) {
             Alert.alert('Error', response.errors[0].message, [{text: 'ok'}], {
               cancelable: true,
@@ -180,43 +180,9 @@ class Product extends Component {
   componentDidMount() {
     let itemID = this.props.navigation.state.params.itemId;
     this.getProduct(itemID);
-    // console.log('---------------bag Start---------------');
-    // console.log(jsonBeautify(this.props.bag));
-    // console.log('---------------bag End---------------');
-  }
-  renderOptions(options) {
-    options.map(item => {
-      radio_props = [];
-      return (
-        <View>
-          <Text style={styles.optionsTitle}>{item.title}</Text>
-          <View style={styles.optionSize}>
-            <View style={styles.radioButtons}>
-              {item.values.forEach(val => {
-                radio_props.push({
-                  label: val.name,
-                  value: val.price,
-                });
-              })}
-              <RadioForm
-                radio_props={radio_props}
-                initial={null}
-                onPress={value => {
-                  this.setState({
-                    finallPrice: parseFloat(price) + parseFloat(value),
-                  });
-                  radio_props.forEach(item => {
-                    if (parseFloat(item.value) === parseFloat(value)) {
-                      this.setState({selectedOption: item.label});
-                    }
-                  });
-                }}
-              />
-            </View>
-          </View>
-        </View>
-      );
-    });
+    console.log('---------------bag Start---------------');
+    console.log(jsonBeautify(this.props.bag));
+    console.log('---------------bag End---------------');
   }
   renderFooter() {
     const {pickup, delivery} = this.state.fulfillment;
@@ -253,11 +219,7 @@ class Product extends Component {
             transparent
             style={styles.footerItemBuy}
             onPress={() => {
-              this.setState({addedToBagModalVisible: true}, () => {
-                setTimeout(() => {
-                  this.props.navigation.goBack();
-                }, 1000);
-              });
+              this.state.buyType ? this.handleAddToBag() : null;
             }}>
             {this.state.buyType ? <BuyButtonBlue /> : <BuyButton />}
           </Button>
@@ -267,20 +229,31 @@ class Product extends Component {
     );
   }
   handleAddToBag() {
-    let itemToAdd = {
-      vendorID: this.state.vendorID,
-      productInCart: [
-        {
-          product: this.state.product,
-          quantity: this.state.quantity,
-          addressID: this.state.selectedDeliveryAddres,
-          buyType: this.state.buyType,
-          price: this.state.finallPrice,
-          orderType: this.state.orderType,
-        },
-      ],
-    };
-    this.props.addToBag(itemToAdd);
+    if (this.props.bag.length >= 5) {
+      Alert.alert('maximum bag');
+    } else {
+      let itemToAdd = {
+        vendorID: this.state.vendorID,
+        cart: [
+          {
+            product: this.state.product,
+            quantity: this.state.quantity,
+            addressID: this.state.selectedDeliveryAddres,
+            buyType: this.state.buyType,
+            price: this.state.finallPrice,
+            orderType: this.state.orderType,
+            packing: this.state.activePackingOption,
+            selectedOption: this.state.selectedOption,
+          },
+        ],
+      };
+      this.props.addToBag(itemToAdd);
+      this.setState({addedToBagModalVisible: true}, () => {
+        setTimeout(() => {
+          this.props.navigation.goBack();
+        }, 1000);
+      });
+    }
   }
   renderPickUpModal() {
     const {pickup} = this.state.fulfillment;
@@ -551,14 +524,16 @@ class Product extends Component {
           <Button
             transparent
             onPress={() =>
-              this.setState({
-                buyType: 'Delivery',
-                modalVisible: false,
-                modalPickUp: false,
-                modalDelivery: false,
-                modalNewAddress: false,
-                packingOptions: true,
-              })
+              this.state.selectedDeliveryAddres
+                ? this.setState({
+                    buyType: 'Delivery',
+                    modalVisible: false,
+                    modalPickUp: false,
+                    modalDelivery: false,
+                    modalNewAddress: false,
+                    packingOptions: true,
+                  })
+                : null
             }
             style={styles.acceptModalButtonDelivery}>
             <CheckButton />
@@ -727,7 +702,9 @@ class Product extends Component {
               style={styles.sliderImages}
             />
           </View>
-
+          <Button onPress={() => this.props.clearBag()}>
+            <Text>clear</Text>
+          </Button>
           <View style={styles.productInfo}>
             <View style={styles.infoRowOne}>
               <View>
@@ -851,7 +828,43 @@ class Product extends Component {
           {this.state.packingOptions ? this.renderPackingOptions() : null}
 
           {/* render options */}
-          {options ? this.renderOptions(options) : null}
+          {options
+            ? options.map(item => {
+                radio_props = [];
+                return (
+                  <View>
+                    <Text style={styles.optionsTitle}>{item.title}</Text>
+                    <View style={styles.optionSize}>
+                      <View style={styles.radioButtons}>
+                        {item.values.forEach(val => {
+                          radio_props.push({
+                            label: val.name,
+                            value: val.price,
+                          });
+                        })}
+                        <RadioForm
+                          radio_props={radio_props}
+                          initial={null}
+                          onPress={value => {
+                            this.setState({
+                              finallPrice:
+                                parseFloat(price) + parseFloat(value),
+                            });
+                            radio_props.forEach(item => {
+                              if (
+                                parseFloat(item.value) === parseFloat(value)
+                              ) {
+                                this.setState({selectedOption: item});
+                              }
+                            });
+                          }}
+                        />
+                      </View>
+                    </View>
+                  </View>
+                );
+              })
+            : null}
 
           <View style={{marginTop: 120}} />
         </ScrollView>
