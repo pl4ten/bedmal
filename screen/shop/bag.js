@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View, ImageBackground, ScrollView} from 'react-native';
+import {Text, View, ImageBackground, ScrollView, Alert} from 'react-native';
 import {Button} from 'native-base';
 import Footer from '../com/footer';
 import OptionBG from '../../asset/img/productOptions.png';
@@ -8,9 +8,8 @@ import {styles} from './styles/bag.styles';
 import {connect} from 'react-redux';
 import {addToBag, clearBag} from '../../redux/store/store.actions';
 import {selectUserToken} from '../../redux/user/user.selectors';
-import {selectBagItems} from '../../redux/store/store.selectors';
-
 import {jsonBeautify} from 'beautify-json';
+
 const _defz = require('../com/def');
 
 class Bag extends React.Component {
@@ -18,27 +17,63 @@ class Bag extends React.Component {
     super();
 
     this.state = {
+      isLoading: false,
       packInBorrowBags: false,
       returnBorrows: false,
       bag: [],
       activeVendorBag: 0,
       activeBag: 1,
       totalPrice: 0,
+      fulfillment: '',
+      addressID: 0,
+      vendorID: 0,
+      fulfillmentInfo: '',
+      activeCart: '',
     };
   }
 
   componentDidMount() {
-    this.setState({bag: this.props.bag});
+    this.setState({
+      bag: this.props.bag,
+      activeCart: this.props.bag[0],
+    });
+  }
+
+  async getFulfillmentInfo() {
+    try {
+      await _defz
+        .send(
+          `user/bag/vendor/info/${
+            this.state.activeCart.vendorID
+          }?fulfillment=${this.state.activeCart.fulfillment.toLowerCase()}&address_id=${
+            this.state.activeCart.addressID
+          }`,
+          'GET',
+          this.props.token,
+        )
+        .then(response => {
+          if (response.status === 400) {
+            Alert.alert('Error', response.errors[0].message, [{text: 'ok'}], {
+              cancelable: true,
+            });
+          }
+          this.setState({fulfillmentInfo: response});
+        });
+    } catch (error) {
+      console.log(error);
+    }
   }
   render() {
-    console.log(jsonBeautify(this.state.bag));
+    console.log(this.state.bag);
     return (
       <View style={styles.container}>
         <View style={styles.bag}>
           <View style={styles.bagHeading}>
             <View style={styles.top}>
               <Text style={styles.bagHeadingTitle}>
-                Starbucks of Belsize Park
+                {this.state.fulfillmentInfo
+                  ? this.state.fulfillmentInfo.vendor_info.name
+                  : null}
               </Text>
               <View style={styles.paginationActive}>
                 <View style={styles.paginationSmallBoxActive} />
@@ -85,9 +120,7 @@ class Bag extends React.Component {
             <View style={styles.contentHeading}>
               <View style={styles.contentHeadingLeft}>
                 <LocationWhite />
-                <Text style={styles.contentHeadingLeftText}>
-                  Delivery to 19b…NW3 4DU
-                </Text>
+                <Text style={styles.contentHeadingLeftText}>Delivery to</Text>
               </View>
               <Text style={styles.contentHeadingRigthText}>£6.06</Text>
             </View>
@@ -95,9 +128,9 @@ class Bag extends React.Component {
               style={styles.scrollView}
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{alignItems: 'center'}}>
-              {this.state.bag
-                ? this.state.bag.map((item, idx = 1) =>
-                    item.productInCart.map(card => {
+              {this.state.bag.length
+                ? this.state.bag[this.state.activeBag - 1].cart.map(
+                    (card, idx = 1) => {
                       return (
                         <View
                           style={
@@ -107,8 +140,14 @@ class Bag extends React.Component {
                             <Text style={styles.title}>
                               {card.product.name}
                             </Text>
-                            <Text style={styles.subTtitle}>Large + 50p</Text>
-                            <Text style={styles.subTtitle}>Extra Syrup</Text>
+                            <Text style={styles.subTtitle}>
+                              {card.selectedOption.label}
+                            </Text>
+                            {card.orderType ? (
+                              <Text style={styles.subTtitle}>
+                                {card.orderType}
+                              </Text>
+                            ) : null}
                           </View>
                           <View style={styles.bagCardRigth}>
                             <View style={styles.cardImage}>
@@ -131,7 +170,7 @@ class Bag extends React.Component {
                           </View>
                         </View>
                       );
-                    }),
+                    },
                   )
                 : null}
             </ScrollView>
@@ -148,38 +187,44 @@ class Bag extends React.Component {
           </Text>
           <View style={styles.paginationContainerCenter}>
             {this.state.bag
-              ? this.state.bag.map((item, idx) => (
-                  <Button
-                    transparent
-                    style={[
-                      this.state.activeBag === idx + 1
-                        ? styles.paginationActive
-                        : styles.pagination,
-                      styles.paginationButton,
-                    ]}
-                    onPress={() =>
-                      this.setState({
-                        activeVendorBag: item.vendorID,
-                        activeBag: idx + 1,
-                      })
-                    }>
-                    <View
-                      style={
+              ? this.state.bag.map((item, idx) => {
+                  return (
+                    <Button
+                      transparent
+                      style={[
                         this.state.activeBag === idx + 1
-                          ? styles.paginationSmallBoxActive
-                          : styles.paginationSmallBox
-                      }
-                    />
-                    <Text
-                      style={
-                        this.state.activeBag === idx + 1
-                          ? styles.paginationTextActive
-                          : styles.paginationText
-                      }>
-                      {idx + 1}
-                    </Text>
-                  </Button>
-                ))
+                          ? styles.paginationActive
+                          : styles.pagination,
+                        styles.paginationButton,
+                      ]}
+                      onPress={() => {
+                        this.setState(
+                          {
+                            activeVendorBag: item.vendorID,
+                            activeBag: idx + 1,
+                            activeCart: item,
+                          },
+                          () => this.getFulfillmentInfo(),
+                        );
+                      }}>
+                      <View
+                        style={
+                          this.state.activeBag === idx + 1
+                            ? styles.paginationSmallBoxActive
+                            : styles.paginationSmallBox
+                        }
+                      />
+                      <Text
+                        style={
+                          this.state.activeBag === idx + 1
+                            ? styles.paginationTextActive
+                            : styles.paginationText
+                        }>
+                        {idx + 1}
+                      </Text>
+                    </Button>
+                  );
+                })
               : null}
           </View>
           <Text
@@ -202,7 +247,7 @@ class Bag extends React.Component {
 
 const mapStateToProps = state => ({
   token: selectUserToken(state),
-  bag: selectBagItems(state),
+  bag: state.store.bag,
 });
 
 const mapDispatchToProps = dispatch => ({
