@@ -234,16 +234,16 @@ class Product extends Component {
     } else {
       let itemToAdd = {
         vendorID: this.state.vendorID,
-        cart: [
+        addressID: this.state.selectedDeliveryAddres,
+        buyType: this.state.buyType,
+        price: this.state.finallPrice,
+        products: [
           {
             product: this.state.product,
-            quantity: this.state.quantity,
-            addressID: this.state.selectedDeliveryAddres,
-            buyType: this.state.buyType,
-            price: this.state.finallPrice,
             orderType: this.state.orderType,
             packing: this.state.activePackingOption,
             selectedOption: this.state.selectedOption,
+            quantity: this.state.quantity,
           },
         ],
       };
@@ -526,7 +526,7 @@ class Product extends Component {
             onPress={() =>
               this.state.selectedDeliveryAddres
                 ? this.setState({
-                    buyType: 'Delivery',
+                    buyType: 'delivery',
                     modalVisible: false,
                     modalPickUp: false,
                     modalDelivery: false,
