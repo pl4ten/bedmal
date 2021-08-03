@@ -264,5 +264,12 @@ export const styles = StyleSheet.create({
   quantity: {
     fontFamily: 'FuturaPT-Book',
     fontSize: 15,
+    
+  },
+  productPacking: {
+    fontFamily: 'FuturaPT-Book',
+    fontSize: 17,
+    color: '#707070',
+    marginRight: 7,
   },
 });
