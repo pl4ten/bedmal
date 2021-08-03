@@ -1,6 +1,5 @@
 /* eslint-disable prettier/prettier */
 import { jsonBeautify } from 'beautify-json';
-
 const bagItemFinder = (bag, itemToFind) => {
   let returnBody = {
     exist: false,
@@ -90,4 +89,26 @@ export const addItemToBag = (state, itemToAdd) => {
     newBag.push(itemToAdd);
     return newBag;
   }
+};
+
+export const quantityUp = (state, indexes) => {
+  let newBag = [...state.bag];
+
+  newBag[indexes.bagIndex].products[indexes.productIndex].quantity += parseFloat(1);
+  return newBag;
+};
+
+export const quantityDown = (state, indexes) => {
+  let newBag = [...state.bag];
+
+  if (newBag[indexes.bagIndex].products[indexes.productIndex].quantity === 1) {
+    newBag[indexes.bagIndex].products.splice(indexes.productIndex, 1);
+    if (newBag[indexes.bagIndex].products.length === 0) {
+      newBag.splice(indexes.bagIndex, 1);
+    }
+  } else {
+    newBag[indexes.bagIndex].products[indexes.productIndex].quantity -= parseFloat(1);
+  }
+
+  return newBag;
 };

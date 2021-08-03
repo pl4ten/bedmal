@@ -7,3 +7,11 @@ export const addToBag = item => ({
 export const clearBag = () => ({
   type: storeActionTypes.CLEAR_BAG,
 });
+export const quantityUpper = indexes => ({
+  type: storeActionTypes.QUANTITY_UPPER,
+  payload: indexes,
+});
+export const quantityDowner = indexes => ({
+  type: storeActionTypes.QUANTITY_DOWNER,
+  payload: indexes,
+});
