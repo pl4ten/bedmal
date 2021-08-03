@@ -52,7 +52,7 @@ class Footers extends React.Component {
                 {route === 'active' ? <FooterActive /> : <FooterInActive />}
               </View>
             </Button>
-            <Button vertical onPress={() => navigate('bag')}>
+            <Button vertical onPress={() => navigate('bag', {x: 1})}>
               <View style={styles.footerItem}>
                 {route === 'bag' ? <BagActive /> : <BagInActive />}
               </View>

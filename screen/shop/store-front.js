@@ -227,7 +227,7 @@ class StoreFront extends React.Component {
           <Button
             style={styles.homeButton}
             transparent
-            onPress={() => this.props.navigation.navigate('bag')}>
+            onPress={() => this.props.navigation.navigate('bag', {x: 1})}>
             <BagInActive />
           </Button>
         </View>
