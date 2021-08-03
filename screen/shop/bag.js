@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Text, View, ImageBackground, ScrollView, Alert} from 'react-native';
 import {Button} from 'native-base';
 import Footer from '../com/footer';
@@ -6,7 +6,12 @@ import OptionBG from '../../asset/img/productOptions.png';
 import {SwitchOn, SwitchOff, LocationWhite, EmptyGlass} from '../com/svg-files';
 import {styles} from './styles/bag.styles';
 import {connect} from 'react-redux';
-import {addToBag, clearBag} from '../../redux/store/store.actions';
+import {
+  addToBag,
+  clearBag,
+  quantityUpper,
+  quantityDowner,
+} from '../../redux/store/store.actions';
 import {selectUserToken} from '../../redux/user/user.selectors';
 import {jsonBeautify} from 'beautify-json';
 
@@ -15,7 +20,6 @@ const _defz = require('../com/def');
 class Bag extends React.Component {
   constructor() {
     super();
-
     this.state = {
       isLoading: false,
       packInBorrowBags: false,
@@ -32,41 +36,65 @@ class Bag extends React.Component {
     };
   }
 
+  componentWillReceiveProps() {
+    this.setState(
+      {
+        bag: this.props.bag,
+        activeCart: this.props.bag[0],
+      },
+      () => {
+        this.forceUpdate();
+      },
+    );
+  }
   componentDidMount() {
-    this.setState({
-      bag: this.props.bag,
-      activeCart: this.props.bag[0],
-    });
+    this.setState(
+      {
+        bag: this.props.bag,
+        activeCart: this.props.bag[0],
+      },
+      () => {
+        this.forceUpdate();
+      },
+    );
+  }
+  quantityUpper(bagIndex, productIndex) {
+    this.props.quantityUpper({bagIndex: bagIndex, productIndex: productIndex});
+  }
+  quantityDowner(bagIndex, productIndex) {
+    this.props.quantityDowner({bagIndex: bagIndex, productIndex: productIndex});
   }
 
   async getFulfillmentInfo() {
     try {
-      await _defz
-        .send(
-          `user/bag/vendor/info/${
-            this.state.activeCart.vendorID
-          }?fulfillment=${this.state.activeCart.fulfillment.toLowerCase()}&address_id=${
-            this.state.activeCart.addressID
-          }`,
-          'GET',
-          this.props.token,
-        )
-        .then(response => {
-          if (response.status === 400) {
-            Alert.alert('Error', response.errors[0].message, [{text: 'ok'}], {
-              cancelable: true,
-            });
-          }
-          this.setState({fulfillmentInfo: response});
-        });
+      let activeCart = this.state.activeCart;
+      let url;
+      if (activeCart.buyType === 'delivery') {
+        url = `user/bag/vendor/info/${
+          activeCart.vendorID
+        }?fulfillment=delivery&address_id=${activeCart.addressID}`;
+      } else {
+        url = `user/bag/vendor/info/${activeCart.vendorID}?fulfillment=pickup `;
+      }
+      await _defz.send(url, 'GET', this.props.token).then(response => {
+        console.log(jsonBeautify(response));
+        if (response.status === 400) {
+          Alert.alert('Error', response.errors[0].message, [{text: 'ok'}], {
+            cancelable: true,
+          });
+        }
+        this.setState({fulfillmentInfo: response});
+      });
     } catch (error) {
       console.log(error);
     }
   }
   render() {
-    console.log(this.state.bag);
     return (
       <View style={styles.container}>
+        {/* <Button transparent>
+          <Text>Delete</Text>
+        </Button> */}
         <View style={styles.bag}>
           <View style={styles.bagHeading}>
             <View style={styles.top}>
@@ -120,7 +148,21 @@ class Bag extends React.Component {
             <View style={styles.contentHeading}>
               <View style={styles.contentHeadingLeft}>
                 <LocationWhite />
-                <Text style={styles.contentHeadingLeftText}>Delivery to</Text>
+                {this.state.bag.length ? (
+                  this.state.bag[this.state.activeBag - 1].buyType ===
+                  'delivery' ? (
+                    <Text style={styles.contentHeadingLeftText}>
+                      Delivery to{' '}
+                      {this.state.fulfillmentInfo.address
+                        ? this.state.fulfillmentInfo.address.address
+                        : null}
+                    </Text>
+                  ) : (
+                    <Text style={styles.contentHeadingLeftText}>
+                      Collection
+                    </Text>
+                  )
+                ) : null}
               </View>
               <Text style={styles.contentHeadingRigthText}>£6.06</Text>
             </View>
@@ -129,41 +171,67 @@ class Bag extends React.Component {
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{alignItems: 'center'}}>
               {this.state.bag.length
-                ? this.state.bag[this.state.activeBag - 1].cart.map(
-                    (card, idx = 1) => {
+                ? this.state.bag[this.state.activeBag - 1].products.map(
+                    (product, index) => {
                       return (
                         <View
+                          key={index}
                           style={
-                            idx % 2 === 0 ? styles.bagCard : styles.bagCardBg
+                            index % 2 === 0 ? styles.bagCard : styles.bagCardBg
                           }>
                           <View style={styles.bagCardLeft}>
                             <Text style={styles.title}>
-                              {card.product.name}
+                              {product.product.name}
                             </Text>
                             <Text style={styles.subTtitle}>
-                              {card.selectedOption.label}
+                              {product.selectedOption.label}
                             </Text>
-                            {card.orderType ? (
+                            {product.orderType ? (
                               <Text style={styles.subTtitle}>
-                                {card.orderType}
+                                {product.orderType}
                               </Text>
                             ) : null}
                           </View>
                           <View style={styles.bagCardRigth}>
-                            <View style={styles.cardImage}>
-                              <EmptyGlass
-                                width={_defz.width / 9}
-                                height={_defz.height / 10}
-                              />
-                            </View>
+                            {product.packing ? (
+                              <Text style={styles.productPacking}>
+                                {product.packing}
+                              </Text>
+                            ) : (
+                              <View style={styles.cardImage}>
+                                <EmptyGlass
+                                  width={_defz.width / 9}
+                                  height={_defz.height / 10}
+                                />
+                              </View>
+                            )}
+
                             <View style={styles.counter}>
-                              <Button transparent style={styles.counterButton}>
+                              <Button
+                                transparent
+                                style={styles.counterButton}
+                                onPress={() => {
+                                  this.quantityDowner(
+                                    this.state.activeBag - 1,
+                                    index,
+                                  );
+                                  this.forceUpdate();
+                                }}>
                                 <Text style={styles.counterButtonText}>-</Text>
                               </Button>
                               <Text style={styles.quantity}>
-                                {card.quantity}
+                                {product.quantity}
                               </Text>
-                              <Button transparent style={styles.counterButton}>
+                              <Button
+                                transparent
+                                style={styles.counterButton}
+                                onPress={() => {
+                                  this.quantityUpper(
+                                    this.state.activeBag - 1,
+                                    index,
+                                  );
+                                  this.forceUpdate();
+                                }}>
                                 <Text style={styles.counterButtonText}>+</Text>
                               </Button>
                             </View>
@@ -190,6 +258,7 @@ class Bag extends React.Component {
               ? this.state.bag.map((item, idx) => {
                   return (
                     <Button
+                      key={idx}
                       transparent
                       style={[
                         this.state.activeBag === idx + 1
@@ -253,6 +322,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   addToBag: item => dispatch(addToBag(item)),
   clearBag: () => dispatch(clearBag()),
+  quantityUpper: indexes => dispatch(quantityUpper(indexes)),
+  quantityDowner: indexes => dispatch(quantityDowner(indexes)),
 });
 
 export default connect(
