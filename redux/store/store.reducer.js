@@ -1,5 +1,5 @@
 import storeActionTypes from './store.types';
-import {addItemToBag, quantityUp, quantityDown} from './store.utils';
+import {addItemToBag, quantityUp, quantityDown, deleteBag} from './store.utils';
 
 const INITIAL_STATE = {
   bag: [],
@@ -17,10 +17,15 @@ const storeReducer = (state = INITIAL_STATE, action) => {
         ...state,
         bag: quantityUp(state, action.payload),
       };
-      case storeActionTypes.QUANTITY_DOWNER:
+    case storeActionTypes.QUANTITY_DOWNER:
       return {
         ...state,
         bag: quantityDown(state, action.payload),
+      };
+    case storeActionTypes.DELETE_BAG:
+      return {
+        ...state,
+        bag: deleteBag(state, action.payload),
       };
     case storeActionTypes.CLEAR_BAG:
       return {

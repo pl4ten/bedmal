@@ -112,3 +112,9 @@ export const quantityDown = (state, indexes) => {
 
   return newBag;
 };
+
+export const deleteBag = (state, index) => {
+  let newBag = [...state.bag];
+  newBag.splice(index, 1);
+  return newBag;
+};
