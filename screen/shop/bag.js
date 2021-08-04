@@ -1,9 +1,15 @@
-import React, {useEffect} from 'react';
-import {Text, View, ImageBackground, ScrollView, Alert} from 'react-native';
+import React from 'react';
+import {Text, View, ScrollView, Alert, TouchableOpacity} from 'react-native';
 import {Button} from 'native-base';
 import Footer from '../com/footer';
 import OptionBG from '../../asset/img/productOptions.png';
-import {SwitchOn, SwitchOff, LocationWhite, EmptyGlass} from '../com/svg-files';
+import {
+  SwitchOn,
+  SwitchOff,
+  LocationWhite,
+  EmptyGlass,
+  LidSleeveCup,
+} from '../com/svg-files';
 import {styles} from './styles/bag.styles';
 import {connect} from 'react-redux';
 import {
@@ -11,6 +17,7 @@ import {
   clearBag,
   quantityUpper,
   quantityDowner,
+  deleteBag,
 } from '../../redux/store/store.actions';
 import {selectUserToken} from '../../redux/user/user.selectors';
 import {jsonBeautify} from 'beautify-json';
@@ -21,48 +28,53 @@ class Bag extends React.Component {
   constructor() {
     super();
     this.state = {
-      isLoading: false,
       packInBorrowBags: false,
-      returnBorrows: false,
+      returnBorrows: true,
       bag: [],
       activeVendorBag: 0,
       activeBag: 1,
       totalPrice: 0,
-      fulfillment: '',
       addressID: 0,
-      vendorID: 0,
       fulfillmentInfo: '',
       activeCart: '',
+      isLoading: false,
     };
   }
-
-  componentWillReceiveProps() {
+  getBag = () => {
     this.setState(
       {
-        bag: this.props.bag,
-        activeCart: this.props.bag[0],
+        bag: [],
+        activeCart: '',
+        isLoading: true,
       },
       () => {
-        this.forceUpdate();
+        this.setState({
+          bag: this.props.bag,
+          activeCart: this.props.bag[0],
+          isLoading: false,
+          activeBag: 1,
+          fulfillmentInfo: '',
+        });
       },
     );
-  }
+  };
   componentDidMount() {
-    this.setState(
-      {
-        bag: this.props.bag,
-        activeCart: this.props.bag[0],
-      },
-      () => {
-        this.forceUpdate();
-      },
-    );
+    this.getBag;
+    this.listener = this.props.navigation.addListener('didFocus', this.getBag);
+  }
+  UNSAFE_componentWillReceiveProps() {
+    this.getBag();
   }
   quantityUpper(bagIndex, productIndex) {
     this.props.quantityUpper({bagIndex: bagIndex, productIndex: productIndex});
   }
   quantityDowner(bagIndex, productIndex) {
     this.props.quantityDowner({bagIndex: bagIndex, productIndex: productIndex});
+    this.getBag;
+  }
+  bagDeleteHandler() {
+    this.props.deleteBag(this.state.activeBag - 1);
+    this.getBag;
   }
 
   async getFulfillmentInfo() {
@@ -77,7 +89,7 @@ class Bag extends React.Component {
         url = `user/bag/vendor/info/${activeCart.vendorID}?fulfillment=pickup `;
       }
       await _defz.send(url, 'GET', this.props.token).then(response => {
-        console.log(jsonBeautify(response));
+        // console.log(jsonBeautify(response));
         if (response.status === 400) {
           Alert.alert('Error', response.errors[0].message, [{text: 'ok'}], {
             cancelable: true,
@@ -89,12 +101,16 @@ class Bag extends React.Component {
       console.log(error);
     }
   }
+
   render() {
-    return (
+    return this.state.isLoading ? null : (
       <View style={styles.container}>
-        {/* <Button transparent>
-          <Text>Delete</Text>
-        </Button> */}
+        <Button
+          style={styles.bagDeleteButton}
+          transparent
+          onPress={() => this.bagDeleteHandler()}>
+          <Text style={styles.bagDeleteButtonText}>delete</Text>
+        </Button>
         <View style={styles.bag}>
           <View style={styles.bagHeading}>
             <View style={styles.top}>
@@ -103,21 +119,37 @@ class Bag extends React.Component {
                   ? this.state.fulfillmentInfo.vendor_info.name
                   : null}
               </Text>
-              <View style={styles.paginationActive}>
-                <View style={styles.paginationSmallBoxActive} />
-                <Text style={styles.paginationTextActive}>
-                  {this.state.activeBag}
-                </Text>
-              </View>
+              {this.state.bag.length ? (
+                <View style={styles.paginationActive}>
+                  <View style={styles.paginationSmallBoxActive} />
+                  <Text style={styles.paginationTextActive}>
+                    {this.state.activeBag}
+                  </Text>
+                </View>
+              ) : null}
             </View>
             <View style={styles.headingBottom}>
-              <ImageBackground
-                style={styles.optionBackground}
-                source={OptionBG}>
+              <View style={styles.optionBackground}>
                 <View style={styles.optionRow}>
-                  <Text style={styles.headingText}>
-                    Pack order in BorrowBags?
-                  </Text>
+                  <View>
+                    <Text style={styles.headingText}>
+                      Pack order in BorrowBags?
+                    </Text>
+                    {this.state.packInBorrowBags ? (
+                      <Text style={styles.headingText2}>
+                        5-days to return to any partner store, free. As few bags
+                        as possible will be used. 20p per bag cleaning fee.
+                        <Text
+                          style={{color: '#3D80F2'}}
+                          onPress={() =>
+                            this.props.navigation.navigate('Terms')
+                          }>
+                          See full terms
+                        </Text>
+                      </Text>
+                    ) : null}
+                  </View>
+
                   <Button
                     transparent
                     onPress={() =>
@@ -140,7 +172,214 @@ class Bag extends React.Component {
                     {this.state.returnBorrows ? <SwitchOn /> : <SwitchOff />}
                   </Button>
                 </View>
-              </ImageBackground>
+                {this.state.returnBorrows ? (
+                  <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                    <TouchableOpacity
+                      activeOpacity={1}
+                      style={styles.borrowItem}>
+                      <LidSleeveCup
+                        width={_defz.width / 5}
+                        height={_defz.height / 10}
+                      />
+                      <Text style={styles.borrowItemText}>
+                        lid + sleeve + cup
+                      </Text>
+                      <View style={styles.borrowItemFooter}>
+                        <Text style={styles.borrowItemFooterText}>
+                          2 days left
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                      activeOpacity={1}
+                      style={styles.borrowItem}>
+                      <LidSleeveCup
+                        width={_defz.width / 5}
+                        height={_defz.height / 10}
+                      />
+                      <Text style={styles.borrowItemText}>
+                        lid + sleeve + cup
+                      </Text>
+                      <View style={styles.borrowItemFooterWarn}>
+                        <Text style={styles.borrowItemFooterTextWarn}>
+                          2 days left
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                      activeOpacity={1}
+                      style={styles.borrowItem}>
+                      <LidSleeveCup
+                        width={_defz.width / 5}
+                        height={_defz.height / 10}
+                      />
+                      <Text style={styles.borrowItemText}>
+                        lid + sleeve + cup
+                      </Text>
+                      <View style={styles.borrowItemFooter}>
+                        <Text style={styles.borrowItemFooterText}>
+                          2 days left
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                      activeOpacity={1}
+                      style={styles.borrowItem}>
+                      <LidSleeveCup
+                        width={_defz.width / 5}
+                        height={_defz.height / 10}
+                      />
+                      <Text style={styles.borrowItemText}>
+                        lid + sleeve + cup
+                      </Text>
+                      <View style={styles.borrowItemFooterWarn}>
+                        <Text style={styles.borrowItemFooterTextWarn}>
+                          2 days left
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                      activeOpacity={1}
+                      style={styles.borrowItem}>
+                      <LidSleeveCup
+                        width={_defz.width / 5}
+                        height={_defz.height / 10}
+                      />
+                      <Text style={styles.borrowItemText}>
+                        lid + sleeve + cup
+                      </Text>
+                      <View style={styles.borrowItemFooter}>
+                        <Text style={styles.borrowItemFooterText}>
+                          2 days left
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                      activeOpacity={1}
+                      style={styles.borrowItem}>
+                      <LidSleeveCup
+                        width={_defz.width / 5}
+                        height={_defz.height / 10}
+                      />
+                      <Text style={styles.borrowItemText}>
+                        lid + sleeve + cup
+                      </Text>
+                      <View style={styles.borrowItemFooterWarn}>
+                        <Text style={styles.borrowItemFooterTextWarn}>
+                          2 days left
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                      activeOpacity={1}
+                      style={styles.borrowItem}>
+                      <LidSleeveCup
+                        width={_defz.width / 5}
+                        height={_defz.height / 10}
+                      />
+                      <Text style={styles.borrowItemText}>
+                        lid + sleeve + cup
+                      </Text>
+                      <View style={styles.borrowItemFooter}>
+                        <Text style={styles.borrowItemFooterText}>
+                          2 days left
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                      activeOpacity={1}
+                      style={styles.borrowItem}>
+                      <LidSleeveCup
+                        width={_defz.width / 5}
+                        height={_defz.height / 10}
+                      />
+                      <Text style={styles.borrowItemText}>
+                        lid + sleeve + cup
+                      </Text>
+                      <View style={styles.borrowItemFooterWarn}>
+                        <Text style={styles.borrowItemFooterTextWarn}>
+                          2 days left
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                      activeOpacity={1}
+                      style={styles.borrowItem}>
+                      <LidSleeveCup
+                        width={_defz.width / 5}
+                        height={_defz.height / 10}
+                      />
+                      <Text style={styles.borrowItemText}>
+                        lid + sleeve + cup
+                      </Text>
+                      <View style={styles.borrowItemFooter}>
+                        <Text style={styles.borrowItemFooterText}>
+                          2 days left
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                      activeOpacity={1}
+                      style={styles.borrowItem}>
+                      <LidSleeveCup
+                        width={_defz.width / 5}
+                        height={_defz.height / 10}
+                      />
+                      <Text style={styles.borrowItemText}>
+                        lid + sleeve + cup
+                      </Text>
+                      <View style={styles.borrowItemFooterWarn}>
+                        <Text style={styles.borrowItemFooterTextWarn}>
+                          2 days left
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                      activeOpacity={1}
+                      style={styles.borrowItem}>
+                      <LidSleeveCup
+                        width={_defz.width / 5}
+                        height={_defz.height / 10}
+                      />
+                      <Text style={styles.borrowItemText}>
+                        lid + sleeve + cup
+                      </Text>
+                      <View style={styles.borrowItemFooter}>
+                        <Text style={styles.borrowItemFooterText}>
+                          2 days left
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                      activeOpacity={1}
+                      style={styles.borrowItem}>
+                      <LidSleeveCup
+                        width={_defz.width / 5}
+                        height={_defz.height / 10}
+                      />
+                      <Text style={styles.borrowItemText}>
+                        lid + sleeve + cup
+                      </Text>
+                      <View style={styles.borrowItemFooterWarn}>
+                        <Text style={styles.borrowItemFooterTextWarn}>
+                          2 days left
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  </ScrollView>
+                ) : null}
+              </View>
             </View>
           </View>
 
@@ -324,6 +563,7 @@ const mapDispatchToProps = dispatch => ({
   clearBag: () => dispatch(clearBag()),
   quantityUpper: indexes => dispatch(quantityUpper(indexes)),
   quantityDowner: indexes => dispatch(quantityDowner(indexes)),
+  deleteBag: index => dispatch(deleteBag(index)),
 });
 
 export default connect(

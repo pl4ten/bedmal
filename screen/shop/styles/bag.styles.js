@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 let _defz = require('../../com/def');
 
 export const styles = StyleSheet.create({
@@ -20,7 +20,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     width: '95%',
-    marginTop: '5%',
+    marginTop: '7%',
   },
   bagHeading: {
     width: '100%',
@@ -88,12 +88,15 @@ export const styles = StyleSheet.create({
     width: '100%',
   },
   optionBackground: {
-    width: '100%',
-    height: _defz.height / 9,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#F0F0F0',
+    width: '95%',
+    alignSelf: 'center',
+    borderRadius: 10,
+    marginBottom: 4,
   },
   optionRow: {
     width: '80%',
@@ -261,15 +264,83 @@ export const styles = StyleSheet.create({
     fontWeight: '100',
     color: '#707070',
   },
+  headingText2: {
+    fontFamily: 'FuturaPT-Book',
+    fontSize: 14,
+    fontWeight: '100',
+    color: '#707070',
+    maxWidth: '70%',
+  },
   quantity: {
     fontFamily: 'FuturaPT-Book',
     fontSize: 15,
-    
   },
   productPacking: {
     fontFamily: 'FuturaPT-Book',
     fontSize: 17,
     color: '#707070',
     marginRight: 7,
+  },
+  bagDeleteButton: {
+    position: 'absolute',
+    right: 17,
+  },
+  bagDeleteButtonText: {
+    fontFamily: 'FuturaPT-Book',
+    fontSize: 14,
+    color: '#3D80F2',
+  },
+  optionRowinfo: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    backgroundColor: 'red',
+  },
+  borrowItem: {
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    borderWidth: 0.3,
+    borderColor: '#707070',
+    marginHorizontal: 10,
+    flexDirection: 'column',
+    alignItems: 'center',
+    elevation: 2,
+    paddingHorizontal: 4,
+    marginVertical: 5,
+  },
+  borrowItemText: {
+    fontFamily: 'FuturaPT-Book',
+    fontSize: 14,
+    color: '#707070',
+    alignSelf: 'center',
+  },
+  borrowItemFooterText: {
+    fontFamily: 'FuturaPT-Medium',
+    fontSize: 14,
+    color: '#707070',
+    alignSelf: 'center',
+  },
+  borrowItemFooterTextWarn: {
+    fontFamily: 'FuturaPT-Medium',
+    fontSize: 14,
+    color: '#FAFAFA',
+    alignSelf: 'center',
+  },
+  borrowItemFooter: {
+    width: '80%',
+    backgroundColor: '#F0F0F0',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
+    marginVertical: 7,
+    elevation: 4,
+  },
+  borrowItemFooterWarn: {
+    width: '80%',
+    backgroundColor: '#E03174',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
+    marginVertical: 5,
+    elevation: 4,
   },
 });
