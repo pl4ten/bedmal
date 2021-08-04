@@ -9,6 +9,8 @@ import {
   LocationWhite,
   EmptyGlass,
   LidSleeveCup,
+  BagImg,
+  SleeveCup,
 } from '../com/svg-files';
 import {styles} from './styles/bag.styles';
 import {connect} from 'react-redux';
@@ -38,6 +40,8 @@ class Bag extends React.Component {
       fulfillmentInfo: '',
       activeCart: '',
       isLoading: false,
+      borrowed_items: '',
+      returnBorrowIdz: [],
     };
   }
   getBag = () => {
@@ -48,13 +52,18 @@ class Bag extends React.Component {
         isLoading: true,
       },
       () => {
-        this.setState({
-          bag: this.props.bag,
-          activeCart: this.props.bag[0],
-          isLoading: false,
-          activeBag: 1,
-          fulfillmentInfo: '',
-        });
+        this.setState(
+          {
+            bag: this.props.bag,
+            activeCart: this.props.bag[0],
+            isLoading: false,
+            activeBag: 1,
+            fulfillmentInfo: '',
+          },
+          () => {
+            this.state.activeCart ? this.getFulfillmentInfo() : null;
+          },
+        );
       },
     );
   };
@@ -89,7 +98,51 @@ class Bag extends React.Component {
         url = `user/bag/vendor/info/${activeCart.vendorID}?fulfillment=pickup `;
       }
       await _defz.send(url, 'GET', this.props.token).then(response => {
-        // console.log(jsonBeautify(response));
+        console.log(jsonBeautify(response));
+        if (response.status === 400) {
+          Alert.alert('Error', response.errors[0].message, [{text: 'ok'}], {
+            cancelable: true,
+          });
+        }
+        this.setState({fulfillmentInfo: response});
+        this.getReturnBorrows();
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async getReturnBorrows() {
+    let tokeen =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjI3LCJpYXQiOjE2MjY4NDgzODcsImV4cCI6NjgxMDg0ODM4N30.7CHZRHjNP4ZCtUmuExZeWUsUaQZPu2-usCaP9T12tf8';
+    try {
+      await _defz
+        .send('user/bag/borrowed-items', 'GET', tokeen)
+        .then(response => {
+          console.log(jsonBeautify(response));
+          if (response.status === 400) {
+            Alert.alert('Error', response.errors[0].message, [{text: 'ok'}], {
+              cancelable: true,
+            });
+          }
+          if (response.status === 200) {
+            this.setState({borrowed_items: response.borrowed_items});
+          }
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async checkOut() {
+    const formData = new FormData();
+    // formData.append('vendor_info_id', x);
+    // formData.append('borrow_bag', x);
+    // formData.append('fulfillment', x);
+    // formData.append('products', x);
+    // formData.append('return_borrows', x);
+    // formData.append('vendor_info_id', x);
+    try {
+      await _defz.send('user/bag/checkout', 'POST', tokeen).then(response => {
+        console.log(jsonBeautify(response));
         if (response.status === 400) {
           Alert.alert('Error', response.errors[0].message, [{text: 'ok'}], {
             cancelable: true,
@@ -101,8 +154,26 @@ class Bag extends React.Component {
       console.log(error);
     }
   }
+  handleBorrowItemsAdd(id) {
+    let newIdz = [...this.state.returnBorrowIdz];
 
+    if (newIdz.includes(id)) {
+      newIdz.splice(newIdz.indexOf(id), 1);
+
+      this.setState({
+        returnBorrowIdz: newIdz,
+      });
+    } else {
+      newIdz.push(id);
+      newIdz = [...new Set(newIdz)];
+
+      this.setState({
+        returnBorrowIdz: newIdz,
+      });
+    }
+  }
   render() {
+    console.log(this.state.returnBorrowIdz);
     return this.state.isLoading ? null : (
       <View style={styles.container}>
         <Button
@@ -130,36 +201,45 @@ class Bag extends React.Component {
             </View>
             <View style={styles.headingBottom}>
               <View style={styles.optionBackground}>
-                <View style={styles.optionRow}>
-                  <View>
-                    <Text style={styles.headingText}>
-                      Pack order in BorrowBags?
-                    </Text>
-                    {this.state.packInBorrowBags ? (
-                      <Text style={styles.headingText2}>
-                        5-days to return to any partner store, free. As few bags
-                        as possible will be used. 20p per bag cleaning fee.
-                        <Text
-                          style={{color: '#3D80F2'}}
-                          onPress={() =>
-                            this.props.navigation.navigate('Terms')
-                          }>
-                          See full terms
+                {this.state.fulfillmentInfo.borrow_partner_bag === 1 ? (
+                  <>
+                    <View style={styles.optionRow}>
+                      <View>
+                        <Text style={styles.headingText}>
+                          Pack order in BorrowBags?
                         </Text>
-                      </Text>
-                    ) : null}
-                  </View>
+                        {this.state.packInBorrowBags ? (
+                          <Text style={styles.headingText2}>
+                            5-days to return to any partner store, free. As few
+                            bags as possible will be used. 20p per bag cleaning
+                            fee.
+                            <Text
+                              style={{color: '#3D80F2'}}
+                              onPress={() =>
+                                this.props.navigation.navigate('Terms')
+                              }>
+                              See full terms
+                            </Text>
+                          </Text>
+                        ) : null}
+                      </View>
 
-                  <Button
-                    transparent
-                    onPress={() =>
-                      this.setState({
-                        packInBorrowBags: !this.state.packInBorrowBags,
-                      })
-                    }>
-                    {this.state.packInBorrowBags ? <SwitchOn /> : <SwitchOff />}
-                  </Button>
-                </View>
+                      <Button
+                        transparent
+                        onPress={() =>
+                          this.setState({
+                            packInBorrowBags: !this.state.packInBorrowBags,
+                          })
+                        }>
+                        {this.state.packInBorrowBags ? (
+                          <SwitchOn />
+                        ) : (
+                          <SwitchOff />
+                        )}
+                      </Button>
+                    </View>
+                  </>
+                ) : null}
                 <View style={styles.optionRow2}>
                   <Text style={styles.headingText}>Returning any Borrows?</Text>
                   <Button
@@ -174,209 +254,111 @@ class Bag extends React.Component {
                 </View>
                 {this.state.returnBorrows ? (
                   <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                    <TouchableOpacity
-                      activeOpacity={1}
-                      style={styles.borrowItem}>
-                      <LidSleeveCup
-                        width={_defz.width / 5}
-                        height={_defz.height / 10}
-                      />
-                      <Text style={styles.borrowItemText}>
-                        lid + sleeve + cup
-                      </Text>
-                      <View style={styles.borrowItemFooter}>
-                        <Text style={styles.borrowItemFooterText}>
-                          2 days left
-                        </Text>
-                      </View>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                      activeOpacity={1}
-                      style={styles.borrowItem}>
-                      <LidSleeveCup
-                        width={_defz.width / 5}
-                        height={_defz.height / 10}
-                      />
-                      <Text style={styles.borrowItemText}>
-                        lid + sleeve + cup
-                      </Text>
-                      <View style={styles.borrowItemFooterWarn}>
-                        <Text style={styles.borrowItemFooterTextWarn}>
-                          2 days left
-                        </Text>
-                      </View>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                      activeOpacity={1}
-                      style={styles.borrowItem}>
-                      <LidSleeveCup
-                        width={_defz.width / 5}
-                        height={_defz.height / 10}
-                      />
-                      <Text style={styles.borrowItemText}>
-                        lid + sleeve + cup
-                      </Text>
-                      <View style={styles.borrowItemFooter}>
-                        <Text style={styles.borrowItemFooterText}>
-                          2 days left
-                        </Text>
-                      </View>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                      activeOpacity={1}
-                      style={styles.borrowItem}>
-                      <LidSleeveCup
-                        width={_defz.width / 5}
-                        height={_defz.height / 10}
-                      />
-                      <Text style={styles.borrowItemText}>
-                        lid + sleeve + cup
-                      </Text>
-                      <View style={styles.borrowItemFooterWarn}>
-                        <Text style={styles.borrowItemFooterTextWarn}>
-                          2 days left
-                        </Text>
-                      </View>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                      activeOpacity={1}
-                      style={styles.borrowItem}>
-                      <LidSleeveCup
-                        width={_defz.width / 5}
-                        height={_defz.height / 10}
-                      />
-                      <Text style={styles.borrowItemText}>
-                        lid + sleeve + cup
-                      </Text>
-                      <View style={styles.borrowItemFooter}>
-                        <Text style={styles.borrowItemFooterText}>
-                          2 days left
-                        </Text>
-                      </View>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                      activeOpacity={1}
-                      style={styles.borrowItem}>
-                      <LidSleeveCup
-                        width={_defz.width / 5}
-                        height={_defz.height / 10}
-                      />
-                      <Text style={styles.borrowItemText}>
-                        lid + sleeve + cup
-                      </Text>
-                      <View style={styles.borrowItemFooterWarn}>
-                        <Text style={styles.borrowItemFooterTextWarn}>
-                          2 days left
-                        </Text>
-                      </View>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                      activeOpacity={1}
-                      style={styles.borrowItem}>
-                      <LidSleeveCup
-                        width={_defz.width / 5}
-                        height={_defz.height / 10}
-                      />
-                      <Text style={styles.borrowItemText}>
-                        lid + sleeve + cup
-                      </Text>
-                      <View style={styles.borrowItemFooter}>
-                        <Text style={styles.borrowItemFooterText}>
-                          2 days left
-                        </Text>
-                      </View>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                      activeOpacity={1}
-                      style={styles.borrowItem}>
-                      <LidSleeveCup
-                        width={_defz.width / 5}
-                        height={_defz.height / 10}
-                      />
-                      <Text style={styles.borrowItemText}>
-                        lid + sleeve + cup
-                      </Text>
-                      <View style={styles.borrowItemFooterWarn}>
-                        <Text style={styles.borrowItemFooterTextWarn}>
-                          2 days left
-                        </Text>
-                      </View>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                      activeOpacity={1}
-                      style={styles.borrowItem}>
-                      <LidSleeveCup
-                        width={_defz.width / 5}
-                        height={_defz.height / 10}
-                      />
-                      <Text style={styles.borrowItemText}>
-                        lid + sleeve + cup
-                      </Text>
-                      <View style={styles.borrowItemFooter}>
-                        <Text style={styles.borrowItemFooterText}>
-                          2 days left
-                        </Text>
-                      </View>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                      activeOpacity={1}
-                      style={styles.borrowItem}>
-                      <LidSleeveCup
-                        width={_defz.width / 5}
-                        height={_defz.height / 10}
-                      />
-                      <Text style={styles.borrowItemText}>
-                        lid + sleeve + cup
-                      </Text>
-                      <View style={styles.borrowItemFooterWarn}>
-                        <Text style={styles.borrowItemFooterTextWarn}>
-                          2 days left
-                        </Text>
-                      </View>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                      activeOpacity={1}
-                      style={styles.borrowItem}>
-                      <LidSleeveCup
-                        width={_defz.width / 5}
-                        height={_defz.height / 10}
-                      />
-                      <Text style={styles.borrowItemText}>
-                        lid + sleeve + cup
-                      </Text>
-                      <View style={styles.borrowItemFooter}>
-                        <Text style={styles.borrowItemFooterText}>
-                          2 days left
-                        </Text>
-                      </View>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                      activeOpacity={1}
-                      style={styles.borrowItem}>
-                      <LidSleeveCup
-                        width={_defz.width / 5}
-                        height={_defz.height / 10}
-                      />
-                      <Text style={styles.borrowItemText}>
-                        lid + sleeve + cup
-                      </Text>
-                      <View style={styles.borrowItemFooterWarn}>
-                        <Text style={styles.borrowItemFooterTextWarn}>
-                          2 days left
-                        </Text>
-                      </View>
-                    </TouchableOpacity>
+                    {this.state.borrowed_items
+                      ? this.state.borrowed_items.map(item => {
+                          if (item.combo === 'cup_sleeve_lid') {
+                            return (
+                              <TouchableOpacity
+                                onPress={() =>
+                                  this.handleBorrowItemsAdd(item.id)
+                                }
+                                activeOpacity={1}
+                                style={
+                                  this.state.returnBorrowIdz.includes(item.id)
+                                    ? styles.borrowItemActive
+                                    : styles.borrowItem
+                                }>
+                                <LidSleeveCup
+                                  width={_defz.width / 5}
+                                  height={_defz.height / 10}
+                                />
+                                <Text style={styles.borrowItemText}>
+                                  lid + sleeve + cup
+                                </Text>
+                                <View style={styles.borrowItemFooter}>
+                                  <Text style={styles.borrowItemFooterText}>
+                                    {item.due.slice(0, 10)}
+                                  </Text>
+                                </View>
+                              </TouchableOpacity>
+                            );
+                          } else if (item.combo === 'cup_sleeve') {
+                            return (
+                              <TouchableOpacity
+                                onPress={() =>
+                                  this.handleBorrowItemsAdd(item.id)
+                                }
+                                activeOpacity={1}
+                                style={
+                                  this.state.returnBorrowIdz.includes(item.id)
+                                    ? styles.borrowItemActive
+                                    : styles.borrowItem
+                                }>
+                                <SleeveCup
+                                  width={_defz.width / 5}
+                                  height={_defz.height / 10}
+                                />
+                                <Text style={styles.borrowItemText}>
+                                  sleeve + cup
+                                </Text>
+                                <View style={styles.borrowItemFooter}>
+                                  <Text style={styles.borrowItemFooterText}>
+                                    {item.due.slice(0, 10)}
+                                  </Text>
+                                </View>
+                              </TouchableOpacity>
+                            );
+                          } else if (item.combo === 'cup') {
+                            return (
+                              <TouchableOpacity
+                                onPress={() =>
+                                  this.handleBorrowItemsAdd(item.id)
+                                }
+                                activeOpacity={1}
+                                style={
+                                  this.state.returnBorrowIdz.includes(item.id)
+                                    ? styles.borrowItemActive
+                                    : styles.borrowItem
+                                }>
+                                <EmptyGlass
+                                  width={_defz.width / 5}
+                                  height={_defz.height / 10}
+                                />
+                                <Text style={styles.borrowItemText}>cup</Text>
+                                <View style={styles.borrowItemFooter}>
+                                  <Text style={styles.borrowItemFooterText}>
+                                    {item.due.slice(0, 10)}
+                                  </Text>
+                                </View>
+                              </TouchableOpacity>
+                            );
+                          } else if (item.combo === 'bag') {
+                            return (
+                              <TouchableOpacity
+                                onPress={() =>
+                                  this.handleBorrowItemsAdd(item.id)
+                                }
+                                activeOpacity={1}
+                                style={
+                                  this.state.returnBorrowIdz.includes(item.id)
+                                    ? styles.borrowItemActive
+                                    : styles.borrowItem
+                                }>
+                                <BagImg
+                                  width={_defz.width / 5}
+                                  height={_defz.height / 10}
+                                />
+                                <Text style={styles.borrowItemText}>bag</Text>
+                                <View style={styles.borrowItemFooter}>
+                                  <Text style={styles.borrowItemFooterText}>
+                                    {item.due.slice(0, 10)}
+                                  </Text>
+                                </View>
+                              </TouchableOpacity>
+                            );
+                          }
+                        })
+                      : null}
                   </ScrollView>
                 ) : null}
               </View>

@@ -97,6 +97,7 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: 10,
     marginBottom: 4,
+    paddingVertical: 10,
   },
   optionRow: {
     width: '80%',
@@ -307,6 +308,18 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 4,
     marginVertical: 5,
   },
+  borrowItemActive: {
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#3D80F2',
+    marginHorizontal: 10,
+    flexDirection: 'column',
+    alignItems: 'center',
+    elevation: 2,
+    paddingHorizontal: 4,
+    marginVertical: 5,
+  },
   borrowItemText: {
     fontFamily: 'FuturaPT-Book',
     fontSize: 14,
@@ -315,7 +328,7 @@ export const styles = StyleSheet.create({
   },
   borrowItemFooterText: {
     fontFamily: 'FuturaPT-Medium',
-    fontSize: 14,
+    fontSize: 13,
     color: '#707070',
     alignSelf: 'center',
   },
