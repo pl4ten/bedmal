@@ -8,6 +8,7 @@ export const styles = StyleSheet.create({
     height: '100%',
     display: 'flex',
     alignItems: 'center',
+    flex: 1,
   },
   bag: {
     height: '70%',
