@@ -64,6 +64,7 @@ class Product extends Component {
       fulfillment: '',
       selectedOption: '',
       serverDeliveryInfo: '',
+      productOptionTitle: '',
       activePackingOption: '',
       newAddressPostalCode: '',
     };
@@ -79,7 +80,7 @@ class Product extends Component {
           this.props.token,
         )
         .then(response => {
-          // console.log(jsonBeautify(response));
+          console.log(jsonBeautify(response));
           if (response.status === 400) {
             Alert.alert('Error', response.errors[0].message, [{text: 'ok'}], {
               cancelable: true,
@@ -89,6 +90,7 @@ class Product extends Component {
           }
           this.setState({
             product: response.product,
+            productOptionTitle: response.product.options[0].title,
             finallPrice: response.product.price,
             fulfillment: response.fulfillment,
             borrowPartnerCup: response.vendor_info.borrow_partner_cup,
@@ -243,6 +245,7 @@ class Product extends Component {
             orderType: this.state.orderType,
             packing: this.state.activePackingOption,
             selectedOption: this.state.selectedOption,
+            optionTitle: this.state.productOptionTitle,
             quantity: this.state.quantity,
           },
         ],
