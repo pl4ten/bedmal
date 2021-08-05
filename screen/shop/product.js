@@ -702,9 +702,6 @@ class Product extends Component {
               style={styles.sliderImages}
             />
           </View>
-          <Button onPress={() => this.props.clearBag()}>
-            <Text>clear</Text>
-          </Button>
           <View style={styles.productInfo}>
             <View style={styles.infoRowOne}>
               <View>
