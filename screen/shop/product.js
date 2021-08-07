@@ -80,7 +80,7 @@ class Product extends Component {
           this.props.token,
         )
         .then(response => {
-          console.log(jsonBeautify(response));
+          // console.log(jsonBeautify(response));
           if (response.status === 400) {
             Alert.alert('Error', response.errors[0].message, [{text: 'ok'}], {
               cancelable: true,
@@ -124,7 +124,7 @@ class Product extends Component {
           formData,
         )
         .then(response => {
-          console.log(jsonBeautify(response));
+          // console.log(jsonBeautify(response));
           if (response.status === 400) {
             Alert.alert('Error', response.errors[0].message, [{text: 'ok'}], {
               cancelable: true,
@@ -238,7 +238,6 @@ class Product extends Component {
         vendorID: this.state.vendorID,
         addressID: this.state.selectedDeliveryAddres,
         buyType: this.state.buyType,
-        price: this.state.finallPrice,
         products: [
           {
             product: this.state.product,
@@ -247,6 +246,7 @@ class Product extends Component {
             selectedOption: this.state.selectedOption,
             optionTitle: this.state.productOptionTitle,
             quantity: this.state.quantity,
+            price: this.state.finallPrice,
           },
         ],
       };
