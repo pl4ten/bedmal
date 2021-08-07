@@ -10,6 +10,7 @@ export const styles = StyleSheet.create({
     borderBottomColor: '#F0F0F0',
     borderBottomWidth: 2,
     marginTop: 2,
+    paddingBottom: 5,
   },
   b1: {
     width: _defz.width / 4,
@@ -102,12 +103,21 @@ export const styles = StyleSheet.create({
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
   },
-  alertButtonText: {
-    color: 'gray',
-    fontSize: 11,
+  alertButtonTextOff: {
+    fontSize: 12,
     marginTop: 4,
     alignSelf: 'center',
     textTransform: 'capitalize',
+    color: '#E03174',
+    fontFamily: 'FuturaPT-Book',
+  },
+  alertButtonTextOn: {
+    fontSize: 12,
+    marginTop: 4,
+    alignSelf: 'center',
+    textTransform: 'capitalize',
+    color: '#C3BCBC',
+    fontFamily: 'FuturaPT-Book',
   },
   headerText: {
     color: 'gray',
