@@ -218,13 +218,17 @@ class Bag extends React.Component {
     }
   }
   timeDetector(date) {
-    var date1 = new Date();
-    var date2 = new Date(date);
-
-    // To calculate the time difference of two dates
-    var Difference_In_Time = date2.getTime() - date1.getTime();
-    var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
-    console.log(Difference_In_Days);
+    const date1 = new Date(
+      date
+        .split('-')
+        .reverse()
+        .join('/'),
+    );
+    const date2 = new Date();
+    console.log(date1, date2);
+    const diffTime = Math.abs(date2 - date1);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
   }
 
   render() {
@@ -320,6 +324,7 @@ class Bag extends React.Component {
                         showsHorizontalScrollIndicator={false}>
                         {this.state.borrowed_items
                           ? this.state.borrowed_items.map(item => {
+                              console.log(item)
                               if (item.combo === 'cup_sleeve_lid') {
                                 return (
                                   <TouchableOpacity
