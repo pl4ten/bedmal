@@ -49,6 +49,8 @@ import BlueForwardSvg from '../../asset/svg/blueForward.svg';
 import EmptyGlassNoBGSvg from '../../asset/svg/emptyGlass-noBg.svg';
 import LogoChatSvg from '../../asset/svg/logoChat.svg';
 import SleeveCupSvg from '../../asset/svg/sleeve_cup.svg';
+import AlertsOnSvg from '../../asset/svg/alertOn.svg';
+import AlertsOffSvg from '../../asset/svg/alertOff.svg';
 
 // footer items
 export class FooterActive extends React.Component {
@@ -327,7 +329,16 @@ export class LogoChat extends React.Component {
     return <LogoChatSvg width={this.props.width} height={this.props.height} />;
   }
 }
-
+export class AlertsOn extends React.Component {
+  render() {
+    return <AlertsOnSvg width={this.props.width} height={this.props.height} />;
+  }
+}
+export class AlertsOff extends React.Component {
+  render() {
+    return <AlertsOffSvg width={this.props.width} height={this.props.height} />;
+  }
+}
 const styles = StyleSheet.create({
   logoContainer: {
     display: 'flex',
