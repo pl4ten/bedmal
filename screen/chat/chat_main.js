@@ -20,13 +20,12 @@ import {
   Root,
   Icon,
 } from 'native-base';
-import {LogoChat} from '../com/svg-files';
+import {LogoChat, AlertsOn, AlertsOff} from '../com/svg-files';
 import {styles} from './styles/chat_main.styles';
 import {connect} from 'react-redux';
 import {selectUserToken} from '../../redux/user/user.selectors';
 import {jsonBeautify} from 'beautify-json';
 
-import AsyncStorage from '@react-native-community/async-storage';
 let lodings = false;
 let paging = false;
 let _defz = require('../com/def');
@@ -40,6 +39,7 @@ class chat_main extends Component {
 
     this.state = {
       chatdata: null,
+      alert: 0,
     };
   }
   forceUpdateHandler() {
@@ -77,7 +77,6 @@ class chat_main extends Component {
     if (this.state.chatdata) {
       let items = [];
       this.state.chatdata.map((dataItem, i) => {
-        console.log(jsonBeautify(dataItem));
         items.push(
           <List style={{}}>
             <ListItem noBorder avatar style={styles.cartItem}>
@@ -147,11 +146,32 @@ class chat_main extends Component {
       await _defz
         .get_via_token('user/chats?limit=15&offset=0', 'GET', this.props.token)
         .then(response => {
-          console.log(response);
-          if (response.status == 200) {
-            this.setState({chatdata: response.chats});
+          // console.log(jsonBeautify(response));
+          if (response.status === 200) {
+            this.setState({chatdata: response.chats, alert: response.alerts});
           }
-          if (response.status == 400) {
+          if (response.status === 400) {
+            Alert.alert('Error', response.errors[0].message, [{text: 'ok'}], {
+              cancelable: true,
+            });
+          }
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async toggleAlert() {
+    const {navigate} = this.props.navigation;
+    try {
+      await _defz
+        .get_via_token('user/chats/alerts', 'GET', this.props.token)
+        .then(response => {
+          console.log(jsonBeautify(response));
+          if (response.status === 200) {
+            this.get_chat();
+          }
+          if (response.status === 400) {
             Alert.alert('Error', response.errors[0].message, [{text: 'ok'}], {
               cancelable: true,
             });
@@ -163,7 +183,6 @@ class chat_main extends Component {
   }
 
   render() {
-    console.log(this.props.token);
     const {navigate} = this.props.navigation;
     return (
       <Root>
@@ -183,12 +202,24 @@ class chat_main extends Component {
               style={styles.b1}
               vertical
               transparent
-              onPress={() => console.log('ok')}>
-              <Image
-                source={require('../../asset/img/alert.png')}
-                resizeMode="stretch"
-              />
-              <Text style={styles.alertButtonText}>Alerts on</Text>
+              onPress={() => this.toggleAlert()}>
+              {this.state.alert === 1 ? (
+                <>
+                  <AlertsOn
+                    width={_defz.width / 20}
+                    height={_defz.height / 40}
+                  />
+                  <Text style={styles.alertButtonTextOn}>Alerts on</Text>
+                </>
+              ) : (
+                <>
+                  <AlertsOff
+                    width={_defz.width / 20}
+                    height={_defz.height / 40}
+                  />
+                  <Text style={styles.alertButtonTextOff}>Alerts off</Text>
+                </>
+              )}
             </Button>
 
             <Text style={styles.headerText}>messages</Text>
