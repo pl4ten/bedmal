@@ -226,7 +226,7 @@ export const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     width: '30%',
   },
   checkOutButton: {
@@ -259,6 +259,7 @@ export const styles = StyleSheet.create({
   paginationButton: {
     display: 'flex',
     flexDirection: 'column',
+    marginHorizontal: 5,
   },
   headingText: {
     fontFamily: 'FuturaPT-Book',
