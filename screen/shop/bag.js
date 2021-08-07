@@ -1,5 +1,12 @@
 import React from 'react';
-import {Text, View, ScrollView, Alert, TouchableOpacity, Linking} from 'react-native';
+import {
+  Text,
+  View,
+  ScrollView,
+  Alert,
+  TouchableOpacity,
+  Linking,
+} from 'react-native';
 import {Button} from 'native-base';
 import Footer from '../com/footer';
 import {
@@ -24,13 +31,12 @@ import {selectUserToken} from '../../redux/user/user.selectors';
 import {jsonBeautify} from 'beautify-json';
 
 const _defz = require('../com/def');
-
 class Bag extends React.Component {
   constructor() {
     super();
     this.state = {
       packInBorrowBags: false,
-      returnBorrows: true,
+      returnBorrows: false,
       bag: [],
       activeVendorBag: 0,
       activeBag: 1,
@@ -41,6 +47,8 @@ class Bag extends React.Component {
       isLoading: false,
       borrowed_items: '',
       returnBorrowIdz: [],
+      deliveryCost: 0,
+      freeDeliveryCostOver: 0,
     };
   }
   getBag = () => {
@@ -49,18 +57,20 @@ class Bag extends React.Component {
         bag: [],
         activeCart: '',
         isLoading: true,
+        totalPrice: 0,
       },
       () => {
         this.setState(
           {
             bag: this.props.bag,
-            activeCart: this.props.bag[0],
+            activeCart: this.props.bag[this.state.activeBag - 1],
             isLoading: false,
-            activeBag: 1,
+            activeBag: this.state.activeBag,
             fulfillmentInfo: '',
           },
           () => {
             this.state.activeCart ? this.getFulfillmentInfo() : null;
+            this.sumPrice();
           },
         );
       },
@@ -84,7 +94,15 @@ class Bag extends React.Component {
     this.props.deleteBag(this.state.activeBag - 1);
     this.getBag;
   }
-
+  sumPrice() {
+    let totalPrice = 0;
+    this.state.activeCart
+      ? this.state.activeCart.products.forEach(item => {
+          totalPrice += parseFloat(item.price) * item.quantity;
+        })
+      : null;
+    this.setState({totalPrice: totalPrice});
+  }
   async getFulfillmentInfo() {
     try {
       let activeCart = this.state.activeCart;
@@ -97,13 +115,31 @@ class Bag extends React.Component {
         url = `user/bag/vendor/info/${activeCart.vendorID}?fulfillment=pickup `;
       }
       await _defz.send(url, 'GET', this.props.token).then(response => {
-        console.log(jsonBeautify(response));
+        // console.log(jsonBeautify(response));
         if (response.status === 400) {
           Alert.alert('Error', response.errors[0].message, [{text: 'ok'}], {
             cancelable: true,
           });
         }
-        this.setState({fulfillmentInfo: response});
+        if (response.fulfilment.type === 'nationwide_delivery') {
+          this.setState({
+            fulfillmentInfo: response,
+            deliveryCost: response.fulfilment.data.nationwide_cost,
+            freeDeliveryCostOver: response.fulfilment.data.nationwide_free_over,
+          });
+        } else if (response.fulfilment.type === 'local_delivery') {
+          this.setState({
+            fulfillmentInfo: response,
+            deliveryCost: response.fulfilment.data.local_cost,
+            freeDeliveryCostOver: response.fulfilment.data.local_cost,
+          });
+        } else {
+          this.setState({
+            fulfillmentInfo: response,
+            deliveryCost: -1,
+            freeDeliveryCostOver: -1,
+          });
+        }
         this.getReturnBorrows();
       });
     } catch (error) {
@@ -117,7 +153,7 @@ class Bag extends React.Component {
       await _defz
         .send('user/bag/borrowed-items', 'GET', tokeen)
         .then(response => {
-          console.log(jsonBeautify(response));
+          // console.log(jsonBeautify(response));
           if (response.status === 400) {
             Alert.alert('Error', response.errors[0].message, [{text: 'ok'}], {
               cancelable: true,
@@ -433,7 +469,13 @@ class Bag extends React.Component {
                       )
                     ) : null}
                   </View>
-                  <Text style={styles.contentHeadingRigthText}>£6.06</Text>
+                  {this.state.deliveryCost !== -1 ? (
+                    <Text style={styles.contentHeadingRigthText}>
+                      {this.state.totalPrice > this.state.freeDeliveryCostOver
+                        ? 'free'
+                        : `£ ${this.state.deliveryCost}`}
+                    </Text>
+                  ) : null}
                 </View>
                 <ScrollView
                   style={styles.scrollView}
@@ -548,7 +590,10 @@ class Bag extends React.Component {
                                 activeBag: idx + 1,
                                 activeCart: item,
                               },
-                              () => this.getFulfillmentInfo(),
+                              () => {
+                                this.getFulfillmentInfo();
+                                this.sumPrice();
+                              },
                             );
                           }}>
                           <View
