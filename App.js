@@ -66,6 +66,7 @@ const RootStack = createStackNavigator(
   {
     headerMode: 'none',
     initialRouteName: 'home',
+    initialRouteParams: {transition: 'fade'},
   },
 );
 
