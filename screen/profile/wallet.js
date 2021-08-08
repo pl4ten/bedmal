@@ -8,6 +8,9 @@ import Headers from '../com/header';
 import Loader from '../com/loader';
 import {jsonBeautify} from 'beautify-json';
 
+import {selectUserToken} from '../../redux/user/user.selectors';
+import {connect} from 'react-redux';
+
 class wallet extends Component {
   constructor() {
     super();
@@ -27,7 +30,7 @@ class wallet extends Component {
     try {
       this.setState({isLoading: true});
       await _defz
-        .get_via_token('user/account/wallet/cards', 'GET', _defz._token)
+        .get_via_token('user/account/wallet/cards', 'GET', this.props.token)
         .then(response => {
           console.log(jsonBeautify(response));
           if (response.status === 400) {
@@ -59,7 +62,7 @@ class wallet extends Component {
         .send(
           `user/account/addresses/edit/${addressID}`,
           'POST',
-          _defz._token,
+          this.props.token,
           formData,
         )
         .then(response => {
@@ -101,10 +104,7 @@ class wallet extends Component {
                 />
               </Button>
               <View style={styles.container}>
-                <Headers
-                  navigation={this.props.navigation}
-                  route={'wallet'}
-                />
+                <Headers navigation={this.props.navigation} route={'wallet'} />
                 <ScrollView
                   contentContainerStyle={{
                     alignItems: 'center',
@@ -112,7 +112,6 @@ class wallet extends Component {
                   }}
                   showsVerticalScrollIndicator={false}
                   style={styles.scrollView}>
-
                   {this.state.addresses
                     ? this.state.addresses.map(item => {
                         return (
@@ -206,7 +205,9 @@ class wallet extends Component {
                                           alignItems: 'center',
                                         })
                                       }>
-                                      <Text style={{color: "gray"}}>Primary</Text>
+                                      <Text style={{color: 'gray'}}>
+                                        Primary
+                                      </Text>
                                       <Icon
                                         name="circle"
                                         type="FontAwesome"
@@ -277,7 +278,7 @@ class wallet extends Component {
                         );
                       })
                     : null}
-                    <View style={{marginTop: 100}}/>
+                  <View style={{marginTop: 100}} />
                 </ScrollView>
               </View>
             </View>
@@ -290,5 +291,7 @@ class wallet extends Component {
     );
   }
 }
-
-export default wallet;
+const mapStateToProps = state => ({
+  token: selectUserToken(state),
+});
+export default connect(mapStateToProps)(wallet);

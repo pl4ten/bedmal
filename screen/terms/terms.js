@@ -3,6 +3,9 @@ import {Text, View, ScrollView, TouchableOpacity, Alert} from 'react-native';
 
 import {CardItem, Right, Left, Icon, Button} from 'native-base';
 
+import {selectUserToken} from '../../redux/user/user.selectors';
+import {connect} from 'react-redux';
+
 var Footer = require('../com/footer').default;
 var Header = require('../com/header').default;
 let _defz = require('../com/def');
@@ -20,7 +23,7 @@ class Terms extends Component {
   async getTerms() {
     try {
       await _defz
-        .get_via_token('user/account/terms', 'GET', _defz._token)
+        .get_via_token('user/account/terms', 'GET', this.props.token)
         .then(response => {
           console.log(jsonBeautify(response));
           if (response.status === 200) {
@@ -98,5 +101,7 @@ class Terms extends Component {
     );
   }
 }
-
-export default Terms;
+const mapStateToProps = state => ({
+  token: selectUserToken(state),
+});
+export default connect(mapStateToProps)(Terms);

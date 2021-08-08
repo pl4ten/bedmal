@@ -22,7 +22,6 @@ class usermain extends Component {
   }
   componentDidMount() {
     this.gettoken();
-    console.log('+++++++++++' + this.props.token + '+++++++++++++++++');
   }
 
   gettoken = async () => {
@@ -108,7 +107,6 @@ class usermain extends Component {
     );
   }
 }
-
 
 const mapStateToProps = state => ({
   token: selectUserToken(state),

@@ -5,6 +5,9 @@ import {Button, Icon} from 'native-base';
 
 import {styles} from './styles/term.styles';
 
+import {selectUserToken} from '../../redux/user/user.selectors';
+import {connect} from 'react-redux';
+
 var Footer = require('../com/footer').default;
 var Header = require('../com/header').default;
 let _defz = require('../com/def');
@@ -17,12 +20,12 @@ class Term extends Component {
       terms: null,
     };
   }
-  async getTerm(x) {
+  async getTerm(id) {
     try {
       await _defz
-        .get_via_token('user/account/terms/info/' + x, 'GET', _defz._token)
+        .get_via_token('user/account/terms/info/' + id, 'GET', this.props.token)
         .then(response => {
-          console.log(jsonBeautify(response));
+          // console.log(jsonBeautify(response));
           if (response.status === 200) {
             this.setState({terms: response.term});
           }
@@ -83,5 +86,7 @@ class Term extends Component {
     );
   }
 }
-
-export default Term;
+const mapStateToProps = state => ({
+  token: selectUserToken(state),
+});
+export default connect(mapStateToProps)(Term);

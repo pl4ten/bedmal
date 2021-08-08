@@ -11,6 +11,10 @@ import {
   Icon,
 } from 'native-base';
 import {styles} from './styles/profile.styles';
+
+import {selectUserToken} from '../../redux/user/user.selectors';
+import {connect} from 'react-redux';
+
 let name = '',
   pass = '',
   mobile = '',
@@ -64,7 +68,7 @@ class Profile extends Component {
     }
 
     await _defz
-      .send('user/account/profile/edit', 'POST', _defz._token, formData)
+      .send('user/account/profile/edit', 'POST', this.props.token, formData)
       .then(response => {
         console.log(response);
         if (response.status == 200) {
@@ -87,7 +91,7 @@ class Profile extends Component {
   async getprofile() {
     try {
       await _defz
-        .get_via_token('user/account/profile', 'GET', _defz._token)
+        .get_via_token('user/account/profile', 'GET', this.props.token)
         .then(response => {
           console.log(response);
           if (response.status === 200) {
@@ -313,5 +317,7 @@ class Profile extends Component {
     );
   }
 }
-
-export default Profile;
+const mapStateToProps = state => ({
+  token: selectUserToken(state),
+});
+export default connect(mapStateToProps)(Profile);

@@ -6,6 +6,11 @@ import Footers from '../com/footer';
 import Headers from '../com/header';
 import Loader from '../com/loader';
 import {jsonBeautify} from 'beautify-json';
+
+
+import {selectUserToken} from '../../redux/user/user.selectors';
+import {connect} from 'react-redux';
+
 let _defz = require('../com/def');
 
 class Addresses extends Component {
@@ -27,7 +32,7 @@ class Addresses extends Component {
     try {
       this.setState({isLoading: true});
       await _defz
-        .get_via_token('user/account/addresses', 'GET', _defz._token)
+        .get_via_token('user/account/addresses', 'GET', this.props.token)
         .then(response => {
           console.log(jsonBeautify(response));
           if (response.status === 400) {
@@ -59,7 +64,7 @@ class Addresses extends Component {
         .send(
           `user/account/addresses/edit/${addressID}`,
           'POST',
-          _defz._token,
+          this.props.token,
           formData,
         )
         .then(response => {
@@ -298,5 +303,8 @@ class Addresses extends Component {
     );
   }
 }
+const mapStateToProps = state => ({
+  token: selectUserToken(state),
+});
+export default connect(mapStateToProps)(Addresses);
 
-export default Addresses;
