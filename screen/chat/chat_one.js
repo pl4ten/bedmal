@@ -160,12 +160,10 @@ class Chat_one extends Component {
 
     try {
       await _defz.get_via_token(url, 'GET', this.props.token).then(response => {
-        console.log(jsonBeautify(response));
+        // console.log(jsonBeautify(response));s
         this.setState({isLoading: false});
         if (response.status === 200) {
           this.setState({chatdata: response.messages});
-          this.state.chatdata.reverse().map((dataItem, i) => {});
-          console.log(chat_time);
           this.textInput.clear();
         }
         if (response.status === 400) {
@@ -269,6 +267,7 @@ class Chat_one extends Component {
             ) : null}
           </List>,
         );
+        
       });
 
       return items;

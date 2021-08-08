@@ -69,7 +69,7 @@ class Bag extends React.Component {
             fulfillmentInfo: '',
           },
           () => {
-            this.state.activeCart ? this.getFulfillmentInfo() : null;
+            this.getFulfillmentInfo();
             this.sumPrice();
           },
         );
