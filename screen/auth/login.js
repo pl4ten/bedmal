@@ -274,16 +274,17 @@ class login extends Component {
                 onPress={() => this.login()}>
                 <Text style={styles.textb1}>Login</Text>
               </Button>
+
+              <Button
+                transparent
+                rounded
+                iconLeft
+                style={styles.b3}
+                onPress={() => navigate('signup')}>
+                <Text style={styles.textsignup}>Do not have an account?</Text>
+              </Button>
             </View>
           )}
-          <Button
-            transparent
-            rounded
-            iconLeft
-            style={styles.b3}
-            onPress={() => navigate('signup')}>
-            <Text style={styles.textsignup}>Do not have an account?</Text>
-          </Button>
         </View>
       </DismissKeyboard>
     );
