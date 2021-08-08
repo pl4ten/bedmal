@@ -95,7 +95,6 @@ export const styles = StyleSheet.create({
     zIndex: 999999,
     alignSelf: 'center',
     width: '100%',
-    height: '100%',
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     position: 'absolute',

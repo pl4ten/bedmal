@@ -609,7 +609,12 @@ class SearchProduct extends Component {
           <View style={styles.searchBox}>
             <SearchBoxBlue />
           </View>
-          <BagInActive />
+          <Button
+            style={styles.homeButton}
+            transparent
+            onPress={() => this.props.navigation.navigate('bag')}>
+            <BagInActive />
+          </Button>
         </View>
       </View>
     ) : (
@@ -737,7 +742,12 @@ class SearchProduct extends Component {
           <View style={styles.searchBox}>
             <SearchBoxBlue />
           </View>
-          <BagInActive />
+          <Button
+            style={styles.homeButton}
+            transparent
+            onPress={() => this.props.navigation.navigate('bag')}>
+            <BagInActive />
+          </Button>
         </View>
       </View>
     );
