@@ -51,6 +51,7 @@ import LogoChatSvg from '../../asset/svg/logoChat.svg';
 import SleeveCupSvg from '../../asset/svg/sleeve_cup.svg';
 import AlertsOnSvg from '../../asset/svg/alertOn.svg';
 import AlertsOffSvg from '../../asset/svg/alertOff.svg';
+import ConfirmSvg from '../../asset/svg/confirm.svg';
 
 // footer items
 export class FooterActive extends React.Component {
@@ -339,6 +340,12 @@ export class AlertsOff extends React.Component {
     return <AlertsOffSvg width={this.props.width} height={this.props.height} />;
   }
 }
+export class Confirm extends React.Component {
+  render() {
+    return <ConfirmSvg width={this.props.width} height={this.props.height} />;
+  }
+}
+
 const styles = StyleSheet.create({
   logoContainer: {
     display: 'flex',
