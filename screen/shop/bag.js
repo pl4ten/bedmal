@@ -169,26 +169,37 @@ class Bag extends React.Component {
   }
   async checkOut() {
     let products = [];
-    console.log(this.state.activeCart);
+
     this.state.activeCart.products.map(item => {
       products.push({
         borrow_cup: item.orderType ? item.orderType : item.packing,
-        options: item.selectedOption,
+        options: [{title: item.optionTitle, value: item.selectedOption.label}],
         product_count: item.quantity,
         product_id: item.product.id,
       });
     });
-    console.log(products);
+
     const formData = new FormData();
     formData.append('vendor_info_id', this.state.activeCart.vendorID);
     formData.append('borrow_bag', this.state.packInBorrowBags ? 1 : 0);
     formData.append('fulfillment', this.state.fulfillmentInfo.fulfilment.type);
     formData.append('products', products);
     formData.append('return_borrows', this.state.returnBorrowIdz);
+
+    // console.log(
+    //   jsonBeautify({
+    //     vendor_info_id: this.state.activeCart.vendorID,
+    //     borrow_bag: this.state.packInBorrowBags ? 1 : 0,
+    //     fulfillment: this.state.fulfillmentInfo.fulfilment.type,
+    //     products: products,
+    //     return_borrows: this.state.returnBorrowIdz,
+    //   }),
+    // );
+
     await _defz
       .send('user/bag/checkout', 'POST', this.props.token, formData)
       .then(response => {
-        console.log(response);
+        console.log('xxxxxxxxxxxx' + response + 'xxxxxxxxxxxx');
         this.setState({loading: false});
         if (response.status === 200) {
           //
@@ -324,7 +335,7 @@ class Bag extends React.Component {
                         showsHorizontalScrollIndicator={false}>
                         {this.state.borrowed_items
                           ? this.state.borrowed_items.map(item => {
-                              console.log(item)
+                              console.log(item);
                               if (item.combo === 'cup_sleeve_lid') {
                                 return (
                                   <TouchableOpacity
