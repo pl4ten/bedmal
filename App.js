@@ -24,7 +24,8 @@ import Term from './screen/terms/term';
 import SearchProduct from './screen/shop/search-product';
 import Bag from './screen/shop/bag';
 import verify from './screen/auth/verify';
-import password from './screen/profile/password';
+import password from './screen/auth/password';
+
 
 import Transactions from './screen/account/transactions';
 import Transaction from './screen/account/transaction';
@@ -54,7 +55,7 @@ const RootStack = createStackNavigator(
     searchProduct: SearchProduct,
     Addresses: Addresses,
     bag: Bag,
-    verify: verify,
+    verify: verify, 
     password: password,
     transactions: Transactions,
     transaction: Transaction,
@@ -65,7 +66,7 @@ const RootStack = createStackNavigator(
   },
   {
     headerMode: 'none',
-    initialRouteName: 'home',
+    initialRouteName: 'usermain',
     initialRouteParams: {transition: 'fade'},
   },
 );
