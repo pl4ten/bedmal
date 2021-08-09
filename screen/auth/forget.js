@@ -22,7 +22,6 @@ class forget extends Component {
       visible: true,
     };
   }
-
   forget = async x => {
     this.setState({loading: true});
     const {navigate} = this.props.navigation;
@@ -80,7 +79,7 @@ class forget extends Component {
                   placeholder=" Phone number"
                   placeholderTextColor="silver"
                   onChangeText={text => {
-                    _names = text;
+                    _phone = text;
                   }}
                   maxLength={50}
                   style={styles.textInput3}
