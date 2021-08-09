@@ -6,45 +6,56 @@ import {Image, TextInput, Alert} from 'react-native';
 import {Button, Text} from 'native-base';
 import {styles} from './styles/password.styles';
 import {Keyboard, TouchableWithoutFeedback} from 'react-native';
-let pass = '';
-let pass_confirmation = '';
-let _defz = require('../com/def');
 import Loader from '../com/loader';
+import {Confirm} from '../com/svg-files';
+import { jsonBeautify } from 'beautify-json';
+
+let _defz = require('../com/def');
+
 const DismissKeyboard = ({children}) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
     {children}
   </TouchableWithoutFeedback>
 );
-class password extends Component {
+
+class Password extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      visible: true,
       token: '',
+      newPass: '',
+      newPassRepeat: '',
+      passwordReseted: false,
     };
   }
-  componentWillMount() {
-    const {navigation} = this.props;
 
-    let data = navigation.getParam('token', '0');
-    this.setState({token: data});
+  getToken() {
+    // alert('x')
+    // this.setState({token: token});
+  }
+  componentDidMount() {
+    this.props.navigation.addListener('didFocus', e => {
+      this.setState({token: e.state.params.token});
+    });
   }
 
   reset = async x => {
     this.setState({loading: true});
     const {navigate} = this.props.navigation;
     let formData = new FormData();
-    formData.append('password', pass);
-    formData.append('password_confirmation', pass_confirmation);
+    formData.append('password', this.state.newPass);
+    formData.append('password_confirmation', this.state.newPassRepeat);
     formData.append('reset_token', this.state.token);
 
     await _defz
-      .send('user/forgot-password/verify', 'POST', '0', formData)
+      .send('user/forgot-password/reset', 'POST', '0', formData)
       .then(response => {
         console.log(response);
         this.setState({loading: false});
         if (response.status === 200) {
-          navigate('reet_pass', {token: response.reset_token});
+          this.setState({
+            passwordReseted: true,
+          });
         } else {
           Alert.alert('Error', response.errors[0].message, [{text: 'ok'}], {
             cancelable: true,
@@ -60,6 +71,24 @@ class password extends Component {
         <View style={styles.container}>
           {this.state.loading === true ? (
             <Loader navigation={this.props.navigation} loading={true} />
+          ) : this.state.passwordReseted ? (
+            <View style={styles.resetedContainer}>
+              <Image
+                source={require('../../asset/logo_black.png')}
+                resizeMode="stretch"
+                style={styles.logoImg}
+              />
+              <Confirm width={_defz.width / 6} height={_defz.height / 4} />
+              <Text style={styles.passwordResetedText}>Password changed</Text>
+              <Text style={styles.passwordResetedText}>successfully</Text>
+
+              <Button
+                transparent
+                style={styles.goToLoginButton2}
+                onPress={() => navigate('login')}>
+                <Text style={styles.textsignup}>Go To Login</Text>
+              </Button>
+            </View>
           ) : (
             <View>
               <Image
@@ -67,13 +96,29 @@ class password extends Component {
                 resizeMode="stretch"
                 style={styles.logoImg}
               />
-
+              <Text style={styles.text1}>Enter the new password</Text>
+              <View style={{marginTop: 60}} />
               <TextInput
                 placeholder="New Password"
                 placeholderTextColor="silver"
-                onChangeText={text => {
-                  pass = text;
-                }}
+                value={this.state.newPass}
+                onChangeText={text =>
+                  this.setState({
+                    newPass: text,
+                  })
+                }
+                maxLength={50}
+                style={styles.textInput}
+              />
+              <TextInput
+                placeholder="New Password again"
+                placeholderTextColor="silver"
+                value={this.state.newPassRepeat}
+                onChangeText={text =>
+                  this.setState({
+                    newPassRepeat: text,
+                  })
+                }
                 maxLength={50}
                 style={styles.textInput}
               />
@@ -99,4 +144,4 @@ class password extends Component {
   }
 }
 
-export default password;
+export default Password;

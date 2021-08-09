@@ -80,7 +80,7 @@ export const styles = StyleSheet.create({
     color: 'black',
     borderColor: '#000000',
     textAlign: 'left',
-    marginTop: '25%',
+    marginTop: '10%',
     padding: 15,
   },
   textInput22: {
@@ -107,4 +107,19 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     backgroundColor: _defz.main_color,
   },
+  goToLoginButton2: {
+    position: 'absolute',
+    bottom: 150,
+    alignSelf: 'center',
+    backgroundColor: _defz.main_color,
+  },
+  resetedContainer: {
+    width: '100%',
+    height: '100%',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  passwordResetedText: {
+    fontSize: 20,
+  }
 });
