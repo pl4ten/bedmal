@@ -29,6 +29,8 @@ import {
 } from '../../redux/store/store.actions';
 import {selectUserToken} from '../../redux/user/user.selectors';
 import {jsonBeautify} from 'beautify-json';
+import axios from 'axios';
+import Loader from '../com/loader';
 
 const _defz = require('../com/def');
 class Bag extends React.Component {
@@ -49,6 +51,7 @@ class Bag extends React.Component {
       returnBorrowIdz: [],
       deliveryCost: 0,
       freeDeliveryCostOver: 0,
+      goToPay: false,
     };
   }
   getBag = () => {
@@ -168,6 +171,7 @@ class Bag extends React.Component {
     }
   }
   async checkOut() {
+    this.setState({goToPay: true});
     let products = [];
 
     this.state.activeCart.products.map(item => {
@@ -180,34 +184,46 @@ class Bag extends React.Component {
     });
 
     const formData = new FormData();
+
+    if (this.state.fulfillmentInfo.fulfilment.type === 'pickup') {
+      formData.append('fulfillment', 'pickup');
+    } else {
+      formData.append('fulfillment', 'delivery');
+      formData.append('address_id', this.state.activeCart.addressID);
+    }
     formData.append('vendor_info_id', this.state.activeCart.vendorID);
     formData.append('borrow_bag', this.state.packInBorrowBags ? 1 : 0);
-    formData.append('fulfillment', this.state.fulfillmentInfo.fulfilment.type);
-    formData.append('products', products);
-    formData.append('return_borrows', this.state.returnBorrowIdz);
-
-    // console.log(
-    //   jsonBeautify({
-    //     vendor_info_id: this.state.activeCart.vendorID,
-    //     borrow_bag: this.state.packInBorrowBags ? 1 : 0,
-    //     fulfillment: this.state.fulfillmentInfo.fulfilment.type,
-    //     products: products,
-    //     return_borrows: this.state.returnBorrowIdz,
-    //   }),
-    // );
-
-    await _defz
-      .send('user/bag/checkout', 'POST', this.props.token, formData)
-      .then(response => {
-        console.log('xxxxxxxxxxxx' + response + 'xxxxxxxxxxxx');
-        this.setState({loading: false});
-        if (response.status === 200) {
-          //
+    formData.append('products', JSON.stringify(products));
+    formData.append(
+      'return_borrows',
+      JSON.stringify(this.state.returnBorrowIdz),
+    );
+    console.log(jsonBeautify(formData));
+    await axios({
+      url: 'https://www.bedmal-core.aralstudio.top/api/user/bag/checkout',
+      method: 'POST',
+      headers: {Authorization: 'Bearer ' + this.props.token},
+      data: formData,
+    })
+      .then(responseJson => {
+        this.setState({goToPay: false});
+        if (responseJson.data.status === 200) {
+          this.props.deleteBag(this.state.activeBag - 1);
+          Linking.openURL(responseJson.data.url);
         } else {
-          Alert.alert('Error', response.errors[0].message, [{text: 'ok'}], {
-            cancelable: true,
-          });
+          Alert.alert(
+            'Error',
+            responseJson.data.errors[0].message,
+            [{text: 'ok'}],
+            {
+              cancelable: true,
+            },
+          );
         }
+      })
+      .catch(r => {
+        console.log(r);
+        alert('Error in send data ==>> ' + r);
       });
   }
   handleBorrowItemsAdd(id) {
@@ -243,7 +259,9 @@ class Bag extends React.Component {
   }
 
   render() {
-    return this.state.isLoading ? null : (
+    return this.state.isLoading ? null : this.state.goToPay ? (
+      <Loader />
+    ) : (
       <>
         <ScrollView>
           <View style={styles.container}>
