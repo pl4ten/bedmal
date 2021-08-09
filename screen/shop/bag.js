@@ -38,7 +38,7 @@ class Bag extends React.Component {
     super();
     this.state = {
       packInBorrowBags: false,
-      returnBorrows: true,
+      returnBorrows: false,
       bag: [],
       activeVendorBag: 0,
       activeBag: 1,
