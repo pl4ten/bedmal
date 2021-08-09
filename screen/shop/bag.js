@@ -38,7 +38,7 @@ class Bag extends React.Component {
     super();
     this.state = {
       packInBorrowBags: false,
-      returnBorrows: false,
+      returnBorrows: true,
       bag: [],
       activeVendorBag: 0,
       activeBag: 1,
@@ -198,7 +198,6 @@ class Bag extends React.Component {
       'return_borrows',
       JSON.stringify(this.state.returnBorrowIdz),
     );
-    console.log(jsonBeautify(formData));
     await axios({
       url: 'https://www.bedmal-core.aralstudio.top/api/user/bag/checkout',
       method: 'POST',
@@ -223,6 +222,7 @@ class Bag extends React.Component {
       })
       .catch(r => {
         console.log(r);
+        this.setState({goToPay: false});
         alert('Error in send data ==>> ' + r);
       });
   }
@@ -245,14 +245,12 @@ class Bag extends React.Component {
     }
   }
   timeDetector(date) {
-    const date1 = new Date(
-      date
-        .split('-')
-        .reverse()
-        .join('/'),
-    );
+    const date1 = new Date(date);
     const date2 = new Date();
-    console.log(date1, date2);
+
+    console.log(date1);
+    console.log(date2);
+
     const diffTime = Math.abs(date2 - date1);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     return diffDays;
@@ -353,7 +351,6 @@ class Bag extends React.Component {
                         showsHorizontalScrollIndicator={false}>
                         {this.state.borrowed_items
                           ? this.state.borrowed_items.map(item => {
-                              console.log(item);
                               if (item.combo === 'cup_sleeve_lid') {
                                 return (
                                   <TouchableOpacity
