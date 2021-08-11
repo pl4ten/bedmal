@@ -147,7 +147,8 @@ export const styles = StyleSheet.create({
     fontFamily: 'FuturaPT-Medium',
   },
   bagCard: {
-    width: '90%',
+    width: '100%',
+    paddingHorizontal: 10,
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
@@ -155,7 +156,8 @@ export const styles = StyleSheet.create({
     marginTop: '2%',
   },
   bagCardBg: {
-    width: '90%',
+    width: '100%',
+    paddingHorizontal: 10,
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
