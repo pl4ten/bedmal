@@ -5,6 +5,7 @@ import {
   ScrollView,
   Image,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import {Text, Item, Button, Input, Icon, Header} from 'native-base';
 import Loader from '../com/loader';
@@ -136,12 +137,6 @@ class home extends Component {
       show_box: false,
       departments: null,
       vendors: null,
-      position: {
-        latitude: 38.06393741,
-        longitude: 46.30746081,
-      },
-      user_lat: '',
-      user_log: '',
       renderMode: this._renderModeOptions[0].data,
       followUserLocation: true,
       showsUserHeadingIndicator: false,
@@ -294,13 +289,6 @@ class home extends Component {
         });
     } catch (error) {
       console.log(error);
-    }
-  }
-
-  location_seter(x, y) {
-    if (x !== this.state.user_lat && y !== this.state.user_log) {
-      this.setState({user_lat: x});
-      this.setState({user_log: y});
     }
   }
   select_btn(b) {
