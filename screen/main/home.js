@@ -7,27 +7,26 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import {Text, Item, Button, Input, Icon, Header} from 'native-base';
+import Loader from '../com/loader';
+
 import {SliderBox} from 'react-native-image-slider-box';
-import AsyncStorage from '@react-native-community/async-storage';
 import {styles} from './styles/home.styles';
-let logedin = '0';
-var Footers = require('../com/footer').default;
+import {Logger} from '@react-native-mapbox-gl/maps';
 import MapboxGL, {MarkerView} from '@react-native-mapbox-gl/maps';
 import {PermissionsAndroid} from 'react-native';
-let position = [53.4808, 2.2426];
-let position2 = [53.4808, 2.2426];
-import Loader from '../com/loader';
-import ProductTypes from '../shop/product-types';
+import {jsonBeautify} from 'beautify-json';
+import SystemSetting from 'react-native-system-setting';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {Keyboard} from 'react-native';
+import {selectUserToken} from '../../redux/user/user.selectors';
+import {connect} from 'react-redux';
+import Geolocation from '@react-native-community/geolocation';
+var Footers = require('../com/footer').default;
 let _defz = require('../com/def');
-import Mapbox, { Logger } from '@react-native-mapbox-gl/maps';
 
 // edit logging messages
 Logger.setLogCallback(log => {
-  const { message } = log;
+  const {message} = log;
 
-  // expected warnings - see https://github.com/mapbox/mapbox-gl-native/issues/15341#issuecomment-522889062
   if (
     message.match('Request failed due to a permanent error: Canceled') ||
     message.match('Request failed due to a permanent error: Socket Closed')
@@ -88,13 +87,11 @@ const marker_Local_Image = [
   require('../../asset/marker/49.png'),
   require('../../asset/marker/50.png'),
 ];
-let marker_count = 1;
+
 MapboxGL.setAccessToken(
   'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',
 );
 MapboxGL.setTelemetryEnabled(false);
-
-
 
 const Marker = ({coordinate, id, color, label}) => {
   return coordinate[0] && coordinate[1] ? (
@@ -131,7 +128,6 @@ class home extends Component {
     ];
 
     this.state = {
-      mapRef: null,
       loading_like: false,
       loading: false,
       acctive_shop: '',
@@ -139,18 +135,19 @@ class home extends Component {
       selected_btn: '',
       show_box: false,
       departments: null,
-      selected_btn: '',
       vendors: null,
       position: {
-        latitude: 53.4808,
-        longitude: 2.2426,
+        latitude: 38.06393741,
+        longitude: 46.30746081,
       },
       user_lat: '',
       user_log: '',
-      centerCoordinate: [53.4808, 2.2426],
       renderMode: this._renderModeOptions[0].data,
       followUserLocation: true,
       showsUserHeadingIndicator: false,
+      latitude: null,
+      longitude: null,
+      userLocationOn: null,
     };
 
     this.onRenderModeChange = this.onRenderModeChange.bind(this);
@@ -159,35 +156,19 @@ class home extends Component {
   forceUpdateHandler() {
     this.forceUpdate();
   }
-
   onRenderModeChange(index, renderMode) {
     this.setState({renderMode});
   }
-  gettoken = async () => {
-    try {
-      const value = await AsyncStorage.getItem('token');
-      if (value !== null) {
-        if (value === '0') {
-        } else {
-          _defz._token = value;
-          this.get_store('new');
-        }
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  };
-  shop_selecter = async (x,lng, lat) => {
+  shop_selecter = async (x, lng, lat) => {
     if (this.state.acctive_shop == x) {
       this.setState({acctive_shop: ''});
     } else {
       this.setState({acctive_shop: x});
-      this.camera_map.flyTo([lng, lat], 1000)
-
+      this.camera_map.flyTo([lng, lat], 1000);
     }
   };
   componentDidMount() {
-    this.gettoken();
+    this.tryToGetSrotes();
     StatusBar.setHidden(true);
     MapboxGL.setTelemetryEnabled(false);
     PermissionsAndroid.requestMultiple(
@@ -208,7 +189,6 @@ class home extends Component {
         console.log(err);
       });
   }
-
   async like_dislike_vendor(vendor_id, index) {
     this.setState({loading_like: true});
     try {
@@ -216,7 +196,7 @@ class home extends Component {
         .get_via_token(
           'user/like-dislike-vendor/' + vendor_id,
           'GET',
-          _defz._token,
+          this.props.token,
         )
         .then(response => {
           if (response.status === 200) {
@@ -229,7 +209,34 @@ class home extends Component {
       console.log(error);
     }
   }
-
+  tryToGetSrotes() {
+    setInterval(() => {
+      SystemSetting.isLocationEnabled().then(enable => {
+        if (enable !== this.state.userLocationOn) {
+          this.setState({userLocationOn: enable}, () => {
+            if (this.state.userLocationOn) {
+              Geolocation.getCurrentPosition(info => {
+                this.setState(
+                  {
+                    latitude: info.coords.latitude,
+                    longitude: info.coords.longitude,
+                  },
+                  () => {
+                    this.get_store_via_location(
+                      this.state.latitude,
+                      this.state.longitude,
+                    );
+                  },
+                );
+              });
+            } else {
+              this.get_store('new');
+            }
+          });
+        }
+      });
+    }, 1000);
+  }
   async get_store(parm_data) {
     this.setState({loading: true});
     const {navigate} = this.props.navigation;
@@ -239,9 +246,8 @@ class home extends Component {
         params = parm_data;
       }
       await _defz
-        .get_via_token('user/home?range=40' + params, 'GET', _defz._token)
+        .get_via_token('user/home' + params, 'GET', this.props.token)
         .then(response => {
-          console.log(response.departments);
           if (response.status === 200) {
             if (response.departments) {
               this.setState({departments: response.departments});
@@ -259,19 +265,20 @@ class home extends Component {
       console.log(error);
     }
   }
-
-  async get_store_via_location(x, y) {
+  async get_store_via_location() {
     this.setState({loading: true});
     const {navigate} = this.props.navigation;
     try {
       let params = '';
-
-      params += '&latitude=' + x + ' &longitude=' + y;
+      params +=
+        '&latitude=' +
+        this.state.latitude +
+        '&longitude=' +
+        this.state.longitude;
 
       await _defz
-        .get_via_token('user/home?range=40' + params, 'GET', _defz._token)
+        .get_via_token('user/home?range=40' + params, 'GET', this.props.token)
         .then(response => {
-          console.log(response.departments);
           if (response.status === 200) {
             if (response.departments) {
               this.setState({departments: response.departments});
@@ -297,17 +304,21 @@ class home extends Component {
     }
   }
   select_btn(b) {
-    if (this.state.selected_btn == b) {
-      this.get_store('new');
-      this.setState({selected_btn: ''});
+    if (this.state.userLocationOn) {
+      this.get_store_via_location();
     } else {
-      if (b == 'heart') {
-        this.get_store('?liked=1');
+      if (this.state.selected_btn == b) {
+        this.get_store('new');
+        this.setState({selected_btn: ''});
       } else {
-        this.get_store(b);
-      }
+        if (b == 'heart') {
+          this.get_store('?liked=1');
+        } else {
+          this.get_store(b);
+        }
 
-      this.setState({selected_btn: b});
+        this.setState({selected_btn: b});
+      }
     }
   }
   render_box() {
@@ -365,7 +376,7 @@ class home extends Component {
   checkImageURL(url) {
     fetch(url)
       .then(res => {
-        console.log(res.status);
+        // console.log(res.status);
         if (res.status == 404) {
           return require('../../asset/img/bedmal-place-holder.jpg');
         } else {
@@ -378,15 +389,6 @@ class home extends Component {
   }
   render() {
     const {navigate} = this.props.navigation;
-    const {
-      followUserLocation,
-      showsUserHeadingIndicator,
-      followUserMode,
-      androidRenderMode,
-    } = this.state;
-
-    let {settings, onUpdateSettings} = this.props;
-
     MapboxGL.setAccessToken(
       'pk.eyJ1IjoiYmFyYmFyeWFiIiwiYSI6ImNraTMyaWt3dTFta2oycnFxcDRrOW4xd2oifQ.190FCXQ4cF95_ZhzMisEyw',
     );
@@ -465,13 +467,8 @@ class home extends Component {
                 zoomLevel={10}
                 animationMode={'flyTo'}
               />
-<MapboxGL.Light />
-              <MapboxGL.UserLocation
-                ref={location => {
-                  console.log("----*****************************************")
-                   console.warn(location); 
-                }}
-              />
+              <MapboxGL.Light />
+              <MapboxGL.UserLocation />
             </MapboxGL.MapView>
 
             {this.state.vendors !== null ? (
@@ -487,14 +484,17 @@ class home extends Component {
                         require('../../asset/img/bedmal-place-holder.jpg'),
                       );
                     }
-                    console.log(item)
                     return (
                       <TouchableOpacity
                         activeOpacity={1}
                         key={index}
                         onPress={() => {
                           this.state.acctive_shop !== item.id
-                            ? this.shop_selecter(item.id,item.longitude,item.latitude)
+                            ? this.shop_selecter(
+                                item.id,
+                                item.longitude,
+                                item.latitude,
+                              )
                             : this.setState({acctive_shop: ''});
                         }}
                         style={[
@@ -756,4 +756,7 @@ class home extends Component {
   }
 }
 
-export default home;
+const mapStateToProps = state => ({
+  token: selectUserToken(state),
+});
+export default connect(mapStateToProps)(home);
