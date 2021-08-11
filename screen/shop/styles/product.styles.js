@@ -218,7 +218,7 @@ export const styles = StyleSheet.create({
     fontSize: 17,
   },
   radioButtons: {
-    width: '20%',
+    width: '100%',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
