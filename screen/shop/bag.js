@@ -150,11 +150,9 @@ class Bag extends React.Component {
     }
   }
   async getReturnBorrows() {
-    let tokeen =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjI3LCJpYXQiOjE2MjY4NDgzODcsImV4cCI6NjgxMDg0ODM4N30.7CHZRHjNP4ZCtUmuExZeWUsUaQZPu2-usCaP9T12tf8';
     try {
       await _defz
-        .send('user/bag/borrowed-items', 'GET', tokeen)
+        .send('user/bag/borrowed-items', 'GET', this.props.token)
         .then(response => {
           // console.log(jsonBeautify(response));
           if (response.status === 400) {
