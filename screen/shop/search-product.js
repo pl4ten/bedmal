@@ -295,6 +295,7 @@ class SearchProduct extends Component {
           </View>
         </View>
         <MapboxGL.MapView
+          styleURL={'mapbox://styles/mapbox/light-v10'}
           ref={c => (this._map = c)}
           zoomLevel={2}
           style={styles.map}>
