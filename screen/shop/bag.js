@@ -205,12 +205,12 @@ class Bag extends React.Component {
       .then(responseJson => {
         this.setState({goToPay: false});
         if (responseJson.data.status === 200) {
-          this.props.deleteBag(this.state.activeBag - 1);
           Linking.openURL(responseJson.data.url);
+          // this.props.deleteBag(this.state.activeBag - 1);
         } else {
           Alert.alert(
             'Error',
-            responseJson.data.errors[0].message,
+            responseJson.response.data.errors[0].error,
             [{text: 'ok'}],
             {
               cancelable: true,
@@ -219,9 +219,10 @@ class Bag extends React.Component {
         }
       })
       .catch(r => {
-        console.log(r);
         this.setState({goToPay: false});
-        alert('Error in send data ==>> ' + r);
+        Alert.alert('Error', r.response.data.errors[0].error, [{text: 'ok'}], {
+          cancelable: true,
+        });
       });
   }
   handleBorrowItemsAdd(id) {
