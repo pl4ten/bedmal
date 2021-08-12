@@ -130,7 +130,7 @@ class home extends Component {
 
     this.state = {
       loading_like: false,
-      loading: false,
+      loading: true,
       acctive_shop: '',
       serach_txt: '',
       selected_btn: '',
@@ -452,7 +452,7 @@ class home extends Component {
                 : null}
               <MapboxGL.Camera
                 ref={c => (this.camera_map = c)}
-                zoomLevel={10}
+                zoomLevel={1}
                 animationMode={'flyTo'}
               />
               <MapboxGL.Light />
