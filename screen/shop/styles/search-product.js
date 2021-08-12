@@ -206,7 +206,7 @@ export const styles = StyleSheet.create({
   productCards: {
     width: '100%',
     position: 'absolute',
-    top: '23%',
+    top: '25%',
     flex: 1,
     paddingRight: '2%',
     paddingLeft: '2%',
