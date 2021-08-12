@@ -24,12 +24,10 @@ import {jsonBeautify} from 'beautify-json';
 let img_temp = '';
 
 let msg = '';
-let chat_time = [];
 
 let _defz = require('../com/def');
 let type_chat = 'admin';
 let id_chat = 'admin';
-let t = [];
 
 class Chat_one extends Component {
   constructor() {

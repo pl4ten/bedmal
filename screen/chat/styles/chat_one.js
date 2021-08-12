@@ -27,16 +27,16 @@ export const styles = StyleSheet.create({
     height: 50,
     marginLeft: 'auto',
     width: '100%',
-    marginTop: '-5%',
   },
   text_card: {color: 'gray'},
   card: {
     borderRadius: 50,
     width: '90%',
     alignSelf: 'center',
+    alignItems: 'center',
     marginTop: _defz.height / 100,
     elevation: 2,
-    height: _defz.height / 20,
+    height: 40,
     borderWidth: 1,
     borderColor: 'silver',
     backgroundColor: '#F0F0F0',
@@ -143,6 +143,7 @@ export const styles = StyleSheet.create({
   footerBody: {
     width: '80%',
     flex: 6,
+    alignSelf: 'center',
   },
   headingVendorName: {
     fontFamily: 'FuturaPT-Medium',

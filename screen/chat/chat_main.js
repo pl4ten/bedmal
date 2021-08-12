@@ -259,7 +259,7 @@ class chat_main extends Component {
             {lodings === true && paging === false ? (
               <ActivityIndicator size="large" color="grey" />
             ) : null}
-            <View style={{marginTop: '2%'}} />
+            <View style={{marginTop: 80}} />
           </ScrollView>
           <Footers navigation={this.props.navigation} route={'account'} />
         </View>

@@ -206,7 +206,7 @@ export const styles = StyleSheet.create({
   productCards: {
     width: '100%',
     position: 'absolute',
-    top: _defz.height / 4,
+    top: '23%',
     flex: 1,
     paddingRight: '2%',
     paddingLeft: '2%',
@@ -214,7 +214,7 @@ export const styles = StyleSheet.create({
   scrollViewV: {
     width: '100%',
     height: _defz.height / 1.3,
-    marginTop: _defz.height / 25,
+    marginTop: 60,
   },
   products: {
     display: 'flex',
@@ -231,25 +231,24 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     backgroundColor: '#F0F0F0',
     elevation: 3,
-    marginTop: '4%',
     paddingHorizontal: '1%',
     borderRadius: 50,
-    height: _defz.height / 27,
+    height: 35,
+    marginTop: 15,
   },
   searchTypeButton: {
-    marginTop: -5,
+    alignSelf: 'center',
   },
   searchTypeButtonActive: {
     borderWidth: 1.5,
     borderColor: '#3D80F2',
     borderRadius: 50,
     paddingHorizontal: '3%',
-    width: _defz.width / 5,
     height: _defz.height / 30,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 2,
+    alignSelf: 'center',
     backgroundColor: '#fff',
   },
   header: {

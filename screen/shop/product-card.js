@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     borderColor: '#707070',
     borderWidth: 0.3,
     borderRadius: 10,
-    height: _def.height / 3.8,
+    height: 240,
     width: '48%',
     marginTop: 10,
     marginBottom: 10,
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     width: '100%',
     borderBottomRightRadius: 10,
     borderBottomLeftRadius: 10,
-    height: _def.height / 5.5,
+    height: 160,
   },
   price: {
     color: '#707070',

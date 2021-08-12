@@ -713,7 +713,6 @@ class SearchProduct extends Component {
         </View>
         <View style={styles.productCards}>
           <ScrollView style={styles.scrollViewV} scrollEnabled>
-            <View style={{marginTop: 10}} />
             {this.state.searchProducts ? (
               <View style={styles.products}>
                 {this.state.searchProducts.map(item =>

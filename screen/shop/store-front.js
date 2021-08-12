@@ -203,7 +203,7 @@ class StoreFront extends React.Component {
                 />
               ))}
             </View>
-            <View style={{height: _defz.height / 4}} />
+            <View style={{height: 200}} />
           </ScrollView>
         </View>
 
