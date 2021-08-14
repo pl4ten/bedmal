@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
-import {Text, View, ScrollView, Alert} from 'react-native';
+import {Text, View, ScrollView, Alert, TouchableOpacity} from 'react-native';
 import {styles} from './styles/borrow-receipt.styles';
 
 import {selectUserToken} from '../../redux/user/user.selectors';
 import {connect} from 'react-redux';
+
 import {jsonBeautify} from 'beautify-json';
 import Loader from '../com/loader';
 import Headers from '../com/header';
@@ -18,10 +19,14 @@ class BorrowReceipt extends Component {
 
     this.state = {
       isLoading: false,
+      vendor_info: null,
+      borrowReceipts: null,
+      activeBorrwed: null,
     };
   }
 
   async getBorrowReceipt(id) {
+    console.log(id);
     try {
       this.setState({isLoading: true});
       await _defz
@@ -35,7 +40,9 @@ class BorrowReceipt extends Component {
           console.log(jsonBeautify(response));
           if (response.status === 200) {
             this.setState({
-              //   borrowReceipts: response.transactions,
+              borrowReceipts: response.borrow_receipts,
+              activeBorrwed: response.borrow_receipts[0],
+              vendor_info: response.vendor_info,
             });
           }
           if (response.status === 400) {
@@ -49,90 +56,166 @@ class BorrowReceipt extends Component {
     }
   }
   componentDidMount() {
-    this.getBorrowReceipt();
+    let id = this.props.navigation.state.params.id;
+    this.getBorrowReceipt(id);
   }
   render() {
     return (
       <View style={styles.container}>
         <Headers
-          route={'Tulip Cafe'}
+          route={this.state.vendor_info ? this.state.vendor_info.name : null}
           navigation={this.props.navigation}
           message
         />
         <View style={styles.content}>
-          <View style={styles.head}>
-            <Text style={styles.headText} numberOfLines={1}>
-              32 Hampstead High Street, Hampstead, London, NW3 4UU
-            </Text>
-            <View style={styles.headBottom}>
-              <Text style={styles.headText}>Borrow receipt TC2003021536</Text>
-              <Text style={styles.headText}>02/03/2020 | 15:36</Text>
-            </View>
-          </View>
-          <View style={styles.main}>
-            <Text style={styles.mainTitle}>Borrowed</Text>
-            <ScrollView
-              horizontal={true}
-              style={styles.scrollView}
-              showsHorizontalScrollIndicator={false}>
-              <View style={styles.card}>
-                <EmptyGlass width={_defz.width / 4} height={_defz.height / 7} />
-                <Text style={styles.borrowedNumber}>1</Text>
-              </View>
-              <View style={styles.card}>
-                <LidCup width={_defz.width / 4} height={_defz.height / 7} />
-                <Text style={styles.borrowedNumber}>1</Text>
-              </View>
-              <View style={styles.card}>
-                <LidSleeveCup
-                  width={_defz.width / 4}
-                  height={_defz.height / 7}
-                />
-                <Text style={styles.borrowedNumber}>1</Text>
-              </View>
-              <View style={styles.card}>
-                <Bag width={_defz.width / 4} height={_defz.height / 7} />
-                <Text style={styles.borrowedNumber}>1</Text>
-              </View>
-            </ScrollView>
-          </View>
-          <View style={styles.main}>
-            <Text style={styles.mainTitle}>Returned</Text>
-            <View style={styles.returned}>
-              <Text style={styles.returnedText}>b.Cups </Text>
-              <View style={styles.returnedItems}>
-                <View style={styles.returnedItem}>
-                  <View style={styles.circle}>
-                    <Text style={styles.circleNumber}>1</Text>
-                  </View>
-                  <Text style={styles.returnedItemText}>sleeve</Text>
-                </View>
-                <View style={styles.returnedItem}>
-                  <View style={styles.circle}>
-                    <Text style={styles.circleNumber}>1</Text>
-                  </View>
-                  <Text style={styles.returnedItemText}>sleeve</Text>
-                </View>
-                <View style={styles.returnedItem}>
-                  <View style={styles.circle}>
-                    <Text style={styles.circleNumber}>1</Text>
-                  </View>
-                  <Text style={styles.returnedItemText}>sleeve</Text>
+          {this.state.isLoading ? (
+            <Loader />
+          ) : this.state.vendor_info && this.state.borrowReceipts ? (
+            <>
+              <View style={styles.head}>
+                <Text style={styles.headText} numberOfLines={1}>
+                  {this.state.vendor_info.address}
+                </Text>
+                <View style={styles.headBottom}>
+                  {this.state.activeBorrwed ? (
+                    <>
+                      <Text style={styles.headText}>
+                        Borrow receipt {this.state.activeBorrwed.ref_id}
+                      </Text>
+                      <Text style={styles.headText}>
+                        {this.state.activeBorrwed.due.split('T')[0]} |{' '}
+                        {this.state.activeBorrwed.due.split('T')[1].slice(0, 8)}
+                      </Text>
+                    </>
+                  ) : (
+                    <>
+                      <Text style={styles.headText}>Borrow receipt</Text>
+                      <Text style={styles.headText} />
+                    </>
+                  )}
                 </View>
               </View>
-            </View>
+              <View style={styles.main}>
+                <Text style={styles.mainTitle}>Borrowed</Text>
+                <ScrollView
+                  horizontal={true}
+                  style={styles.scrollView}
+                  showsHorizontalScrollIndicator={false}>
+                  {this.state.borrowReceipts.map(item => {
+                    if (item.lid && item.sleeve && item.cup) {
+                      return (
+                        <TouchableOpacity
+                          style={styles.card}
+                          activeOpacity={1}
+                          onPress={() => {
+                            this.setState({activeBorrwed: item});
+                          }}>
+                          <LidSleeveCup
+                            width={_defz.width / 4}
+                            height={_defz.height / 7}
+                          />
+                          <Text style={styles.borrowedNumber}>
+                            {item.count}
+                          </Text>
+                        </TouchableOpacity>
+                      );
+                    }
+                    if (item.lid && item.cup && !item.sleeve) {
+                      return (
+                        <TouchableOpacity
+                          style={styles.card}
+                          activeOpacity={1}
+                          onPress={() => {
+                            this.setState({activeBorrwed: item});
+                          }}>
+                          <LidCup
+                            width={_defz.width / 4}
+                            height={_defz.height / 7}
+                          />
+                          <Text style={styles.borrowedNumber}>
+                            {item.count}
+                          </Text>
+                        </TouchableOpacity>
+                      );
+                    }
+                    if (!item.lid && !item.sleeve && item.cup) {
+                      return (
+                        <TouchableOpacity
+                          style={styles.card}
+                          activeOpacity={1}
+                          onPress={() => {
+                            this.setState({activeBorrwed: item});
+                          }}>
+                          <EmptyGlass
+                            width={_defz.width / 4}
+                            height={_defz.height / 7}
+                          />
+                          <Text style={styles.borrowedNumber}>
+                            {item.count}
+                          </Text>
+                        </TouchableOpacity>
+                      );
+                    }
+                    if (!item.lid && !item.sleeve && !item.cup && item.bag) {
+                      return (
+                        <TouchableOpacity
+                          style={styles.card}
+                          activeOpacity={1}
+                          onPress={() => {
+                            this.setState({activeBorrwed: item});
+                          }}>
+                          <Bag
+                            width={_defz.width / 4}
+                            height={_defz.height / 7}
+                          />
+                          <Text style={styles.borrowedNumber}>
+                            {item.count}
+                          </Text>
+                        </TouchableOpacity>
+                      );
+                    }
+                  })}
+                </ScrollView>
+              </View>
+              <View style={styles.main}>
+                <Text style={styles.mainTitle}>Returned</Text>
+                <View style={styles.returned}>
+                  <Text style={styles.returnedText}>b.Cups </Text>
+                  <View style={styles.returnedItems}>
+                    <View style={styles.returnedItem}>
+                      <View style={styles.circle}>
+                        <Text style={styles.circleNumber}>1</Text>
+                      </View>
+                      <Text style={styles.returnedItemText}>sleeve</Text>
+                    </View>
+                    <View style={styles.returnedItem}>
+                      <View style={styles.circle}>
+                        <Text style={styles.circleNumber}>1</Text>
+                      </View>
+                      <Text style={styles.returnedItemText}>sleeve</Text>
+                    </View>
+                    <View style={styles.returnedItem}>
+                      <View style={styles.circle}>
+                        <Text style={styles.circleNumber}>1</Text>
+                      </View>
+                      <Text style={styles.returnedItemText}>sleeve</Text>
+                    </View>
+                  </View>
+                </View>
 
-            <View style={styles.returned}>
-              <Text style={styles.returnedText}>b.Bags </Text>
-              <View style={styles.returnedItems}>
-                <View style={styles.returnedBag}>
-                  <View style={styles.circle}>
-                    <Text style={styles.circleNumber}>1</Text>
+                <View style={styles.returned}>
+                  <Text style={styles.returnedText}>b.Bags </Text>
+                  <View style={styles.returnedItems}>
+                    <View style={styles.returnedBag}>
+                      <View style={styles.circle}>
+                        <Text style={styles.circleNumber}>1</Text>
+                      </View>
+                    </View>
                   </View>
                 </View>
               </View>
-            </View>
-          </View>
+            </>
+          ) : null}
         </View>
         <Footers navigation={this.props.navigation} route={'account'} />
       </View>
