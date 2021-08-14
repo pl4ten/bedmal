@@ -1,261 +1,111 @@
 import React, {Component} from 'react';
-import {Text, View, ScrollView, TouchableOpacity} from 'react-native';
+import {Text, View, ScrollView, TouchableOpacity, Alert} from 'react-native';
 import {CardItem, Right, Left, Icon} from 'native-base';
 import {styles} from './styles/transactions.styles';
+
+import {selectUserToken} from '../../redux/user/user.selectors';
+import {connect} from 'react-redux';
+import {jsonBeautify} from 'beautify-json';
+import Loader from '../com/loader';
 import Headers from '../com/header';
 import Footers from '../com/footer';
 
 let _defz = require('../com/def');
 class Transactions extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      isLoading: false,
+      transactions: null,
+    };
+  }
+
+  async getTransactions() {
+    try {
+      this.setState({isLoading: true});
+      await _defz
+        .get_via_token(
+          'user/account/transactions?offset=0&limit=30',
+          'GET',
+          this.props.token,
+        )
+        .then(response => {
+          this.setState({isLoading: false});
+          console.log(jsonBeautify(response));
+          if (response.status === 200) {
+            this.setState({
+              transactions: response.transactions,
+            });
+          }
+          if (response.status === 400) {
+            Alert.alert('Error', response.errors[0].message, [{text: 'ok'}], {
+              cancelable: true,
+            });
+          }
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  componentDidMount() {
+    this.getTransactions();
+  }
   render() {
     return (
       <View style={styles.container}>
-        <Headers route={'Transactions'} />
+        <Headers route={'Transactions'} navigation={this.props.navigation} />
         <View style={styles.content}>
-          <ScrollView>
-            <View>
-              <CardItem style={styles.card}>
-                <Left>
-                  <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('transaction')
-                    }>
-                    <Text style={styles.cardTitle}>ApplePay</Text>
-                    <Text style={styles.cardTitle}>- £29.12</Text>
-                    <Text style={styles.cardFooter}>Date: 02/03/2020</Text>
-                    <Text style={styles.cardFooter}>Ref:123-123-123-123</Text>
-                  </TouchableOpacity>
-                </Left>
+          {this.state.isLoading ? (
+            <Loader />
+          ) : (
+            <ScrollView>
+              <View>
+                {this.state.transactions
+                  ? this.state.transactions.map(item => {
+                      return (
+                        <TouchableOpacity
+                          onPress={() =>
+                            this.props.navigation.navigate('transaction', {
+                              id: item.id,
+                            })
+                          }
+                          style={styles.card}>
+                          <Left>
+                            {/* <Text style={styles.cardTitle}>ApplePay</Text> */}
+                            <Text style={styles.cardTitle}>
+                              £{item.total_price}
+                            </Text>
+                            <Text style={styles.cardFooter}>
+                              Date: {item.created_at.slice(0, 10)}
+                            </Text>
+                            <Text style={styles.cardFooter}>
+                              Ref:{item.ref_id}
+                            </Text>
+                          </Left>
 
-                <Right>
-                  <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('transaction')
-                    }>
-                    <Icon
-                      type="AntDesign"
-                      name="arrowright"
-                      style={styles.icon}
-                    />
-                  </TouchableOpacity>
-                </Right>
-              </CardItem>
-              <CardItem style={styles.card}>
-                <Left>
-                  <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('transaction')
-                    }>
-                    <Text style={styles.cardTitle}>ApplePay</Text>
-                    <Text style={styles.cardTitle}>- £29.12</Text>
-                    <Text style={styles.cardFooter}>Date: 02/03/2020</Text>
-                    <Text style={styles.cardFooter}>Ref:123-123-123-123</Text>
-                  </TouchableOpacity>
-                </Left>
-
-                <Right>
-                  <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('transaction')
-                    }>
-                    <Icon
-                      type="AntDesign"
-                      name="arrowright"
-                      style={styles.icon}
-                    />
-                  </TouchableOpacity>
-                </Right>
-              </CardItem>
-              <CardItem style={styles.card}>
-                <Left>
-                  <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('transaction')
-                    }>
-                    <Text style={styles.cardTitle}>ApplePay</Text>
-                    <Text style={styles.cardTitle}>- £29.12</Text>
-                    <Text style={styles.cardFooter}>Date: 02/03/2020</Text>
-                    <Text style={styles.cardFooter}>Ref:123-123-123-123</Text>
-                  </TouchableOpacity>
-                </Left>
-
-                <Right>
-                  <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('transaction')
-                    }>
-                    <Icon
-                      type="AntDesign"
-                      name="arrowright"
-                      style={styles.icon}
-                    />
-                  </TouchableOpacity>
-                </Right>
-              </CardItem>
-              <CardItem style={styles.card}>
-                <Left>
-                  <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('transaction')
-                    }>
-                    <Text style={styles.cardTitle}>ApplePay</Text>
-                    <Text style={styles.cardTitle}>- £29.12</Text>
-                    <Text style={styles.cardFooter}>Date: 02/03/2020</Text>
-                    <Text style={styles.cardFooter}>Ref:123-123-123-123</Text>
-                  </TouchableOpacity>
-                </Left>
-
-                <Right>
-                  <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('transaction')
-                    }>
-                    <Icon
-                      type="AntDesign"
-                      name="arrowright"
-                      style={styles.icon}
-                    />
-                  </TouchableOpacity>
-                </Right>
-              </CardItem>
-              <CardItem style={styles.card}>
-                <Left>
-                  <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('transaction')
-                    }>
-                    <Text style={styles.cardTitle}>ApplePay</Text>
-                    <Text style={styles.cardTitle}>- £29.12</Text>
-                    <Text style={styles.cardFooter}>Date: 02/03/2020</Text>
-                    <Text style={styles.cardFooter}>Ref:123-123-123-123</Text>
-                  </TouchableOpacity>
-                </Left>
-
-                <Right>
-                  <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('transaction')
-                    }>
-                    <Icon
-                      type="AntDesign"
-                      name="arrowright"
-                      style={styles.icon}
-                    />
-                  </TouchableOpacity>
-                </Right>
-              </CardItem>
-              <CardItem style={styles.card}>
-                <Left>
-                  <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('transaction')
-                    }>
-                    <Text style={styles.cardTitle}>ApplePay</Text>
-                    <Text style={styles.cardTitle}>- £29.12</Text>
-                    <Text style={styles.cardFooter}>Date: 02/03/2020</Text>
-                    <Text style={styles.cardFooter}>Ref:123-123-123-123</Text>
-                  </TouchableOpacity>
-                </Left>
-
-                <Right>
-                  <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('transaction')
-                    }>
-                    <Icon
-                      type="AntDesign"
-                      name="arrowright"
-                      style={styles.icon}
-                    />
-                  </TouchableOpacity>
-                </Right>
-              </CardItem>
-              <CardItem style={styles.card}>
-                <Left>
-                  <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('transaction')
-                    }>
-                    <Text style={styles.cardTitle}>ApplePay</Text>
-                    <Text style={styles.cardTitle}>- £29.12</Text>
-                    <Text style={styles.cardFooter}>Date: 02/03/2020</Text>
-                    <Text style={styles.cardFooter}>Ref:123-123-123-123</Text>
-                  </TouchableOpacity>
-                </Left>
-
-                <Right>
-                  <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('transaction')
-                    }>
-                    <Icon
-                      type="AntDesign"
-                      name="arrowright"
-                      style={styles.icon}
-                    />
-                  </TouchableOpacity>
-                </Right>
-              </CardItem>
-              <CardItem style={styles.card}>
-                <Left>
-                  <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('transaction')
-                    }>
-                    <Text style={styles.cardTitle}>ApplePay</Text>
-                    <Text style={styles.cardTitle}>- £29.12</Text>
-                    <Text style={styles.cardFooter}>Date: 02/03/2020</Text>
-                    <Text style={styles.cardFooter}>Ref:123-123-123-123</Text>
-                  </TouchableOpacity>
-                </Left>
-
-                <Right>
-                  <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('transaction')
-                    }>
-                    <Icon
-                      type="AntDesign"
-                      name="arrowright"
-                      style={styles.icon}
-                    />
-                  </TouchableOpacity>
-                </Right>
-              </CardItem>
-              <CardItem style={styles.card}>
-                <Left>
-                  <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('transaction')
-                    }>
-                    <Text style={styles.cardTitle}>ApplePay</Text>
-                    <Text style={styles.cardTitle}>- £29.12</Text>
-                    <Text style={styles.cardFooter}>Date: 02/03/2020</Text>
-                    <Text style={styles.cardFooter}>Ref:123-123-123-123</Text>
-                  </TouchableOpacity>
-                </Left>
-
-                <Right>
-                  <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('transaction')
-                    }>
-                    <Icon
-                      type="AntDesign"
-                      name="arrowright"
-                      style={styles.icon}
-                    />
-                  </TouchableOpacity>
-                </Right>
-              </CardItem>
-            </View>
-            <View style={{marginTop: 100}} />
-          </ScrollView>
+                          <Right>
+                            <Icon
+                              type="AntDesign"
+                              name="arrowright"
+                              style={styles.icon}
+                            />
+                          </Right>
+                        </TouchableOpacity>
+                      );
+                    })
+                  : null}
+              </View>
+              <View style={{marginTop: 100}} />
+            </ScrollView>
+          )}
         </View>
         <Footers navigation={this.props.navigation} route={'account'} />
       </View>
     );
   }
 }
-
-export default Transactions;
+const mapStateToProps = state => ({
+  token: selectUserToken(state),
+});
+export default connect(mapStateToProps)(Transactions);

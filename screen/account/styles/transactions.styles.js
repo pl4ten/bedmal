@@ -13,8 +13,12 @@ export const styles = StyleSheet.create({
     backgroundColor: '#FAFAFA',
   },
   card: {
-    marginTop: _defz.height / 50,
+    marginTop: 20,
     minHeight: _defz.height / 10,
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
   },
   cardTitle: {
     fontFamily: 'FuturaPT-Book',
