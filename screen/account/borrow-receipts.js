@@ -26,7 +26,7 @@ class BorrowReceipts extends Component {
       this.setState({isLoading: true});
       await _defz
         .get_via_token(
-          'user/account/transactions?offset=0&limit=30',
+          'user/account/borrow-receipts?offset=0&limit=100',
           'GET',
           this.props.token,
         )
@@ -35,7 +35,7 @@ class BorrowReceipts extends Component {
           console.log(jsonBeautify(response));
           if (response.status === 200) {
             this.setState({
-              borrowReceipts: response.transactions,
+              borrowReceipts: response.borrow_receipts,
             });
           }
           if (response.status === 400) {
@@ -74,7 +74,7 @@ class BorrowReceipts extends Component {
                           <Left>
                             {/* <Text style={styles.cardTitle}>ApplePay</Text> */}
                             <Text style={styles.cardTitle}>
-                              {item.total_price}
+                              {item.vendor_info.name}
                             </Text>
                             <Text style={styles.cardFooter}>
                               Date: {item.created_at.slice(0, 10)}
