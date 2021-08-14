@@ -122,7 +122,7 @@ class account extends Component {
               <Button
                 iconRight
                 style={styles.b1}
-                onPress={() => navigate('Profile')}>
+                onPress={() => navigate('borrowReceipts')}>
                 <Text style={styles.headingRowText}>Borrow Receipts</Text>
               </Button>
             </View>
