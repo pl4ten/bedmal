@@ -26,7 +26,6 @@ import Bag from './screen/shop/bag';
 import verify from './screen/auth/verify';
 import password from './screen/auth/password';
 
-
 import Transactions from './screen/account/transactions';
 import Transaction from './screen/account/transaction';
 import Orders from './screen/account/orders';
@@ -35,7 +34,6 @@ import Active from './screen/account/active';
 import OnDemand from './screen/account/onDemand';
 import BorrowReceipts from './screen/account/borrow-receipts';
 import BorrowReceipt from './screen/account/borrow-receipt';
-
 
 import Addresses from './screen/profile/addresses';
 let _defz = require('./screen/com/def');
@@ -71,7 +69,7 @@ const RootStack = createStackNavigator(
   },
   {
     headerMode: 'none',
-    initialRouteName: 'borrowReceipt',
+    initialRouteName: 'usermain',
     initialRouteParams: {transition: 'fade'},
   },
 );
