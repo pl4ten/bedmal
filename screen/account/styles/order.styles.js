@@ -189,4 +189,28 @@ export const styles = StyleSheet.create({
     fontSize: 20,
     color: '#707070',
   },
+  footer: {
+    backgroundColor: '#fff',
+    width: '100%',
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginTop: 30,
+    paddingVertical: 10,
+  },
+  footerRow: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+  },
+  footerRowText1: {
+    fontFamily: 'FuturaPT-Book',
+    fontSize: 15,
+    color: '#707070',
+  },
+  footerRowText2: {
+    fontFamily: 'FuturaPT-Medium',
+    fontSize: 15,
+    color: '#707070',
+  },
 });
