@@ -5,6 +5,7 @@ export const styles = StyleSheet.create({
   container: {
     width: '100%',
     height: '100%',
+    backgroundColor: '#FAFAFA',
   },
   header: {
     width: '100%',
@@ -125,10 +126,11 @@ export const styles = StyleSheet.create({
   },
   borrowBG: {
     width: '100%',
-    height: _defz.height / 7,
+    height: 140,
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
+    marginTop: 10,
   },
   BorrowBGItems: {
     flexDirection: 'row',
@@ -148,5 +150,13 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#707070',
     fontFamily: 'FuturaPT-Book',
+  },
+  noReturnsText: {
+    fontFamily: 'FuturaPT-Medium',
+    fontSize: 40,
+    color: '#707070',
+  },
+  forwardButton: {
+    alignSelf: 'center',
   },
 });
