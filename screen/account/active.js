@@ -23,9 +23,10 @@ class Active extends Component {
       isLoading: false,
       activeTab: 'borrows',
       orders: null,
+      borrows: null,
     };
   }
-  async getActives() {
+  async getActivesOrders() {
     try {
       this.setState({isLoading: true});
       await _defz
@@ -52,9 +53,46 @@ class Active extends Component {
       console.log(error);
     }
   }
-  componentDidMount() {
-    this.getActives();
+  async getActiveBorrows() {
+    try {
+      this.setState({isLoading: true});
+      await _defz
+        .get_via_token(
+          'user/active/borrow-receipts?offset=0&limit=100',
+          'GET',
+          this.props.token,
+        )
+        .then(response => {
+          this.setState({isLoading: false});
+          console.log(jsonBeautify(response));
+          if (response.status === 200) {
+            this.setState({
+              borrows: response.borrow_receipts,
+            });
+          }
+          if (response.status === 400) {
+            Alert.alert('Error', response.errors[0].message, [{text: 'ok'}], {
+              cancelable: true,
+            });
+          }
+        });
+    } catch (error) {
+      console.log(error);
+    }
   }
+  componentDidMount() {
+    this.getActivesOrders();
+    this.getActiveBorrows();
+  }
+
+  timeDetector(date) {
+    const date1 = new Date(date);
+    const date2 = new Date();
+    const diffTime = Math.abs(date2 - date1);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -106,98 +144,218 @@ class Active extends Component {
             {this.state.activeTab === 'borrows' ? (
               <ScrollView style={styles.scrollView}>
                 <View>
-                  <CardItem style={styles.card}>
-                    <Left style={styles.cardLeft}>
-                      <LidCup
-                        width={_defz.width / 4}
-                        height={_defz.height / 9}
-                      />
-                      <View style={styles.cardLeftInfo}>
-                        <Text style={styles.cardLeftText}>lid</Text>
-                        <Text style={styles.cardLeftText}>cup</Text>
-                      </View>
-                    </Left>
-                    <Right style={styles.cardRight}>
-                      <View style={styles.status}>
-                        <View style={styles.timeCircleWarn}>
-                          <Text style={styles.timeCircleWarnText}>1</Text>
-                        </View>
-                        <Text style={styles.statusText}>due today</Text>
-                      </View>
-                    </Right>
-                  </CardItem>
-                  <CardItem style={styles.card}>
-                    <Left style={styles.cardLeft}>
-                      <EmptyGlass
-                        width={_defz.width / 4}
-                        height={_defz.height / 9}
-                      />
-                      <View style={styles.cardLeftInfo}>
-                        <Text style={styles.cardLeftText}>cup</Text>
-                      </View>
-                    </Left>
-                    <Right style={styles.cardRight}>
-                      <View style={styles.status}>
-                        <View style={styles.timeCircle}>
-                          <Text style={styles.timeCircleText}>1</Text>
-                        </View>
-                        <Text style={styles.statusText}>days to return</Text>
-                      </View>
-                    </Right>
-                  </CardItem>
-                  <CardItem style={styles.card}>
-                    <Left style={styles.cardLeft}>
-                      <Bag width={_defz.width / 4} height={_defz.height / 9} />
-                      <View style={styles.cardLeftInfo}>
-                        <Text style={styles.cardLeftText}>bag</Text>
-                      </View>
-                    </Left>
-                    <Right style={styles.cardRight}>
-                      <View style={styles.status}>
-                        <View style={styles.timeCircle}>
-                          <Text style={styles.timeCircleText}>1</Text>
-                        </View>
-                        <Text style={styles.statusText}>days to return</Text>
-                      </View>
-                    </Right>
-                  </CardItem>
-                  <CardItem style={styles.card}>
-                    <Left style={styles.cardLeft}>
-                      <Lid width={_defz.width / 4} height={_defz.height / 9} />
-                      <View style={styles.cardLeftInfo}>
-                        <Text style={styles.cardLeftText}>lid</Text>
-                      </View>
-                    </Left>
-                    <Right style={styles.cardRight}>
-                      <View style={styles.status}>
-                        <View style={styles.timeCircle}>
-                          <Text style={styles.timeCircleText}>1</Text>
-                        </View>
-                        <Text style={styles.statusText}>days to return</Text>
-                      </View>
-                    </Right>
-                  </CardItem>
-                  <CardItem style={styles.card}>
-                    <Left style={styles.cardLeft}>
-                      <LidSleeveCup
-                        width={_defz.width / 4}
-                        height={_defz.height / 9}
-                      />
-                      <View style={styles.cardLeftInfo}>
-                        <Text style={styles.cardLeftText}>lid</Text>
-                        <Text style={styles.cardLeftText}>sleeve</Text>
-                        <Text style={styles.cardLeftText}>cup</Text>
-                      </View>
-                    </Left>
-                    <Right style={styles.cardRight}>
-                      <View style={styles.status}>
-                        <View style={styles.timeCircle}>
-                          <Text style={styles.timeCircleText}>1</Text>
-                        </View>
-                        <Text style={styles.statusText}>days to return</Text>
-                      </View>
-                    </Right>
-                  </CardItem>
+                  {this.state.borrows
+                    ? this.state.borrows.map(item => {
+                        if (item.lid && item.sleeve && item.cup) {
+                          return (
+                            <CardItem style={styles.card}>
+                              <Left style={styles.cardLeft}>
+                                <LidSleeveCup
+                                  width={_defz.width / 4}
+                                  height={_defz.height / 9}
+                                />
+                                <View style={styles.cardLeftInfo}>
+                                  <Text style={styles.cardLeftText}>lid</Text>
+                                  <Text style={styles.cardLeftText}>
+                                    sleeve
+                                  </Text>
+                                  <Text style={styles.cardLeftText}>cup</Text>
+                                </View>
+                              </Left>
+                              <Right style={styles.cardRight}>
+                                <View style={styles.status}>
+                                  <View
+                                    style={
+                                      this.timeDetector(item.due) > 2
+                                        ? styles.timeCircle
+                                        : styles.timeCircleWarn
+                                    }>
+                                    <Text
+                                      style={
+                                        this.timeDetector(item.due) > 2
+                                          ? styles.timeCircleText
+                                          : styles.timeCircleWarnText
+                                      }>
+                                      {this.timeDetector(item.due)}
+                                    </Text>
+                                  </View>
+                                  <Text style={styles.statusText}>
+                                    days to return
+                                  </Text>
+                                </View>
+                              </Right>
+                            </CardItem>
+                          );
+                        }
+                        if (item.lid && item.cup && !item.sleeve) {
+                          return (
+                            <CardItem style={styles.card}>
+                              <Left style={styles.cardLeft}>
+                                <LidCup
+                                  width={_defz.width / 4}
+                                  height={_defz.height / 9}
+                                />
+                                <View style={styles.cardLeftInfo}>
+                                  <Text style={styles.cardLeftText}>lid</Text>
+                                  <Text style={styles.cardLeftText}>cup</Text>
+                                </View>
+                              </Left>
+                              <Right style={styles.cardRight}>
+                                <View style={styles.status}>
+                                  <View
+                                    style={
+                                      this.timeDetector(item.due) > 2
+                                        ? styles.timeCircle
+                                        : styles.timeCircleWarn
+                                    }>
+                                    <Text
+                                      style={
+                                        this.timeDetector(item.due) > 2
+                                          ? styles.timeCircleText
+                                          : styles.timeCircleWarnText
+                                      }>
+                                      {this.timeDetector(item.due)}
+                                    </Text>
+                                  </View>
+                                  <Text style={styles.statusText}>
+                                    {this.timeDetector(item.due) > 2
+                                      ? 'days to return'
+                                      : 'due today'}
+                                  </Text>
+                                </View>
+                              </Right>
+                            </CardItem>
+                          );
+                        }
+                        if (!item.lid && !item.sleeve && item.cup) {
+                          return (
+                            <CardItem style={styles.card}>
+                              <Left style={styles.cardLeft}>
+                                <EmptyGlass
+                                  width={_defz.width / 4}
+                                  height={_defz.height / 9}
+                                />
+                                <View style={styles.cardLeftInfo}>
+                                  <Text style={styles.cardLeftText}>cup</Text>
+                                </View>
+                              </Left>
+                              <Right style={styles.cardRight}>
+                                <View style={styles.status}>
+                                  <View
+                                    style={
+                                      this.timeDetector(item.due) > 2
+                                        ? styles.timeCircle
+                                        : styles.timeCircleWarn
+                                    }>
+                                    <Text
+                                      style={
+                                        this.timeDetector(item.due) > 2
+                                          ? styles.timeCircleText
+                                          : styles.timeCircleWarnText
+                                      }>
+                                      {this.timeDetector(item.due)}
+                                    </Text>
+                                  </View>
+                                  <Text style={styles.statusText}>
+                                    {this.timeDetector(item.due) > 2
+                                      ? 'days to return'
+                                      : 'due today'}
+                                  </Text>
+                                </View>
+                              </Right>
+                            </CardItem>
+                          );
+                        }
+                        if (
+                          !item.lid &&
+                          !item.sleeve &&
+                          !item.cup &&
+                          item.bag
+                        ) {
+                          return (
+                            <CardItem style={styles.card}>
+                              <Left style={styles.cardLeft}>
+                                <Bag
+                                  width={_defz.width / 4}
+                                  height={_defz.height / 9}
+                                />
+                                <View style={styles.cardLeftInfo}>
+                                  <Text style={styles.cardLeftText}>bag</Text>
+                                </View>
+                              </Left>
+                              <Right style={styles.cardRight}>
+                                <View style={styles.status}>
+                                  <View
+                                    style={
+                                      this.timeDetector(item.due) > 2
+                                        ? styles.timeCircle
+                                        : styles.timeCircleWarn
+                                    }>
+                                    <Text
+                                      style={
+                                        this.timeDetector(item.due) > 2
+                                          ? styles.timeCircleText
+                                          : styles.timeCircleWarnText
+                                      }>
+                                      {this.timeDetector(item.due)}
+                                    </Text>
+                                  </View>
+                                  <Text style={styles.statusText}>
+                                    {this.timeDetector(item.due) > 2
+                                      ? 'days to return'
+                                      : 'due today'}
+                                  </Text>
+                                </View>
+                              </Right>
+                            </CardItem>
+                          );
+                        }
+                        if (
+                          item.lid &&
+                          !item.sleeve &&
+                          !item.cup &&
+                          !!item.bag
+                        ) {
+                          return (
+                            <CardItem style={styles.card}>
+                              <Left style={styles.cardLeft}>
+                                <Lid
+                                  width={_defz.width / 4}
+                                  height={_defz.height / 9}
+                                />
+                                <View style={styles.cardLeftInfo}>
+                                  <Text style={styles.cardLeftText}>lid</Text>
+                                </View>
+                              </Left>
+                              <Right style={styles.cardRight}>
+                                <View style={styles.status}>
+                                  <View
+                                    style={
+                                      this.timeDetector(item.due) > 2
+                                        ? styles.timeCircle
+                                        : styles.timeCircleWarn
+                                    }>
+                                    <Text
+                                      style={
+                                        this.timeDetector(item.due) > 2
+                                          ? styles.timeCircleText
+                                          : styles.timeCircleWarnText
+                                      }>
+                                      {this.timeDetector(item.due)}
+                                    </Text>
+                                  </View>
+                                  <Text style={styles.statusText}>
+                                    {this.timeDetector(item.due) > 2
+                                      ? 'days to return'
+                                      : 'due today'}
+                                  </Text>
+                                </View>
+                              </Right>
+                            </CardItem>
+                          );
+                        }
+                      })
+                    : null}
                 </View>
                 <View style={{marginTop: 200}} />
               </ScrollView>
