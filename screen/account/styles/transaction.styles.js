@@ -34,9 +34,10 @@ export const styles = StyleSheet.create({
   info: {
     display: 'flex',
     flexDirection: 'row',
-    width: '90%',
+    width: '100%',
     alignSelf: 'center',
     backgroundColor: '#fff',
+    paddingHorizontal: 15,
   },
   infoText: {
     fontFamily: 'FuturaPT-Book',

@@ -30,10 +30,14 @@ import Transactions from './screen/account/transactions';
 import Transaction from './screen/account/transaction';
 import Orders from './screen/account/orders';
 import Order from './screen/account/order';
-import Active from './screen/account/active';
-import OnDemand from './screen/account/onDemand';
 import BorrowReceipts from './screen/account/borrow-receipts';
 import BorrowReceipt from './screen/account/borrow-receipt';
+
+import Active from './screen/active/active';
+
+
+import OnDemand from './screen/on-demand/onDemand';
+import OnDemandStage2 from './screen/on-demand/onDemand-stage2';
 
 import Addresses from './screen/profile/addresses';
 let _defz = require('./screen/com/def');
@@ -44,10 +48,10 @@ const RootStack = createStackNavigator(
     usermain: usermain,
     login: login,
     forget: forget,
-    account: account,
-    wallet: wallet,
     chat_main: chat_main,
     chat_one: chat_one,
+    account: account,
+    wallet: wallet,
     home: home,
     storeFront: StoreFront,
     Product: Product,
@@ -62,14 +66,15 @@ const RootStack = createStackNavigator(
     transaction: Transaction,
     orders: Orders,
     order: Order,
-    active: Active,
-    onDemand: OnDemand,
     borrowReceipts: BorrowReceipts,
     borrowReceipt: BorrowReceipt,
+    active: Active,
+    onDemand: OnDemand,
+    onDemandStage2: OnDemandStage2,
   },
   {
     headerMode: 'none',
-    initialRouteName: 'usermain',
+    initialRouteName: 'home',
     initialRouteParams: {transition: 'fade'},
   },
 );

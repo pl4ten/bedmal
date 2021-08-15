@@ -94,7 +94,7 @@ class Transaction extends Component {
                     <TouchableOpacity
                       onPress={() =>
                         this.props.navigation.navigate('order', {
-                          id: 'item.id',
+                          id: this.state.transaction.order_id,
                         })
                       }
                       style={styles.card}>
