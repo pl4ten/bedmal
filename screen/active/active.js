@@ -384,7 +384,8 @@ class Active extends Component {
                                     {item.ref_id}
                                   </Text>
                                   <Text style={styles.cardFooter}>
-                                    {'item.created_at.slice(0, 10)'}
+                                    {/* {item.created_at.slice(0, 10)} */}
+                                    No created at for order!
                                   </Text>
                                   <Text style={styles.cardFooter}>
                                     £{item.total_price}
