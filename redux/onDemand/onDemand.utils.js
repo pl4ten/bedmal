@@ -58,6 +58,5 @@ export const addReturnItems = (state, itemsToAdd) => {
   };
 
   newState.returns.push(itemsToAdd);
-
   return newState;
 };
