@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
   },
   header: {
     width: '100%',
-    height: 500,
+    height: 100,
     backgroundColor: '#000',
   },
   content: {
@@ -42,6 +42,10 @@ export const styles = StyleSheet.create({
   scrollViewH: {
     width: '100%',
     marginTop: _defz.height / 25,
+  },
+  scrollViewH2: {
+    marginLeft: 50,
+    marginRight: 50,
   },
   card: {
     backgroundColor: '#fff',
@@ -132,7 +136,6 @@ export const styles = StyleSheet.create({
     borderTopColor: '#C3BCBC',
     borderTopWidth: 1,
     fontSize: 25,
-    width: _defz.width / 20,
     textAlign: 'center',
     color: '#707070',
     fontFamily: 'FuturaPT-Book',
@@ -176,5 +179,6 @@ export const styles = StyleSheet.create({
   },
   forwardButton: {
     alignSelf: 'center',
+    marginRight: 30,
   },
 });

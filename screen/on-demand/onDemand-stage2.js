@@ -32,7 +32,7 @@ import BorrowBG from '../../asset/img/borrowBg.png';
 
 const _defz = require('../com/def');
 
-class OnDemand extends Component {
+class OnDemandStage2 extends Component {
   constructor() {
     super();
 
@@ -111,7 +111,6 @@ class OnDemand extends Component {
     this.setState({selectedReturns: [...new Set(selecteds)]});
   }
   render() {
-    console.log(jsonBeautify(this.props));
     return !this.state.isLoading ? (
       <View style={styles.container}>
         <View style={styles.header}>
@@ -292,13 +291,13 @@ class OnDemand extends Component {
           </ScrollView>
 
           <View style={styles.tip}>
-            <Text style={styles.tipHead}>
-              Keep borrowing free. Return on time
-            </Text>
+            <Text style={styles.tipHead}>Lost or broken a part?</Text>
             <Button
               transparent
               onPress={() => this.props.navigation.navigate('Terms')}>
-              <Text style={styles.tipTerms}>see full terms </Text>
+              <Text style={styles.tipTerms}>
+                Click here to reduce waste and fees.
+              </Text>
             </Button>
           </View>
           <ImageBackground source={BorrowBG} style={styles.borrowBG}>
@@ -306,69 +305,75 @@ class OnDemand extends Component {
               <Text style={styles.noReturnsText}>No returns</Text>
             ) : (
               <View style={styles.BorrowBGItems}>
-                {this.state.borrowedItems
-                  ? this.state.borrowedItems.map(item => {
-                      if (this.state.selectedReturns.includes(item.id)) {
-                        if (item.lid && item.sleeve && item.cup) {
-                          return (
-                            <View style={styles.BorrowBGItem}>
-                              <LidSleeveCup
-                                width={_defz.width / 10}
-                                height={_defz.height / 10}
-                              />
-                              <Text style={styles.BorrowBGItemText}>
-                                {item.count}
-                              </Text>
-                            </View>
-                          );
+                <ScrollView
+                  style={styles.scrollViewH2}
+                  horizontal
+                  scrollEnabled
+                  showsHorizontalScrollIndicator={false}>
+                  {this.state.borrowedItems
+                    ? this.state.borrowedItems.map(item => {
+                        if (this.state.selectedReturns.includes(item.id)) {
+                          if (item.lid && item.sleeve && item.cup) {
+                            return (
+                              <View style={styles.BorrowBGItem}>
+                                <LidSleeveCup
+                                  width={_defz.width / 10}
+                                  height={_defz.height / 10}
+                                />
+                                <Text style={styles.BorrowBGItemText}>
+                                  {item.count}
+                                </Text>
+                              </View>
+                            );
+                          }
+                          if (
+                            !item.lid &&
+                            !item.sleeve &&
+                            !item.cup &&
+                            item.bag
+                          ) {
+                            return (
+                              <View style={styles.BorrowBGItem}>
+                                <Bag
+                                  width={_defz.width / 10}
+                                  height={_defz.height / 10}
+                                />
+                                <Text style={styles.BorrowBGItemText}>
+                                  {item.count}
+                                </Text>
+                              </View>
+                            );
+                          }
+                          if (!item.lid && !item.sleeve && item.cup) {
+                            return (
+                              <View style={styles.BorrowBGItem}>
+                                <EmptyGlassNoBG
+                                  width={_defz.width / 10}
+                                  height={_defz.height / 10}
+                                />
+                                <Text style={styles.BorrowBGItemText}>
+                                  {item.count}
+                                </Text>
+                              </View>
+                            );
+                          }
+                          if (item.lid && item.cup && !item.sleeve) {
+                            return (
+                              <View style={styles.BorrowBGItem}>
+                                <LidCup
+                                  width={_defz.width / 10}
+                                  height={_defz.height / 10}
+                                />
+                                <Text style={styles.BorrowBGItemText}>
+                                  {item.count}
+                                </Text>
+                              </View>
+                            );
+                          }
                         }
-                        if (
-                          !item.lid &&
-                          !item.sleeve &&
-                          !item.cup &&
-                          item.bag
-                        ) {
-                          return (
-                            <View style={styles.BorrowBGItem}>
-                              <Bag
-                                width={_defz.width / 10}
-                                height={_defz.height / 10}
-                              />
-                              <Text style={styles.BorrowBGItemText}>
-                                {item.count}
-                              </Text>
-                            </View>
-                          );
-                        }
-                        if (!item.lid && !item.sleeve && item.cup) {
-                          return (
-                            <View style={styles.BorrowBGItem}>
-                              <EmptyGlassNoBG
-                                width={_defz.width / 10}
-                                height={_defz.height / 10}
-                              />
-                              <Text style={styles.BorrowBGItemText}>
-                                {item.count}
-                              </Text>
-                            </View>
-                          );
-                        }
-                        if (item.lid && item.cup && !item.sleeve) {
-                          return (
-                            <View style={styles.BorrowBGItem}>
-                              <LidCup
-                                width={_defz.width / 10}
-                                height={_defz.height / 10}
-                              />
-                              <Text style={styles.BorrowBGItemText}>
-                                {item.count}
-                              </Text>
-                            </View>
-                          );
-                        }
-                      }
-                    })
-                  : null}
+                      })
+                    : null}
+                </ScrollView>
               </View>
             )}
 
@@ -376,12 +381,16 @@ class OnDemand extends Component {
               transparent
               style={styles.forwardButton}
               onPress={() => {
+                this.state.finallReturns = [];
                 this.state.borrowedItems
                   ? this.state.borrowedItems.map(item => {
-                      this.state.finallReturns.push(item);
+                      if (this.state.selectedReturns.includes(item.id)) {
+                        this.state.finallReturns.push(item);
+                      }
                     })
                   : null;
                 this.props.addReturnItems(this.state.finallReturns);
+                this.props.navigation.navigate('onDemandStage3');
               }}>
               <BlueForward width={_defz.width / 7} height={_defz.height / 7} />
             </Button>
@@ -405,4 +414,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(OnDemand);
+)(OnDemandStage2);
