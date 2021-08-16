@@ -208,22 +208,28 @@ class home extends Component {
     setInterval(() => {
       SystemSetting.isLocationEnabled().then(enable => {
         if (enable !== this.state.userLocationOn) {
-          this.setState({userLocationOn: enable}, () => {
+          this.setState({userLocationOn: enable ? true : false}, () => {
             if (this.state.userLocationOn) {
-              Geolocation.getCurrentPosition(info => {
-                this.setState(
-                  {
-                    latitude: info.coords.latitude,
-                    longitude: info.coords.longitude,
-                  },
-                  () => {
-                    this.get_store_via_location(
-                      this.state.latitude,
-                      this.state.longitude,
-                    );
-                  },
-                );
-              });
+              Geolocation.getCurrentPosition(
+                position => {
+                  this.setState(
+                    {
+                      latitude: position.coords.latitude,
+                      longitude: position.coords.longitude,
+                    },
+                    () => {
+                      this.get_store_via_location(
+                        this.state.latitude,
+                        this.state.longitude,
+                      );
+                    },
+                  );
+                },
+                error => {
+                  Alert.alert(error.code, error.message);
+                },
+                {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+              );
             } else {
               this.get_store('new');
             }
