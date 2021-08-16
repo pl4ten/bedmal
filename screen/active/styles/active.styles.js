@@ -43,7 +43,9 @@ export const styles = StyleSheet.create({
   },
   card: {
     marginTop: _defz.height / 50,
-    minHeight: _defz.height / 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
   },
   cardTitle: {
     fontFamily: 'FuturaPT-Book',
@@ -57,7 +59,6 @@ export const styles = StyleSheet.create({
   },
   cardLeft: {
     flex: 2,
-    alignItems: 'center',
   },
   cardRight: {
     display: 'flex',
@@ -84,6 +85,27 @@ export const styles = StyleSheet.create({
     width: 40,
     height: 40,
     backgroundColor: '#08D18C',
+    borderRadius: 500,
+    marginBottom: _defz.height / 100,
+  },
+  circleBlack: {
+    width: 40,
+    height: 40,
+    backgroundColor: '#000',
+    borderRadius: 500,
+    marginBottom: _defz.height / 100,
+  },
+  circlePink: {
+    width: 40,
+    height: 40,
+    backgroundColor: '#E03174',
+    borderRadius: 500,
+    marginBottom: _defz.height / 100,
+  },
+  circleYellow: {
+    width: 40,
+    height: 40,
+    backgroundColor: '#F79F28',
     borderRadius: 500,
     marginBottom: _defz.height / 100,
   },

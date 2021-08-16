@@ -364,91 +364,188 @@ class Active extends Component {
                 <View>
                   {this.state.orders
                     ? this.state.orders.map(item => {
-                        if (item.status === 'ready_to_pickup') {
+                        if (
+                          item.status === 'ready_to_pickup' ||
+                          item.status === 'being_delivered'
+                        ) {
                           return (
-                            <CardItem style={styles.card}>
-                              <Left style={styles.cardLeft}>
-                                <TouchableOpacity
-                                  onPress={() =>
-                                    this.props.navigation.navigate('order', {
-                                      id: item.id,
-                                    })
-                                  }>
-                                  <Text style={styles.cardTitle}>
-                                    {item.vendor_info.name}
-                                  </Text>
-                                  <Text style={styles.cardTitle}>
-                                    {item.fulfillment
-                                      ? 'Collection'
-                                      : 'Delivery'}
-                                  </Text>
-                                  <Text style={styles.cardFooter}>
-                                    {item.ref_id}
-                                  </Text>
-                                  <Text style={styles.cardFooter}>
-                                    {/* {item.created_at.slice(0, 10)} */}
-                                    No created at for order!
-                                  </Text>
-                                  <Text style={styles.cardFooter}>
-                                    £{item.total_price}
-                                  </Text>
-                                </TouchableOpacity>
-                              </Left>
-                              <Right style={styles.cardRight}>
+                            <TouchableOpacity
+                              style={styles.card}
+                              onPress={() =>
+                                this.props.navigation.navigate('order', {
+                                  id: item.id,
+                                })
+                              }>
+                              <View style={styles.cardLeft}>
+                                <Text style={styles.cardTitle}>
+                                  {item.vendor_info.name}
+                                </Text>
+                                <Text style={styles.cardTitle}>
+                                  {item.fulfillment ? 'Collection' : 'Delivery'}
+                                </Text>
+                                <Text style={styles.cardFooter}>
+                                  {item.ref_id}
+                                </Text>
+                                <Text style={styles.cardFooter}>
+                                  {item.created_at.slice(0, 10)}
+                                </Text>
+                                <Text style={styles.cardFooter}>
+                                  £{item.total_price}
+                                </Text>
+                              </View>
+                              <View style={styles.cardRight}>
                                 <View style={styles.status}>
                                   <View style={styles.circleGreen} />
                                   <Text style={styles.statusText}>
                                     pick-up now
                                   </Text>
                                 </View>
-                                <TouchableOpacity
-                                  onPress={() =>
-                                    this.props.navigation.navigate('order', {
-                                      id: item.id,
-                                    })
-                                  }>
-                                  <Icon
-                                    type="AntDesign"
-                                    name="arrowright"
-                                    style={styles.icon}
-                                  />
-                                </TouchableOpacity>
-                              </Right>
-                            </CardItem>
+                                <Icon
+                                  type="AntDesign"
+                                  name="arrowright"
+                                  style={styles.icon}
+                                />
+                              </View>
+                            </TouchableOpacity>
+                          );
+                        }
+                        if (
+                          item.status === 'picked_up' ||
+                          item.status === 'delivered' ||
+                          item.status === 'canceled' ||
+                          item.status === 'rejected'
+                        ) {
+                          return (
+                            <TouchableOpacity
+                              style={styles.card}
+                              onPress={() =>
+                                this.props.navigation.navigate('order', {
+                                  id: item.id,
+                                })
+                              }>
+                              <View style={styles.cardLeft}>
+                                <Text style={styles.cardTitle}>
+                                  {item.vendor_info.name}
+                                </Text>
+                                <Text style={styles.cardTitle}>
+                                  {item.fulfillment ? 'Collection' : 'Delivery'}
+                                </Text>
+                                <Text style={styles.cardFooter}>
+                                  {item.ref_id}
+                                </Text>
+                                <Text style={styles.cardFooter}>
+                                  {item.created_at.slice(0, 10)}
+                                </Text>
+                                <Text style={styles.cardFooter}>
+                                  £{item.total_price}
+                                </Text>
+                              </View>
+                              <View style={styles.cardRight}>
+                                <View style={styles.status}>
+                                  <View style={styles.circleBlack} />
+                                  <Text style={styles.statusText}>
+                                    {item.status}
+                                  </Text>
+                                </View>
+                                <Icon
+                                  type="AntDesign"
+                                  name="arrowright"
+                                  style={styles.icon}
+                                />
+                              </View>
+                            </TouchableOpacity>
+                          );
+                        }
+                        if (
+                          item.status === 'pending' ||
+                          item.status === 'not_payed'
+                        ) {
+                          return (
+                            <TouchableOpacity
+                              style={styles.card}
+                              onPress={() =>
+                                this.props.navigation.navigate('order', {
+                                  id: item.id,
+                                })
+                              }>
+                              <View style={styles.cardLeft}>
+                                <Text style={styles.cardTitle}>
+                                  {item.vendor_info.name}
+                                </Text>
+                                <Text style={styles.cardTitle}>
+                                  {item.fulfillment ? 'Collection' : 'Delivery'}
+                                </Text>
+                                <Text style={styles.cardFooter}>
+                                  {item.ref_id}
+                                </Text>
+                                <Text style={styles.cardFooter}>
+                                  {item.created_at.slice(0, 10)}
+                                </Text>
+                                <Text style={styles.cardFooter}>
+                                  £{item.total_price}
+                                </Text>
+                              </View>
+                              <View style={styles.cardRight}>
+                                <View style={styles.status}>
+                                  <View style={styles.circlePink} />
+                                  <Text style={styles.statusText}>
+                                    {item.status}
+                                  </Text>
+                                </View>
+                                <Icon
+                                  type="AntDesign"
+                                  name="arrowright"
+                                  style={styles.icon}
+                                />
+                              </View>
+                            </TouchableOpacity>
+                          );
+                        }
+                        if (
+                          item.status === 'accepted') {
+                          return (
+                            <TouchableOpacity
+                              style={styles.card}
+                              onPress={() =>
+                                this.props.navigation.navigate('order', {
+                                  id: item.id,
+                                })
+                              }>
+                              <View style={styles.cardLeft}>
+                                <Text style={styles.cardTitle}>
+                                  {item.vendor_info.name}
+                                </Text>
+                                <Text style={styles.cardTitle}>
+                                  {item.fulfillment ? 'Collection' : 'Delivery'}
+                                </Text>
+                                <Text style={styles.cardFooter}>
+                                  {item.ref_id}
+                                </Text>
+                                <Text style={styles.cardFooter}>
+                                  {item.created_at.slice(0, 10)}
+                                </Text>
+                                <Text style={styles.cardFooter}>
+                                  £{item.total_price}
+                                </Text>
+                              </View>
+                              <View style={styles.cardRight}>
+                                <View style={styles.status}>
+                                  <View style={styles.circleYellow} />
+                                  <Text style={styles.statusText}>
+                                    {item.status}
+                                  </Text>
+                                </View>
+                                <Icon
+                                  type="AntDesign"
+                                  name="arrowright"
+                                  style={styles.icon}
+                                />
+                              </View>
+                            </TouchableOpacity>
                           );
                         }
                       })
                     : null}
-
-                  {/* <CardItem style={styles.card}>
-                    <Left style={styles.cardLeft}>
-                      <TouchableOpacity
-                        onPress={() => this.props.navigation.navigate('order')}>
-                        <Text style={styles.cardTitle}>
-                          Tulip Cafe of Hampstead
-                        </Text>
-                        <Text style={styles.cardTitle}>Collection</Text>
-                        <Text style={styles.cardFooter}>TC-200302LJS1</Text>
-                        <Text style={styles.cardFooter}>02/03/2020</Text>
-                        <Text style={styles.cardFooter}>£59.60</Text>
-                      </TouchableOpacity>
-                    </Left>
-                    <Right style={styles.cardRight}>
-                      <View style={styles.status}>
-                        <View style={styles.circleOrange} />
-                        <Text style={styles.statusText}>pick-up now</Text>
-                      </View>
-                      <TouchableOpacity
-                        onPress={() => this.props.navigation.navigate('order')}>
-                        <Icon
-                          type="AntDesign"
-                          name="arrowright"
-                          style={styles.icon}
-                        />
-                      </TouchableOpacity>
-                    </Right>
-                  </CardItem>
-                 */}
                 </View>
                 <View style={{marginTop: 200}} />
               </ScrollView>
