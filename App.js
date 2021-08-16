@@ -38,6 +38,7 @@ import Active from './screen/active/active';
 
 import OnDemand from './screen/on-demand/onDemand';
 import OnDemandStage2 from './screen/on-demand/onDemand-stage2';
+import OnDemandStage3 from './screen/on-demand/onDemand-stage3';
 
 import Addresses from './screen/profile/addresses';
 let _defz = require('./screen/com/def');
@@ -71,10 +72,11 @@ const RootStack = createStackNavigator(
     active: Active,
     onDemand: OnDemand,
     onDemandStage2: OnDemandStage2,
+    onDemandStage3: OnDemandStage3,
   },
   {
     headerMode: 'none',
-    initialRouteName: 'home',
+    initialRouteName: 'usermain',
     initialRouteParams: {transition: 'fade'},
   },
 );
