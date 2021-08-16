@@ -753,12 +753,12 @@ class Product extends Component {
                     <View style={styles.BorrowTrueContent}>
                       <Button
                         onPress={() =>
-                          this.setState({orderType: 'lid_sleeve_up'})
+                          this.setState({orderType: 'cup_sleeve_lid'})
                         }
                         transparent
                         style={[
                           styles.BorrowTrueSelectButtons,
-                          this.state.orderType === 'lid_sleeve_up'
+                          this.state.orderType === 'cup_sleeve_lid'
                             ? styles.typeSelected
                             : null,
                         ]}>
@@ -768,11 +768,11 @@ class Product extends Component {
                         </Text>
                       </Button>
                       <Button
-                        onPress={() => this.setState({orderType: 'sleeve_up'})}
+                        onPress={() => this.setState({orderType: 'cup_sleeve'})}
                         transparent
                         style={[
                           styles.BorrowTrueSelectButtons,
-                          this.state.orderType === 'sleeve_up'
+                          this.state.orderType === 'cup_sleeve'
                             ? styles.typeSelected
                             : null,
                         ]}>
@@ -785,11 +785,11 @@ class Product extends Component {
                         transparent
                         style={[
                           styles.BorrowTrueSelectButtons,
-                          this.state.orderType === 'cup_only'
+                          this.state.orderType === 'cup'
                             ? styles.typeSelected
                             : null,
                         ]}
-                        onPress={() => this.setState({orderType: 'cup_only'})}>
+                        onPress={() => this.setState({orderType: 'cup'})}>
                         <EmptyGlass
                           width={_defz.width / 7}
                           height={_defz.height / 8}
@@ -825,7 +825,7 @@ class Product extends Component {
           ) : null}
 
           {/* render packing options */}
-          {this.state.packingOptions ? this.renderPackingOptions() : null}
+          {/* {this.state.packingOptions ? this.renderPackingOptions() : null} */}
 
           {/* render options */}
           {options
