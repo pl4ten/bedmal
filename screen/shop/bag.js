@@ -174,7 +174,7 @@ class Bag extends React.Component {
 
     this.state.activeCart.products.map(item => {
       products.push({
-        borrow_cup: item.orderType ? item.orderType : item.packing,
+        borrow_cup: item.orderType,
         options: [{title: item.optionTitle, value: item.selectedOption.label}],
         product_count: item.quantity,
         product_id: item.product.id,
@@ -536,14 +536,7 @@ class Bag extends React.Component {
                                   <Text style={styles.productPacking}>
                                     {product.packing}
                                   </Text>
-                                ) : (
-                                  <View style={styles.cardImage}>
-                                    <EmptyGlass
-                                      width={_defz.width / 9}
-                                      height={_defz.height / 10}
-                                    />
-                                  </View>
-                                )}
+                                ) : null}
 
                                 <View style={styles.counter}>
                                   <Button
