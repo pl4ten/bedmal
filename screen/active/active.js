@@ -370,7 +370,9 @@ class Active extends Component {
                               <Left style={styles.cardLeft}>
                                 <TouchableOpacity
                                   onPress={() =>
-                                    this.props.navigation.navigate('order')
+                                    this.props.navigation.navigate('order', {
+                                      id: item.id,
+                                    })
                                   }>
                                   <Text style={styles.cardTitle}>
                                     {item.vendor_info.name}
@@ -401,7 +403,9 @@ class Active extends Component {
                                 </View>
                                 <TouchableOpacity
                                   onPress={() =>
-                                    this.props.navigation.navigate('order')
+                                    this.props.navigation.navigate('order', {
+                                      id: item.id,
+                                    })
                                   }>
                                   <Icon
                                     type="AntDesign"
