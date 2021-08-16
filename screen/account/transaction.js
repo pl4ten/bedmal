@@ -62,7 +62,7 @@ class Transaction extends Component {
         <Headers
           route={'Transaction'}
           navigation={this.props.navigation}
-          message
+          message={'chat_main'}
         />
 
         {this.state.isLoading ? (
