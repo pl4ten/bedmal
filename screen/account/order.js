@@ -21,6 +21,8 @@ class Order extends Component {
       modalVisible: false,
       isLoading: false,
       order: null,
+      transaction: null,
+      orderStatus: '',
       products: null,
       totalPrice: null,
       deliveryCost: null,
@@ -44,6 +46,7 @@ class Order extends Component {
             this.setState({
               order: response.order,
               products: response.products,
+              transaction: response.transaction,
             });
             if (response.order.fulfillment.type === 'nationwide_delivery') {
               this.setState({
@@ -63,6 +66,32 @@ class Order extends Component {
                 freeDeliveryCostOver: null,
               });
             }
+            let statusText = '';
+            if (
+              response.order.status === 'pending' ||
+              response.order.status === 'not_payed' ||
+              response.order.status === 'preparing '
+            ) {
+              statusText = response.order.status.split('_').join('-');
+            }
+            if (response.order.status === 'accepted') {
+              statusText = response.order.status.split('_').join('-');
+            }
+            if (
+              response.order.status === 'rejected' ||
+              response.order.status === 'canceled' ||
+              response.order.status === 'picked_up' ||
+              response.order.status === 'delivered'
+            ) {
+              statusText = response.order.status.split('_').join('-');
+            }
+            if (
+              response.order.status === 'ready_to_pickup' ||
+              response.order.status === 'being_delivered'
+            ) {
+              statusText = this.state.order.status.split('_').join('-');
+            }
+            this.setState({orderStatus: statusText});
           }
           if (response.status === 400) {
             Alert.alert('Error', response.errors[0].message, [{text: 'ok'}], {
@@ -114,7 +143,9 @@ class Order extends Component {
                   </Text>
                   <Text style={styles.infoText}>{this.state.order.ref_id}</Text>
                   <Text style={styles.infoTextBlue}>
-                    £{this.state.order.total_price}
+                    {this.state.transaction
+                      ? this.state.transaction.ref_id
+                      : '-'}
                   </Text>
                   <Text style={styles.infoTextAddress} numberOfLines={3}>
                     {this.state.order.fulfillment.type === 'pickup'
@@ -123,33 +154,38 @@ class Order extends Component {
                   </Text>
                 </View>
               </View>
-              {/* <View style={styles.statusBox}>
-                <Text style={styles.statusBoxText}>Status</Text>
-                <Text style={styles.statusPink}>pending</Text>
-              </View>
               <View style={styles.statusBox}>
                 <Text style={styles.statusBoxText}>Status</Text>
-                <Text style={styles.statusOrange}>order accepted</Text>
+                <Text
+                  style={
+                    this.state.order.status === 'pending' ||
+                    this.state.order.status === 'not_payed' ||
+                    this.state.order.status === 'preparing '
+                      ? styles.statusPink
+                      : this.state.order.status === 'accepted'
+                      ? styles.statusOrange
+                      : this.state.order.status === 'rejected' ||
+                        this.state.order.status === 'canceled' ||
+                        this.state.order.status === 'picked_up' ||
+                        this.state.order.status === 'delivered'
+                      ? styles.statusBlack
+                      : this.state.order.status === 'ready_to_pickup' ||
+                        this.state.order.status === 'being_delivered'
+                      ? styles.statusGreen
+                      : null
+                  }>
+                  {this.state.orderStatus}
+                </Text>
               </View>
-              <View style={styles.statusBox}>
-                <Text style={styles.statusBoxText}>Status</Text>
-                <Text style={styles.statusGreen}>on its way</Text>
-              </View>
-              <View style={styles.statusBox}>
-                <Text style={styles.statusBoxText}>Status</Text>
-                <Text style={styles.statusGreen}>pick-up now</Text>
-              </View>
-              <View style={styles.statusBox}>
-                <Text style={styles.statusBoxText}>Status</Text>
-                <Text style={styles.statusBlack}>cancelled</Text>
-              </View>
-               */}
-              <Button
-                style={styles.cancelBtn}
-                transparent
-                onPress={() => this.setState({modalVisible: true})}>
-                <Text style={styles.cancelBtnText}>Cancel order?</Text>
-              </Button>
+              {this.state.order.status === 'pending' ? (
+                <Button
+                  style={styles.cancelBtn}
+                  transparent
+                  onPress={() => this.setState({modalVisible: true})}>
+                  <Text style={styles.cancelBtnText}>Cancel order?</Text>
+                </Button>
+              ) : null}
+
               <ScrollView>
                 <View>
                   {this.state.products.map(item => {
