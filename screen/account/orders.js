@@ -82,7 +82,7 @@ class Orders extends Component {
                               {item.vendor_info.name}
                             </Text>
                             <Text style={styles.cardTitle}>
-                              {item.fulfillment.type}
+                              {item.fulfillment.type.split('_').join('-')}
                             </Text>
                             <Text style={styles.cardFooter}>{item.ref_id}</Text>
                             <Text style={styles.cardFooter}>
@@ -94,8 +94,28 @@ class Orders extends Component {
                           </Left>
                           <Right style={styles.cardRight}>
                             <View style={styles.status}>
-                              <View style={styles.circleBlack} />
-                              <Text style={styles.statusText}>picked-up</Text>
+                              <View
+                                style={
+                                  item.status === 'pending' ||
+                                  item.status === 'not_payed' ||
+                                  item.status === 'preparing '
+                                    ? styles.circlePink
+                                    : item.status === 'accepted'
+                                    ? styles.circlePink
+                                    : item.status === 'rejected' ||
+                                      item.status === 'canceled' ||
+                                      item.status === 'picked_up' ||
+                                      item.status === 'delivered'
+                                    ? styles.circleBlack
+                                    : item.status === 'ready_to_pickup' ||
+                                      item.status === 'being_delivered'
+                                    ? styles.circleGreen
+                                    : null
+                                }
+                              />
+                              <Text style={styles.statusText}>
+                                {item.status.split('_').join('-')}
+                              </Text>
                             </View>
                             <Icon
                               type="AntDesign"
@@ -107,315 +127,6 @@ class Orders extends Component {
                       );
                     })
                   : null}
-                {/* <CardItem style={styles.card}>
-                <Left style={styles.cardLeft}>
-                  <TouchableOpacity
-                    onPress={() => this.props.navigation.navigate('order')}>
-                    <Text style={styles.cardTitle}>
-                      Tulip Cafe of Hampstead
-                    </Text>
-                    <Text style={styles.cardTitle}>Collection</Text>
-                    <Text style={styles.cardFooter}>TC-200302LJS1</Text>
-                    <Text style={styles.cardFooter}>02/03/2020</Text>
-                    <Text style={styles.cardFooter}>£59.60</Text>
-                  </TouchableOpacity>
-                </Left>
-                <Right style={styles.cardRight}>
-                  <View style={styles.status}>
-                    <View style={styles.circleGreen} />
-                    <Text style={styles.statusText}>pick-up now</Text>
-                  </View>
-                  <TouchableOpacity
-                    onPress={() => this.props.navigation.navigate('order')}>
-                    <Icon
-                      type="AntDesign"
-                      name="arrowright"
-                      style={styles.icon}
-                    />
-                  </TouchableOpacity>
-                </Right>
-              </CardItem>
-              <CardItem style={styles.card}>
-                <Left style={styles.cardLeft}>
-                  <TouchableOpacity
-                    onPress={() => this.props.navigation.navigate('order')}>
-                    <Text style={styles.cardTitle}>
-                      Tulip Cafe of Hampstead
-                    </Text>
-                    <Text style={styles.cardTitle}>Collection</Text>
-                    <Text style={styles.cardFooter}>TC-200302LJS1</Text>
-                    <Text style={styles.cardFooter}>02/03/2020</Text>
-                    <Text style={styles.cardFooter}>£59.60</Text>
-                  </TouchableOpacity>
-                </Left>
-                <Right style={styles.cardRight}>
-                  <View style={styles.status}>
-                    <View style={styles.circlePink} />
-                    <Text style={styles.statusText}>preparing</Text>
-                  </View>
-                  <TouchableOpacity
-                    onPress={() => this.props.navigation.navigate('order')}>
-                    <Icon
-                      type="AntDesign"
-                      name="arrowright"
-                      style={styles.icon}
-                    />
-                  </TouchableOpacity>
-                </Right>
-              </CardItem>
-              <CardItem style={styles.card}>
-                <Left style={styles.cardLeft}>
-                  <TouchableOpacity
-                    onPress={() => this.props.navigation.navigate('order')}>
-                    <Text style={styles.cardTitle}>
-                      Tulip Cafe of Hampstead
-                    </Text>
-                    <Text style={styles.cardTitle}>Collection</Text>
-                    <Text style={styles.cardFooter}>TC-200302LJS1</Text>
-                    <Text style={styles.cardFooter}>02/03/2020</Text>
-                    <Text style={styles.cardFooter}>£59.60</Text>
-                  </TouchableOpacity>
-                </Left>
-                <Right style={styles.cardRight}>
-                  <View style={styles.status}>
-                    <View style={styles.circleBlack} />
-                    <Text style={styles.statusText}>picked-up</Text>
-                  </View>
-                  <TouchableOpacity
-                    onPress={() => this.props.navigation.navigate('order')}>
-                    <Icon
-                      type="AntDesign"
-                      name="arrowright"
-                      style={styles.icon}
-                    />
-                  </TouchableOpacity>
-                </Right>
-              </CardItem>
-              <CardItem style={styles.card}>
-                <Left style={styles.cardLeft}>
-                  <TouchableOpacity
-                    onPress={() => this.props.navigation.navigate('order')}>
-                    <Text style={styles.cardTitle}>
-                      Tulip Cafe of Hampstead
-                    </Text>
-                    <Text style={styles.cardTitle}>Collection</Text>
-                    <Text style={styles.cardFooter}>TC-200302LJS1</Text>
-                    <Text style={styles.cardFooter}>02/03/2020</Text>
-                    <Text style={styles.cardFooter}>£59.60</Text>
-                  </TouchableOpacity>
-                </Left>
-                <Right style={styles.cardRight}>
-                  <View style={styles.status}>
-                    <View style={styles.circleGreen} />
-                    <Text style={styles.statusText}>pick-up now</Text>
-                  </View>
-                  <TouchableOpacity
-                    onPress={() => this.props.navigation.navigate('order')}>
-                    <Icon
-                      type="AntDesign"
-                      name="arrowright"
-                      style={styles.icon}
-                    />
-                  </TouchableOpacity>
-                </Right>
-              </CardItem>
-              <CardItem style={styles.card}>
-                <Left style={styles.cardLeft}>
-                  <TouchableOpacity
-                    onPress={() => this.props.navigation.navigate('order')}>
-                    <Text style={styles.cardTitle}>
-                      Tulip Cafe of Hampstead
-                    </Text>
-                    <Text style={styles.cardTitle}>Collection</Text>
-                    <Text style={styles.cardFooter}>TC-200302LJS1</Text>
-                    <Text style={styles.cardFooter}>02/03/2020</Text>
-                    <Text style={styles.cardFooter}>£59.60</Text>
-                  </TouchableOpacity>
-                </Left>
-                <Right style={styles.cardRight}>
-                  <View style={styles.status}>
-                    <View style={styles.circlePink} />
-                    <Text style={styles.statusText}>preparing</Text>
-                  </View>
-                  <TouchableOpacity
-                    onPress={() => this.props.navigation.navigate('order')}>
-                    <Icon
-                      type="AntDesign"
-                      name="arrowright"
-                      style={styles.icon}
-                    />
-                  </TouchableOpacity>
-                </Right>
-              </CardItem>
-              <CardItem style={styles.card}>
-                <Left style={styles.cardLeft}>
-                  <TouchableOpacity
-                    onPress={() => this.props.navigation.navigate('order')}>
-                    <Text style={styles.cardTitle}>
-                      Tulip Cafe of Hampstead
-                    </Text>
-                    <Text style={styles.cardTitle}>Collection</Text>
-                    <Text style={styles.cardFooter}>TC-200302LJS1</Text>
-                    <Text style={styles.cardFooter}>02/03/2020</Text>
-                    <Text style={styles.cardFooter}>£59.60</Text>
-                  </TouchableOpacity>
-                </Left>
-                <Right style={styles.cardRight}>
-                  <View style={styles.status}>
-                    <View style={styles.circleBlack} />
-                    <Text style={styles.statusText}>picked-up</Text>
-                  </View>
-                  <TouchableOpacity
-                    onPress={() => this.props.navigation.navigate('order')}>
-                    <Icon
-                      type="AntDesign"
-                      name="arrowright"
-                      style={styles.icon}
-                    />
-                  </TouchableOpacity>
-                </Right>
-              </CardItem>
-              <CardItem style={styles.card}>
-                <Left style={styles.cardLeft}>
-                  <TouchableOpacity
-                    onPress={() => this.props.navigation.navigate('order')}>
-                    <Text style={styles.cardTitle}>
-                      Tulip Cafe of Hampstead
-                    </Text>
-                    <Text style={styles.cardTitle}>Collection</Text>
-                    <Text style={styles.cardFooter}>TC-200302LJS1</Text>
-                    <Text style={styles.cardFooter}>02/03/2020</Text>
-                    <Text style={styles.cardFooter}>£59.60</Text>
-                  </TouchableOpacity>
-                </Left>
-                <Right style={styles.cardRight}>
-                  <View style={styles.status}>
-                    <View style={styles.circleGreen} />
-                    <Text style={styles.statusText}>pick-up now</Text>
-                  </View>
-                  <TouchableOpacity
-                    onPress={() => this.props.navigation.navigate('order')}>
-                    <Icon
-                      type="AntDesign"
-                      name="arrowright"
-                      style={styles.icon}
-                    />
-                  </TouchableOpacity>
-                </Right>
-              </CardItem>
-              <CardItem style={styles.card}>
-                <Left style={styles.cardLeft}>
-                  <TouchableOpacity
-                    onPress={() => this.props.navigation.navigate('order')}>
-                    <Text style={styles.cardTitle}>
-                      Tulip Cafe of Hampstead
-                    </Text>
-                    <Text style={styles.cardTitle}>Collection</Text>
-                    <Text style={styles.cardFooter}>TC-200302LJS1</Text>
-                    <Text style={styles.cardFooter}>02/03/2020</Text>
-                    <Text style={styles.cardFooter}>£59.60</Text>
-                  </TouchableOpacity>
-                </Left>
-                <Right style={styles.cardRight}>
-                  <View style={styles.status}>
-                    <View style={styles.circlePink} />
-                    <Text style={styles.statusText}>preparing</Text>
-                  </View>
-                  <TouchableOpacity
-                    onPress={() => this.props.navigation.navigate('order')}>
-                    <Icon
-                      type="AntDesign"
-                      name="arrowright"
-                      style={styles.icon}
-                    />
-                  </TouchableOpacity>
-                </Right>
-              </CardItem>
-              <CardItem style={styles.card}>
-                <Left style={styles.cardLeft}>
-                  <TouchableOpacity
-                    onPress={() => this.props.navigation.navigate('order')}>
-                    <Text style={styles.cardTitle}>
-                      Tulip Cafe of Hampstead
-                    </Text>
-                    <Text style={styles.cardTitle}>Collection</Text>
-                    <Text style={styles.cardFooter}>TC-200302LJS1</Text>
-                    <Text style={styles.cardFooter}>02/03/2020</Text>
-                    <Text style={styles.cardFooter}>£59.60</Text>
-                  </TouchableOpacity>
-                </Left>
-                <Right style={styles.cardRight}>
-                  <View style={styles.status}>
-                    <View style={styles.circleBlack} />
-                    <Text style={styles.statusText}>picked-up</Text>
-                  </View>
-                  <TouchableOpacity
-                    onPress={() => this.props.navigation.navigate('order')}>
-                    <Icon
-                      type="AntDesign"
-                      name="arrowright"
-                      style={styles.icon}
-                    />
-                  </TouchableOpacity>
-                </Right>
-              </CardItem>
-              <CardItem style={styles.card}>
-                <Left style={styles.cardLeft}>
-                  <TouchableOpacity
-                    onPress={() => this.props.navigation.navigate('order')}>
-                    <Text style={styles.cardTitle}>
-                      Tulip Cafe of Hampstead
-                    </Text>
-                    <Text style={styles.cardTitle}>Collection</Text>
-                    <Text style={styles.cardFooter}>TC-200302LJS1</Text>
-                    <Text style={styles.cardFooter}>02/03/2020</Text>
-                    <Text style={styles.cardFooter}>£59.60</Text>
-                  </TouchableOpacity>
-                </Left>
-                <Right style={styles.cardRight}>
-                  <View style={styles.status}>
-                    <View style={styles.circleGreen} />
-                    <Text style={styles.statusText}>pick-up now</Text>
-                  </View>
-                  <TouchableOpacity
-                    onPress={() => this.props.navigation.navigate('order')}>
-                    <Icon
-                      type="AntDesign"
-                      name="arrowright"
-                      style={styles.icon}
-                    />
-                  </TouchableOpacity>
-                </Right>
-              </CardItem>
-              <CardItem style={styles.card}>
-                <Left style={styles.cardLeft}>
-                  <TouchableOpacity
-                    onPress={() => this.props.navigation.navigate('order')}>
-                    <Text style={styles.cardTitle}>
-                      Tulip Cafe of Hampstead
-                    </Text>
-                    <Text style={styles.cardTitle}>Collection</Text>
-                    <Text style={styles.cardFooter}>TC-200302LJS1</Text>
-                    <Text style={styles.cardFooter}>02/03/2020</Text>
-                    <Text style={styles.cardFooter}>£59.60</Text>
-                  </TouchableOpacity>
-                </Left>
-                <Right style={styles.cardRight}>
-                  <View style={styles.status}>
-                    <View style={styles.circlePink} />
-                    <Text style={styles.statusText}>preparing</Text>
-                  </View>
-                  <TouchableOpacity
-                    onPress={() => this.props.navigation.navigate('order')}>
-                    <Icon
-                      type="AntDesign"
-                      name="arrowright"
-                      style={styles.icon}
-                    />
-                  </TouchableOpacity>
-                </Right>
-              </CardItem>
-             */}
               </View>
               <View style={{marginTop: 200}} />
             </ScrollView>
