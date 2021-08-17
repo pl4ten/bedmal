@@ -11,10 +11,11 @@ export const styles = StyleSheet.create({
   },
   noAddress: {
     width: '100%',
-    height: '90%',
+    height: '100%',
     backgroundColor: '#FAFAFA',
     justifyContent: 'center',
     alignItems: 'center',
+    alignSelf: 'center',
   },
   headerXIcon: {
     alignSelf: 'center',

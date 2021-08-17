@@ -110,7 +110,7 @@ class Addresses extends Component {
                   navigation={this.props.navigation}
                   route={'Your Addresses'}
                 />
-                {this.state.addresses ?(
+                {this.state.addresses.length ? (
                   <ScrollView
                     contentContainerStyle={{
                       alignItems: 'center',
@@ -288,9 +288,7 @@ class Addresses extends Component {
                     <View style={{marginTop: 100}} />
                   </ScrollView>
                 ) : (
-                  <View style={styles.noAddress}>
-                    <Text>no address!</Text>
-                  </View>
+                  <View style={styles.noAddress} />
                 )}
               </View>
             </View>
