@@ -108,6 +108,15 @@ class Product extends Component {
           }
         });
     } catch (error) {
+      Alert.alert('Error', "error in product data read.", [    
+      {
+        text: "OK",
+        onPress: () =>this.props.navigation.goBack(),
+        style: "OK",
+      },
+    ], {
+        cancelable: false,
+      });
       console.log(error);
     }
   }
@@ -149,6 +158,9 @@ class Product extends Component {
           }
         });
     } catch (error) {
+      Alert.alert('Error', "error in add address.", [{text: 'ok'}], {
+        cancelable: true,
+      });
       console.log(error);
     }
   }

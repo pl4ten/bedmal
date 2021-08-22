@@ -21,7 +21,7 @@ class usermain extends Component {
     };
   }
   componentDidMount() {
-    this.gettoken();
+    this.getprofile();
   }
 
   gettoken = async () => {
@@ -40,11 +40,11 @@ class usermain extends Component {
       alert(e);
     }
   };
-  async getprofile(x) {
+  async getprofile() {
     const {navigate} = this.props.navigation;
     try {
       await _defz
-        .get_via_token('user/account/profile', 'GET', x)
+        .get_via_token('user/account/profile', 'GET', this.props.token)
         .then(response => {
           if (response.status == 200) {
             this.setState({loading: false});
@@ -61,6 +61,7 @@ class usermain extends Component {
   }
   nav(x) {
     const {navigate} = this.props.navigation;
+    this.setState({loading: false});
     this.props.navigation.pop();
     navigate(x);
   }

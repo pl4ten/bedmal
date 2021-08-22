@@ -20,6 +20,7 @@ export const styles = StyleSheet.create({
     marginTop: '3%',
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
+    height:"100%"
   },
   addressCard: {
     borderColor: '#707070',

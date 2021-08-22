@@ -72,6 +72,15 @@ class StoreFront extends React.Component {
           }
         });
     } catch (error) {
+      Alert.alert('Error', "error in store data.", [    
+        {
+          text: "OK",
+          onPress: () =>this.props.navigation.goBack(),
+          style: "OK",
+        },
+      ], {
+          cancelable: false,
+        });
       console.log(error);
     }
   }
@@ -96,6 +105,15 @@ class StoreFront extends React.Component {
           }
         });
     } catch (error) {
+      Alert.alert('Error', "error in product data.", [    
+        {
+          text: "OK",
+          onPress: () =>this.props.navigation.goBack(),
+          style: "OK",
+        },
+      ], {
+          cancelable: false,
+        });
       console.log(error);
     }
   }

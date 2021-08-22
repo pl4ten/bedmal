@@ -285,7 +285,7 @@ class Addresses extends Component {
                         </View>
                       );
                     })}
-                    <View style={{marginTop: 100}} />
+                    <View style={{marginTop: 250}} />
                   </ScrollView>
                 ) : (
                   <View style={styles.noAddress} />

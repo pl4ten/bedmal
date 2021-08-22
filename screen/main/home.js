@@ -143,6 +143,7 @@ class home extends Component {
       latitude: null,
       longitude: null,
       userLocationOn: null,
+      loader_Text: "",
     };
 
     this.onRenderModeChange = this.onRenderModeChange.bind(this);
@@ -163,7 +164,7 @@ class home extends Component {
     }
   };
   componentDidMount() {
-    this.tryToGetSrotes();
+
     StatusBar.setHidden(true);
     MapboxGL.setTelemetryEnabled(false);
     PermissionsAndroid.requestMultiple(
@@ -183,6 +184,7 @@ class home extends Component {
       .catch(err => {
         console.log(err);
       });
+      this.tryToGetSrotes();
   }
   async like_dislike_vendor(vendor_id, index) {
     this.setState({loading_like: true});
@@ -205,6 +207,8 @@ class home extends Component {
     }
   }
   tryToGetSrotes() {
+    this.setState({loading: true});
+    this.setState({loader_Text: "Get Store Data"});
     setInterval(() => {
       SystemSetting.isLocationEnabled().then(enable => {
         if (enable !== this.state.userLocationOn) {
@@ -236,16 +240,21 @@ class home extends Component {
           });
         }
       });
-    }, 1000);
+    }, 500);
   }
   async get_store(parm_data) {
-    this.setState({loading: true});
+    this.setState({loader_Text: "Get Store Data"});
     const {navigate} = this.props.navigation;
     try {
       let params = '';
       if (parm_data !== 'new') {
         params = parm_data;
       }
+      if (parm_data == '?liked=1') {
+        this.setState({loader_Text: "Get Store Data Liked"});
+      }
+      this.setState({loading: true});
+
       await _defz
         .get_via_token('user/home' + params, 'GET', this.props.token)
         .then(response => {
@@ -263,11 +272,21 @@ class home extends Component {
           this.setState({loading: false});
         });
     } catch (error) {
+      Alert.alert('Error', "error in shop data read.", [    
+        {
+          text: "OK",
+          onPress: () =>this.props.navigation.goBack(),
+          style: "OK",
+        },
+      ], {
+          cancelable: false,
+        });
       console.log(error);
     }
   }
   async get_store_via_location() {
     this.setState({loading: true});
+    this.setState({loader_Text: "Get Store data via Your Location"});
     const {navigate} = this.props.navigation;
     try {
       let params = '';
@@ -367,7 +386,7 @@ class home extends Component {
       return items;
     }
   }
-  checkImageURL(url) {
+/*   checkImageURL(url) {
     fetch(url)
       .then(res => {
         // console.log(res.status);
@@ -380,7 +399,7 @@ class home extends Component {
       .catch(err => {
         return require('../../asset/img/bedmal-place-holder.jpg');
       });
-  }
+  } */
   render() {
     const {navigate} = this.props.navigation;
     MapboxGL.setAccessToken(
@@ -390,7 +409,7 @@ class home extends Component {
     return (
       <View style={styles.container}>
         {this.state.loading === true ? (
-          <Loader navigation={this.props.navigation} loading={true} />
+          <Loader navigation={this.props.navigation} loading={true} text={this.state.loader_Text} />
         ) : (
           <View style={styles.main}>
             <Header style={styles.header} searchBar rounded>

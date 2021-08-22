@@ -12,6 +12,7 @@ class Loader extends React.Component {
     return (
       <View style={styles.loader}>
         <View style={styles.loadingz}>
+          <Text style={{alignSelf: 'center', zIndex: 201,fontSize:20,opacity:1}}>{this.props.text}</Text>
           <ActivityIndicator size="large" color="white" />
         </View>
       </View>
