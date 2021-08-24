@@ -201,7 +201,12 @@ class home extends Component {
         )
         .then(response => {
           if (response.status === 200) {
+
+
             this.state.vendors[index].liked = !this.state.vendors[index].liked;
+            if (!this.state.vendors[index].liked  && this.state.selected_btn == 'heart'){
+              this.get_store('?liked=1');
+            }
           }
 
           this.setState({loading_like: false});
