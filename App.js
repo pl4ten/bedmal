@@ -116,7 +116,7 @@ class App extends React.Component {
     return new Promise(resolve =>
       setTimeout(() => {
         resolve('result');
-      }, 2000),
+      }, 100),
     );
   };
   async componentDidMount() {
@@ -124,11 +124,11 @@ class App extends React.Component {
 
     // Preload data from an external API
     // Preload data using AsyncStorage
-    const data = await this.performTimeConsumingTask();
+    //const data = await this.performTimeConsumingTask();
 
-    if (data !== null) {
+
       this.setState({isLoading: false});
-    }
+    
   }
 
   render() {

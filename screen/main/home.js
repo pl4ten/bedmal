@@ -23,7 +23,7 @@ import {connect} from 'react-redux';
 import Geolocation from '@react-native-community/geolocation';
 var Footers = require('../com/footer').default;
 let _defz = require('../com/def');
-
+let location_checker;
 // edit logging messages
 Logger.setLogCallback(log => {
   const {message} = log;
@@ -163,6 +163,10 @@ class home extends Component {
       this.camera_map.flyTo([lng, lat], 1000);
     }
   };
+  componentWillUnmount(){
+    clearInterval(id);
+
+  }
   componentDidMount() {
 
     StatusBar.setHidden(true);
@@ -178,7 +182,7 @@ class home extends Component {
       },
     )
       .then(granted => {
-        console.log(granted);
+        //console.log(granted);
         //
       })
       .catch(err => {
@@ -209,7 +213,7 @@ class home extends Component {
   tryToGetSrotes() {
     this.setState({loading: true});
     this.setState({loader_Text: "Get Store Data"});
-    setInterval(() => {
+    location_checker=setInterval(() => {
       SystemSetting.isLocationEnabled().then(enable => {
         if (enable !== this.state.userLocationOn) {
           this.setState({userLocationOn: enable ? true : false}, () => {
@@ -481,7 +485,9 @@ class home extends Component {
                 animationMode={'flyTo'}
               />
               <MapboxGL.Light />
+              {this.state.userLocationOn ? (
               <MapboxGL.UserLocation />
+              ) : null}
             </MapboxGL.MapView>
 
             {this.state.vendors !== null ? (

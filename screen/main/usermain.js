@@ -1,6 +1,6 @@
 'use strict';
 import React, {Component} from 'react';
-import {View} from 'react-native';
+import {View,ActivityIndicator} from 'react-native';
 
 import {selectUserToken} from '../../redux/user/user.selectors';
 import {connect} from 'react-redux';
@@ -24,22 +24,7 @@ class usermain extends Component {
     this.getprofile();
   }
 
-  gettoken = async () => {
-    try {
-      const value = await AsyncStorage.getItem('token');
-      if (value !== null) {
-        if (value === '0') {
-          this.getprofile(0);
-        } else {
-          _defz._token = value;
-          this.getprofile(value);
-        }
-      }
-      this.getprofile(value);
-    } catch (e) {
-      alert(e);
-    }
-  };
+
   async getprofile() {
     const {navigate} = this.props.navigation;
     try {
@@ -81,6 +66,7 @@ class usermain extends Component {
 
             <Text style={styles.text1}>Find Coffe You love </Text>
             <Text style={styles.text2}>Discover new Coffe shop</Text>
+            <ActivityIndicator size="large" color="white" />
           </ImageBackground>
         ) : (
           <ImageBackground
