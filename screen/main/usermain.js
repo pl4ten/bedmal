@@ -9,7 +9,7 @@ import {Image, ImageBackground} from 'react-native';
 import {Button, Text} from 'native-base';
 import Loader from '../com/loader';
 import AsyncStorage from '@react-native-community/async-storage';
-
+import { StackActions, NavigationActions } from 'react-navigation';
 let _defz = require('../com/def');
 class usermain extends Component {
   constructor(props) {
@@ -17,7 +17,6 @@ class usermain extends Component {
 
     this.state = {
       loading: false,
-      canGoBack: false,
     };
   }
   componentDidMount() {
@@ -33,8 +32,12 @@ class usermain extends Component {
         .then(response => {
           if (response.status == 200) {
             this.setState({loading: false});
-            this.props.navigation.pop();
-            navigate('home');
+            const resetAction = StackActions.reset({
+              index: 0,
+              actions: [NavigationActions.navigate({ routeName: 'home' })],
+          });
+          this.props.navigation.dispatch(resetAction);
+      
           } else {
             this.setState({loading: true});
           }
@@ -47,8 +50,13 @@ class usermain extends Component {
   nav(x) {
     const {navigate} = this.props.navigation;
     this.setState({loading: false});
-    this.props.navigation.pop();
-    navigate(x);
+    const resetAction = StackActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: x })],
+  });
+  this.props.navigation.dispatch(resetAction);
+
+
   }
   render() {
     return (
@@ -66,7 +74,7 @@ class usermain extends Component {
 
             <Text style={styles.text1}>Find Coffe You love </Text>
             <Text style={styles.text2}>Discover new Coffe shop</Text>
-            <ActivityIndicator size="large" color="white" />
+
           </ImageBackground>
         ) : (
           <ImageBackground

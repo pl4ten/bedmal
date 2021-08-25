@@ -144,7 +144,7 @@ android {
         abi {
             reset()
             enable enableSeparateBuildPerCPUArchitecture
-            universalApk false  // If true, also generate a universal APK
+            universalApk true  // If true, also generate a universal APK
             include "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
         }
     }
@@ -194,6 +194,9 @@ dependencies {
     implementation "com.facebook.react:react-native:+"  // From node_modules
     //implementation 'com.facebook.fresco:fresco:1.+'
     // For animated GIF support
+    api(platform("com.squareup.okhttp3:okhttp-bom:4.7.2"))
+api("com.squareup.okhttp3:okhttp")
+api("com.squareup.okhttp3:logging-interceptor")
        implementation 'com.android.support:multidex:1.0.3'
             implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0' // <-- add this; newer versions should work too
     implementation 'com.facebook.fresco:animated-gif:1.+'

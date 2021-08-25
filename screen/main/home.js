@@ -15,8 +15,6 @@ import {styles} from './styles/home.styles';
 import {Logger} from '@react-native-mapbox-gl/maps';
 import MapboxGL, {MarkerView} from '@react-native-mapbox-gl/maps';
 import {PermissionsAndroid} from 'react-native';
-import {jsonBeautify} from 'beautify-json';
-import SystemSetting from 'react-native-system-setting';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {selectUserToken} from '../../redux/user/user.selectors';
 import {connect} from 'react-redux';
@@ -143,15 +141,17 @@ class home extends Component {
       latitude: null,
       longitude: null,
       userLocationOn: null,
-      loader_Text: "",
+      loader_Text: '',
+      fetchData: false,
+
+      LOCATION_OPNED: false,
+      location_loop: false,
+      no_location_loop: false,
     };
 
     this.onRenderModeChange = this.onRenderModeChange.bind(this);
   }
 
-  forceUpdateHandler() {
-    this.forceUpdate();
-  }
   onRenderModeChange(index, renderMode) {
     this.setState({renderMode});
   }
@@ -163,32 +163,33 @@ class home extends Component {
       this.camera_map.flyTo([lng, lat], 1000);
     }
   };
-  componentWillUnmount(){
-    clearInterval(id);
-
+  componentWillUnmount() {
+    clearInterval(location_checker);
   }
   componentDidMount() {
-
-    StatusBar.setHidden(true);
-    MapboxGL.setTelemetryEnabled(false);
-    PermissionsAndroid.requestMultiple(
-      [
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
-      ],
-      {
-        title: 'Location',
-        message: 'access location',
-      },
-    )
-      .then(granted => {
-        //console.log(granted);
-        //
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    try {
+      StatusBar.setHidden(true);
+      PermissionsAndroid.requestMultiple(
+        [
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+          PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
+        ],
+        {
+          title: 'Location',
+          message: 'access location',
+        },
+      )
+        .then(granted => {
+          //console.log(granted);
+          //
+        })
+        .catch(err => {
+          Alert.alert(err);
+        });
       this.tryToGetSrotes();
+    } catch (error) {
+      Alert.alert(error);
+    }
   }
   async like_dislike_vendor(vendor_id, index) {
     this.setState({loading_like: true});
@@ -201,10 +202,11 @@ class home extends Component {
         )
         .then(response => {
           if (response.status === 200) {
-
-
             this.state.vendors[index].liked = !this.state.vendors[index].liked;
-            if (!this.state.vendors[index].liked  && this.state.selected_btn == 'heart'){
+            if (
+              !this.state.vendors[index].liked &&
+              this.state.selected_btn == 'heart'
+            ) {
               this.get_store('?liked=1');
             }
           }
@@ -216,43 +218,61 @@ class home extends Component {
     }
   }
   tryToGetSrotes() {
-    this.setState({loading: true});
-    this.setState({loader_Text: "Get Store Data"});
-    location_checker=setInterval(() => {
-      SystemSetting.isLocationEnabled().then(enable => {
-        if (enable !== this.state.userLocationOn) {
-          this.setState({userLocationOn: enable ? true : false}, () => {
-            if (this.state.userLocationOn) {
-              Geolocation.getCurrentPosition(
-                position => {
-                  this.setState(
-                    {
-                      latitude: position.coords.latitude,
-                      longitude: position.coords.longitude,
-                    },
-                    () => {
-                      this.get_store_via_location(
-                        this.state.latitude,
-                        this.state.longitude,
-                      );
-                    },
-                  );
-                },
-                error => {
-                  Alert.alert(error.code, error.message);
-                },
-                {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+    try {
+      location_checker = setInterval(() => {
+        Geolocation.getCurrentPosition(
+          position => {
+            this.setState({LOCATION_OPNED: true});
+            if (
+              this.state.LOCATION_OPNED &&
+              this.state.location_loop == false
+            ) {
+              this.setState({
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+                LOCATION_OPNED: true,
+                location_loop: true,
+                no_location_loop: false,
+              });
+
+              this.get_store_via_location(
+                this.state.latitude,
+                this.state.longitude,
               );
-            } else {
+            }
+          },
+
+          error => {
+            if (error.message === 'Location request timed out') {
+              this.setState({
+                loading: true,
+                loader_Text: 'Getting your coordinate ...',
+              });
+            }
+            this.setState({LOCATION_OPNED: false});
+            if (
+              !this.state.LOCATION_OPNED &&
+              this.state.no_location_loop == false
+            ) {
+              this.setState({
+                LOCATION_OPNED: false,
+                no_location_loop: true,
+                location_loop: false,
+                loading: false,
+              });
+
               this.get_store('new');
             }
-          });
-        }
-      });
-    }, 500);
+          },
+          {enableHighAccuracy: false, timeout: 500000000, maximumAge: 500000},
+        );
+      }, 1000);
+    } catch (error) {
+      Alert.alert(error);
+    }
   }
   async get_store(parm_data) {
-    this.setState({loader_Text: "Get Store Data"});
+    this.setState({loader_Text: 'Get Store Data'});
     const {navigate} = this.props.navigation;
     try {
       let params = '';
@@ -260,7 +280,7 @@ class home extends Component {
         params = parm_data;
       }
       if (parm_data == '?liked=1') {
-        this.setState({loader_Text: "Get Store Data Liked"});
+        this.setState({loader_Text: 'Get Store Data Liked'});
       }
       this.setState({loading: true});
 
@@ -281,21 +301,26 @@ class home extends Component {
           this.setState({loading: false});
         });
     } catch (error) {
-      Alert.alert('Error', "error in shop data read.", [    
+      Alert.alert(
+        'Error',
+        'error in shop data read.',
+        [
+          {
+            text: 'OK',
+            onPress: () => this.props.navigation.goBack(),
+            style: 'OK',
+          },
+        ],
         {
-          text: "OK",
-          onPress: () =>this.props.navigation.goBack(),
-          style: "OK",
-        },
-      ], {
           cancelable: false,
-        });
+        },
+      );
       console.log(error);
     }
   }
   async get_store_via_location() {
-    this.setState({loading: true});
-    this.setState({loader_Text: "Get Store data via Your Location"});
+    this.setState({loading: true, fetchData: true});
+    this.setState({loader_Text: 'Get Store data via Your Location'});
     const {navigate} = this.props.navigation;
     try {
       let params = '';
@@ -326,76 +351,84 @@ class home extends Component {
     }
   }
   select_btn(b) {
-    if (this.state.userLocationOn) {
-      this.get_store_via_location();
-    } else {
-      if (this.state.selected_btn == b) {
-        this.get_store('new');
-        this.setState({selected_btn: ''});
+    try {
+      if (this.state.userLocationOn) {
+        this.get_store_via_location();
       } else {
-        if (b == 'heart') {
-          this.get_store('?liked=1');
+        if (this.state.selected_btn == b) {
+          this.get_store('new');
+          this.setState({selected_btn: ''});
         } else {
-          this.get_store(b);
-        }
+          if (b == 'heart') {
+            this.get_store('?liked=1');
+          } else {
+            this.get_store(b);
+          }
 
-        this.setState({selected_btn: b});
+          this.setState({selected_btn: b});
+        }
       }
+    } catch (error) {
+      Alert.alert(error);
     }
   }
   render_box() {
-    const {navigate} = this.props.navigation;
-    if (this.state.departments !== null) {
-      let items = [];
-      items.push(
-        <Button
-          transparent
-          rounded
-          onPress={() => this.select_btn('heart')}
-          style={[
-            this.state.selected_btn !== 'heart'
-              ? styles.unselectb
-              : styles.selectb,
-          ]}>
-          <Icon
-            name="heart"
-            type="AntDesign"
-            style={[
-              this.state.selected_btn !== 'heart'
-                ? styles.unselectb_data
-                : styles.selectb_data,
-            ]}
-          />
-        </Button>,
-      );
-
-      this.state.departments.map((dataItem, i) => {
+    try {
+      const {navigate} = this.props.navigation;
+      if (this.state.departments !== null) {
+        let items = [];
         items.push(
           <Button
             transparent
             rounded
-            onPress={() => this.select_btn('?department_id=' + dataItem.id)}
+            onPress={() => this.select_btn('heart')}
             style={[
-              this.state.selected_btn !== '?department_id=' + dataItem.id
+              this.state.selected_btn !== 'heart'
                 ? styles.unselectb
                 : styles.selectb,
             ]}>
-            <Text
+            <Icon
+              name="heart"
+              type="AntDesign"
               style={[
-                this.state.selected_btn !== '?department_id=' + dataItem.id
+                this.state.selected_btn !== 'heart'
                   ? styles.unselectb_data
                   : styles.selectb_data,
-              ]}>
-              {dataItem.name}
-            </Text>
+              ]}
+            />
           </Button>,
         );
-      });
-      items.push(<View style={{marginRight: 25}} />);
-      return items;
+
+        this.state.departments.map((dataItem, i) => {
+          items.push(
+            <Button
+              transparent
+              rounded
+              onPress={() => this.select_btn('?department_id=' + dataItem.id)}
+              style={[
+                this.state.selected_btn !== '?department_id=' + dataItem.id
+                  ? styles.unselectb
+                  : styles.selectb,
+              ]}>
+              <Text
+                style={[
+                  this.state.selected_btn !== '?department_id=' + dataItem.id
+                    ? styles.unselectb_data
+                    : styles.selectb_data,
+                ]}>
+                {dataItem.name}
+              </Text>
+            </Button>,
+          );
+        });
+        items.push(<View style={{marginRight: 25}} />);
+        return items;
+      }
+    } catch (error) {
+      Alert.alert(error);
     }
   }
-/*   checkImageURL(url) {
+  /*   checkImageURL(url) {
     fetch(url)
       .then(res => {
         // console.log(res.status);
@@ -418,7 +451,11 @@ class home extends Component {
     return (
       <View style={styles.container}>
         {this.state.loading === true ? (
-          <Loader navigation={this.props.navigation} loading={true} text={this.state.loader_Text} />
+          <Loader
+            navigation={this.props.navigation}
+            loading={true}
+            text={this.state.loader_Text}
+          />
         ) : (
           <View style={styles.main}>
             <Header style={styles.header} searchBar rounded>
@@ -490,9 +527,7 @@ class home extends Component {
                 animationMode={'flyTo'}
               />
               <MapboxGL.Light />
-              {this.state.userLocationOn ? (
-              <MapboxGL.UserLocation />
-              ) : null}
+              {this.state.LOCATION_OPNED ? <MapboxGL.UserLocation /> : null}
             </MapboxGL.MapView>
 
             {this.state.vendors !== null ? (

@@ -81,43 +81,13 @@ const RootStack = createStackNavigator(
   },
 );
 
-let AppContainer;
 
-class SplashScreen extends React.Component {
-  render() {
-    return (
-      <Root>
-        <View style={styles.container}>
-          <ImageBackground
-            source={require('./asset/splash.png')}
-            resizeMode="stretch"
-            style={styles.splashImage}>
-            <Image
-              source={require('./asset/logo_white.png')}
-              resizeMode="stretch"
-              style={styles.logoImage}
-            />
-
-            <Text style={styles.text1}>Find Coffe You love </Text>
-            <Text style={styles.text2}>Discover new Coffe shop</Text>
-          </ImageBackground>
-        </View>
-      </Root>
-    );
-  }
-}
 class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {isLoading: true};
-  }
-  performTimeConsumingTask = async () => {
-    return new Promise(resolve =>
-      setTimeout(() => {
-        resolve('result');
-      }, 100),
-    );
+  
   };
   async componentDidMount() {
     I18nManager.allowRTL(false);
@@ -132,16 +102,13 @@ class App extends React.Component {
   }
 
   render() {
-    if (this.state.isLoading) {
-      return <SplashScreen />;
-    }
-    if (!this.state.isLoading) {
+
       let AppContainer;
 
       AppContainer = createAppContainer(RootStack);
 
       return <AppContainer />;
-    }
+    
   }
 }
 const styles = StyleSheet.create({

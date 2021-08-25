@@ -10,11 +10,11 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from 'react-native';
+import {StackActions, NavigationActions} from 'react-navigation';
 import {styles} from './styles/login.styles';
 import {connect} from 'react-redux';
 import {setUserToken} from '../../redux/user/user.actions';
 import {Button} from 'native-base';
-import AsyncStorage from '@react-native-community/async-storage';
 let _defz = require('../com/def');
 import Loader from '../com/loader';
 let _names = '';
@@ -114,14 +114,7 @@ class login extends Component {
       value: '',
     };
   }
-  storeData = async () => {
-    try {
-      await AsyncStorage.setItem('token', _token);
-      _defz._token = _token;
-    } catch (e) {
-      console.log('error save token ', e);
-    }
-  };
+
   signIn = async () => {
     try {
       GoogleSignin.configure({
@@ -150,57 +143,67 @@ class login extends Component {
     }
   };
   login = async x => {
-    this.setState({loading: true});
-    const {navigate} = this.props.navigation;
-    let formData = new FormData();
-    if (code !== '') {
-      _names = code + '-' + _names;
-    }
-    formData.append('username', _names);
-    formData.append('password', _pass);
+    try {
+      this.setState({loading: true});
+      const {navigate} = this.props.navigation;
+      let formData = new FormData();
+      if (code !== '') {
+        _names = code + '-' + _names;
+      }
+      formData.append('username', _names);
+      formData.append('password', _pass);
 
-    await _defz
-      .send('user/login', 'POST', _defz._token, formData)
-      .then(response => {
-        console.log(response);
-        this.setState({loading: false});
-        if (response.status === 200) {
-          this.props.navigation.pop();
-          this.props.setUserToken(response.token);
-          _token = response.token;
-          _defz._token = response.token;
-          this.storeData();
-          navigate('home');
-        } else {
-          Alert.alert('Error', response.errors[0].message, [{text: 'ok'}], {
-            cancelable: true,
-          });
-        }
-      });
+      await _defz
+        .send('user/login', 'POST', _defz._token, formData)
+        .then(response => {
+          console.log(response);
+          this.setState({loading: false});
+          if (response.status === 200) {
+            this.props.navigation.pop();
+            this.props.setUserToken(response.token);
+            const resetAction = StackActions.reset({
+              index: 0,
+              actions: [NavigationActions.navigate({routeName: 'home'})],
+            });
+            this.props.navigation.dispatch(resetAction);
+          } else {
+            Alert.alert('Error', response.errors[0].message, [{text: 'ok'}], {
+              cancelable: true,
+            });
+          }
+        });
+    } catch (error) {
+      console.log(error);
+    }
   };
   login_via_google = async x => {
-    this.setState({loading: true});
-    const {navigate} = this.props.navigation;
-    let formData = new FormData();
+    try {
+      this.setState({loading: true});
+      const {navigate} = this.props.navigation;
+      let formData = new FormData();
 
-    await _defz
-      .send('user/login/google?idToken=' + x, 'GET', '0', formData)
-      .then(response => {
-        console.log(response);
-        this.setState({loading: false});
-        if (response.status === 200) {
-          this.props.navigation.pop();
-          this.props.setUserToken(response.token);
-          _token = response.token;
-          _defz._token = response.token;
-          this.storeData();
-          navigate('home');
-        } else {
-          Alert.alert('Error', response.errors[0].message, [{text: 'ok'}], {
-            cancelable: true,
-          });
-        }
-      });
+      await _defz
+        .send('user/login/google?idToken=' + x, 'GET', '0', formData)
+        .then(response => {
+          console.log(response);
+          this.setState({loading: false});
+          if (response.status === 200) {
+            this.props.navigation.pop();
+            this.props.setUserToken(response.token);
+            const resetAction = StackActions.reset({
+              index: 0,
+              actions: [NavigationActions.navigate({routeName: 'home'})],
+            });
+            this.props.navigation.dispatch(resetAction);
+          } else {
+            Alert.alert('Error', 'Error in login', [{text: 'ok'}], {
+              cancelable: true,
+            });
+          }
+        });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   render() {

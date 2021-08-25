@@ -15,7 +15,7 @@ import {
 import {connect} from 'react-redux';
 import {setUserToken} from '../../redux/user/user.actions';
 let _defz = require('../com/def');
-
+import {StackActions, NavigationActions} from 'react-navigation';
 import Loader from '../com/loader';
 let _names = '';
 let _pass = '';
@@ -91,9 +91,12 @@ class signup extends Component {
         this.setState({loading: false});
         if (response.status === 200) {
           this.props.navigation.pop();
-          _token = response.token;
-          this.storeData();
-          navigate('home', {mod: 'new'});
+          this.props.setUserToken(response.token);
+          const resetAction = StackActions.reset({
+            index: 0,
+            actions: [NavigationActions.navigate({routeName: 'home'})],
+          });
+          this.props.navigation.dispatch(resetAction);
         }
         if (response.status === 400) {
           Alert.alert('Error', response.errors[0].message, [{text: 'ok'}], {
@@ -115,10 +118,11 @@ class signup extends Component {
         if (response.status === 200) {
           this.props.navigation.pop();
           this.props.setUserToken(response.token);
-          _token = response.token;
-          _defz._token = response.token;
-          this.storeData();
-          navigate('home');
+          const resetAction = StackActions.reset({
+            index: 0,
+            actions: [NavigationActions.navigate({routeName: 'home'})],
+          });
+          this.props.navigation.dispatch(resetAction);
         } else {
           Alert.alert('Error', response.errors[0].message, [{text: 'ok'}], {
             cancelable: true,
