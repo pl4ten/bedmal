@@ -4,7 +4,7 @@ let _defz = require('../../com/def');
 export const styles = StyleSheet.create({
   container: {
     backgroundColor: '#FAFAFA',
-    marginTop: '3%',
+    marginTop: 5,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
   },
@@ -48,7 +48,7 @@ export const styles = StyleSheet.create({
   },
   headerXbutton: {
     alignSelf: 'flex-end',
-    marginTop: _defz.height / 50,
+    marginTop: 5,
   },
   headerXIcon: {
     alignSelf: 'center',
