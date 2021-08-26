@@ -11,7 +11,6 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   bag: {
-    height: '70%',
     borderRadius: 10,
     borderColor: '#C3BCBC',
     borderWidth: 1,
@@ -21,7 +20,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     width: '95%',
-    marginTop: '7%',
+    marginTop: 35,
   },
   bagHeading: {
     width: '100%',
@@ -289,6 +288,7 @@ export const styles = StyleSheet.create({
   bagDeleteButton: {
     position: 'absolute',
     right: 17,
+    top: 0,
   },
   bagDeleteButtonText: {
     fontFamily: 'FuturaPT-Book',
