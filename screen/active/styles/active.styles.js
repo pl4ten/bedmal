@@ -58,14 +58,14 @@ export const styles = StyleSheet.create({
     color: '#C3BCBC',
   },
   cardLeft: {
-    flex: 2,
+    flex: 1,
   },
   cardRight: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    flex: 1,
+    justifyContent: 'flex-end',
+    flex: 2,
   },
   status: {
     display: 'flex',
