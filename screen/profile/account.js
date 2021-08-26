@@ -127,7 +127,7 @@ class account extends Component {
               </Button>
             </View>
 
-            <ScrollView>
+            <ScrollView style={{marginTop: 20,}}>
               <View>
                 <TouchableOpacity onPress={() => navigate('userprofile')}>
                   <CardItem style={styles.card}>
@@ -253,7 +253,7 @@ class account extends Component {
                   </CardItem>
                 </TouchableOpacity>
               </View>
-              <View style={{marginTop: 800}} />
+              <View style={{marginTop: 550}} />
             </ScrollView>
           </View>
         </View>
