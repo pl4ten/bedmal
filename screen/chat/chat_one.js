@@ -213,7 +213,9 @@ class Chat_one extends Component {
           <View>
             {all !== 2 ? (
               <Text style={styles.createdAt}>
-                {dataItem.created_at.slice(0, 10)}
+                {String(dataItem.created_at.slice(0, 10))
+                  .replace('-', '/')
+                  .replace('-', '/')}
               </Text>
             ) : null}
           </View>,
@@ -265,7 +267,6 @@ class Chat_one extends Component {
             ) : null}
           </List>,
         );
-        
       });
 
       return items;

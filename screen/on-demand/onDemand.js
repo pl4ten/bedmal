@@ -209,7 +209,11 @@ class OnDemand extends Component {
                 <Text style={styles.tipTerms}>see full terms </Text>
               </Button>
             </View>
-            <ImageBackground source={BorrowBG} style={styles.borrowBG}>
+            <View style={{width: '90%'}} />
+            <ImageBackground
+              source={BorrowBG}
+              resizeMode={'stretch'}
+              style={styles.borrowBG}>
               {this.props.onDemand.lid_cup === 0 &&
               this.props.onDemand.lid_sleeve_cup === 0 &&
               this.props.onDemand.cup === 0 &&
@@ -269,14 +273,11 @@ class OnDemand extends Component {
                 onPress={() =>
                   this.props.navigation.navigate('onDemandStage2')
                 }>
-                <BlueForward
-                  width={_defz.width / 7}
-                  height={_defz.height / 7}
-                />
+                <BlueForward width={_defz.width / 7} height={_defz.width / 7} />
               </Button>
             </ImageBackground>
           </View>
-          <View style={{marginTop: 200,}} />
+          <View style={{marginTop: 200}} />
         </ScrollView>
         <Footers navigation={this.props.navigation} route={'demand'} />
       </View>

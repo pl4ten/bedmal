@@ -6,7 +6,7 @@ import Footers from '../com/footer';
 import Headers from '../com/header';
 import Loader from '../com/loader';
 import {jsonBeautify} from 'beautify-json';
-
+import {ArrowBack, Massage} from './../com/svg-files';
 
 import {selectUserToken} from '../../redux/user/user.selectors';
 import {connect} from 'react-redux';
@@ -106,10 +106,19 @@ class Addresses extends Component {
                 />
               </Button>
               <View style={styles.container}>
-                <Headers
-                  navigation={this.props.navigation}
-                  route={'Your Addresses'}
-                />
+              <View transparent style={styles.headerContainer}>
+            <Button
+          transparent
+          style={styles.arrowBack}
+          onPress={() => this.props.navigation.goBack()}>
+          <ArrowBack />
+        </Button>
+
+        <Text style={styles.headerText2}>Your Addresses</Text>
+
+            </View>
+
+
                 {this.state.addresses.length ? (
                   <ScrollView
                     contentContainerStyle={{

@@ -60,12 +60,11 @@ export const styles = StyleSheet.create({
   view_line_b: {
     width: '70%',
     alignSelf: 'center',
-    height: 4,
-    borderRadius: 15,
+    height: 6,
+    borderRadius: 50,
     marginTop: 5,
     backgroundColor: 'black',
     position: 'absolute',
-    flex: 1,
     zIndex: 999,
   },
 

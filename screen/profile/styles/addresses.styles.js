@@ -164,4 +164,31 @@ export const styles = StyleSheet.create({
   notPrimaryText: {
     color: 'silver',
   },
+  arrowBack: {
+    flex: 1,
+  },
+  headerText2: {
+    color: 'gray',
+    fontSize: 35,
+    alignSelf: 'center',
+    textTransform: 'capitalize',
+    textAlign: 'center',
+    fontFamily: 'FuturaPT-Medium',
+    flex: 3,
+    marginLeft: "-18%",
+    padding: '2%',
+  },
+  headerContainer: {
+    minHeight: _defz.height / 15,
+    marginTop: _defz.height / 50,
+    backgroundColor: '#FAFAFA',
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignContent: 'center',
+    justifyContent: 'space-between',
+    padding: '2%',
+  },
 });

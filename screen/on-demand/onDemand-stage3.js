@@ -8,14 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {Button, Icon} from 'native-base';
-import {
-  EmptyGlass,
-  LidCup,
-  LidSleeveCup,
-  Bag,
-  BlueForward,
-  EmptyGlassNoBG,
-} from '../com/svg-files';
+import {EmptyGlass, LidCup, LidSleeveCup, Bag, Verify} from '../com/svg-files';
 import {styles} from './styles/onDemand-stage3.styles';
 
 import Headers from '../com/header';
@@ -92,111 +85,132 @@ class OnDemandStage3 extends Component {
               navigation={this.props.navigation}
             />
             <Text style={styles.heading}>Show at the till.</Text>
-            <View style={styles.headingRow}>
-              <Button
-                transparent
-                style={styles.editButton}
-                onPress={() => this.props.navigation.navigate('onDemand')}>
-                <Text style={styles.editButtonText}>Edit</Text>
-              </Button>
-              <Text style={styles.title}>Borrowing</Text>
-            </View>
-            <ScrollView
-              style={styles.scrollViewH}
-              horizontal
-              scrollEnabled
-              showsHorizontalScrollIndicator={false}>
-              <View style={styles.card}>
-                <LidSleeveCup
-                  width={_defz.width / 4}
-                  height={_defz.height / 7}
-                />
-                <Text style={styles.cardNumber}>
-                  {this.props.onDemand.lid_sleeve_cup}
-                </Text>
+            <View style={styles.row}>
+              <View style={styles.headingRow}>
+                <Button
+                  transparent
+                  style={styles.editButton}
+                  onPress={() => this.props.navigation.navigate('onDemand')}>
+                  <Text style={styles.editButtonText}>Edit</Text>
+                </Button>
+                <Text style={styles.title}>Borrowing</Text>
               </View>
-
-              <View style={styles.card}>
-                <Bag width={_defz.width / 4} height={_defz.height / 7} />
-                <Text style={styles.cardNumber}>{this.props.onDemand.bag}</Text>
-              </View>
-
-              <View style={styles.card}>
-                <EmptyGlass width={_defz.width / 4} height={_defz.height / 7} />
-                <Text style={styles.cardNumber}>{this.props.onDemand.cup}</Text>
-              </View>
-
-              <View style={styles.card}>
-                <LidCup width={_defz.width / 1} height={_defz.height / 7} />
-                <Text style={styles.cardNumber}>
-                  {this.props.onDemand.lid_cup}
-                </Text>
-              </View>
-            </ScrollView>
-
-            <View style={styles.headingRow}>
-              <Button
-                transparent
-                style={styles.editButton}
-                onPress={() =>
-                  this.props.navigation.navigate('onDemandStage2')
-                }>
-                <Text style={styles.editButtonText}>Edit</Text>
-              </Button>
-              <Text style={styles.title}>Returned</Text>
-            </View>
-            <View style={styles.main}>
-              <View style={styles.returned}>
-                <Text style={styles.returnedText}>b.Cups </Text>
-                <View style={styles.returnedItems}>
-                  <View style={styles.returnedItem}>
-                    <View style={styles.circle}>
-                      <Text style={styles.circleNumber}>
-                        {this.state.returnedSleeve}
-                      </Text>
-                    </View>
-                    <Text style={styles.returnedItemText}>sleeve</Text>
-                  </View>
-                  <View style={styles.returnedItem}>
-                    <View style={styles.circle}>
-                      <Text style={styles.circleNumber}>
-                        {this.state.returnedCup}
-                      </Text>
-                    </View>
-                    <Text style={styles.returnedItemText}>cup</Text>
-                  </View>
-                  <View style={styles.returnedItem}>
-                    <View style={styles.circle}>
-                      <Text style={styles.circleNumber}>
-                        {this.state.returnedLid}
-                      </Text>
-                    </View>
-                    <Text style={styles.returnedItemText}>lid</Text>
-                  </View>
+              <ScrollView
+                style={styles.scrollViewH}
+                horizontal
+                scrollEnabled
+                showsHorizontalScrollIndicator={false}>
+                <View style={styles.card}>
+                  <LidSleeveCup
+                    width={_defz.width / 4}
+                    height={_defz.height / 7}
+                  />
+                  <Text style={styles.cardNumber}>
+                    {this.props.onDemand.lid_sleeve_cup}
+                  </Text>
                 </View>
-              </View>
 
-              <View style={styles.returned}>
-                <Text style={styles.returnedText}>b.Bags </Text>
-                <View style={styles.returnedItems}>
-                  <View style={styles.returnedBag}>
-                    <View style={styles.circle}>
-                      <Text style={styles.circleNumber}>
-                        {this.state.returnedBag}
-                      </Text>
+                <View style={styles.card}>
+                  <Bag width={_defz.width / 4} height={_defz.height / 7} />
+                  <Text style={styles.cardNumber}>
+                    {this.props.onDemand.bag}
+                  </Text>
+                </View>
+
+                <View style={styles.card}>
+                  <EmptyGlass
+                    width={_defz.width / 4}
+                    height={_defz.height / 7}
+                  />
+                  <Text style={styles.cardNumber}>
+                    {this.props.onDemand.cup}
+                  </Text>
+                </View>
+
+                <View style={styles.card}>
+                  <LidCup width={_defz.width / 1} height={_defz.height / 7} />
+                  <Text style={styles.cardNumber}>
+                    {this.props.onDemand.lid_cup}
+                  </Text>
+                </View>
+              </ScrollView>
+            </View>
+
+            <View style={styles.row}>
+              <View style={styles.headingRow}>
+                <Button
+                  transparent
+                  style={styles.editButton}
+                  onPress={() =>
+                    this.props.navigation.navigate('onDemandStage2')
+                  }>
+                  <Text style={styles.editButtonText}>Edit</Text>
+                </Button>
+                <Text style={styles.title}>Returned</Text>
+              </View>
+              <View style={styles.main}>
+                <View style={styles.returned}>
+                  <Text style={styles.returnedText}>b.Cups </Text>
+                  <View style={styles.returnedItems}>
+                    <View style={styles.returnedItem}>
+                      <View style={styles.circle}>
+                        <Text style={styles.circleNumber}>
+                          {this.state.returnedSleeve}
+                        </Text>
+                      </View>
+                      <Text style={styles.returnedItemText}>sleeve</Text>
+                    </View>
+                    <View style={styles.returnedItem}>
+                      <View style={styles.circle}>
+                        <Text style={styles.circleNumber}>
+                          {this.state.returnedCup}
+                        </Text>
+                      </View>
+                      <Text style={styles.returnedItemText}>cup</Text>
+                    </View>
+                    <View style={styles.returnedItem}>
+                      <View style={styles.circle}>
+                        <Text style={styles.circleNumber}>
+                          {this.state.returnedLid}
+                        </Text>
+                      </View>
+                      <Text style={styles.returnedItemText}>lid</Text>
                     </View>
                   </View>
                 </View>
+
+                <View style={styles.returned2}>
+                  <Text style={styles.returnedText}>b.Bags </Text>
+                  <View style={styles.returnedItems}>
+                    <View style={styles.returnedBag}>
+                      <View style={styles.circle}>
+                        <Text style={styles.circleNumber}>
+                          {this.state.returnedBag}
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                </View>
               </View>
             </View>
-            <View style={styles.tip}>
-              <Text style={styles.tipHead}>Lost or broken a part?</Text>
-              <Button
-                transparent
-                onPress={() => this.props.navigation.navigate('Terms')}>
-                <Text style={styles.tipTerms}>
-                  Click here to reduce waste and fees.
-                </Text>
+
+            <View
+              style={{
+                flexDirection: 'row',
+                
+              }}>
+              <View style={styles.tip}>
+                <Text style={styles.tipHead}>Your ticket will be verified in-store.</Text>
+                <Button
+                  transparent
+                  onPress={() => this.props.navigation.navigate('Terms')}>
+                  <Text style={styles.tipTerms}>
+                    having problem verifying?
+                  </Text>
+                </Button>
+              </View>
+              <Button transparent style={styles.verifyButton}>
+                <Verify width={_defz.width/2.7} height={_defz.width/2}  />
               </Button>
             </View>
             <View style={{marginTop: 100}} />

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Text, View, ScrollView, TouchableOpacity, Alert} from 'react-native';
-import {CardItem, Right, Left, Icon} from 'native-base';
+import {CardItem, Right, Left, Icon, Button} from 'native-base';
 import {styles} from './styles/transactions.styles';
 
 import {selectUserToken} from '../../redux/user/user.selectors';
@@ -34,9 +34,9 @@ class Transactions extends Component {
           this.setState({isLoading: false});
           console.log(jsonBeautify(response));
           if (response.status === 200) {
-            this.setState({
+           this.setState({
               transactions: response.transactions,
-            });
+            });  
           }
           if (response.status === 400) {
             Alert.alert('Error', response.errors[0].message, [{text: 'ok'}], {
@@ -54,13 +54,28 @@ class Transactions extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Headers route={'Transactions'} navigation={this.props.navigation} />
-        <View style={styles.content}>
-          {this.state.isLoading ? (
-            <Loader />
-          ) : (
-            <ScrollView>
-              <View>
+        {this.state.isLoading ? (
+          <Loader />
+        ) : (
+          <View style={styles.main}>
+            <View style={styles.heading}>
+              <Button
+                transparent
+                style={styles.headerXbutton}
+                onPress={() => this.props.navigation.goBack()}>
+                <Icon
+                  name="closecircleo"
+                  type="AntDesign"
+                  style={styles.headerXIcon}
+                />
+              </Button>
+            </View>
+            <Headers
+              route={'Transactions'}
+              navigation={this.props.navigation}
+            />
+            <ScrollView style={{height:_defz.height,backgroundColor: '#FAFAFA'}}>
+              <View style={styles.content}>
                 {this.state.transactions
                   ? this.state.transactions.map(item => {
                       return (
@@ -98,8 +113,8 @@ class Transactions extends Component {
               </View>
               <View style={{marginTop: 100}} />
             </ScrollView>
-          )}
-        </View>
+          </View>
+        )}
         <Footers navigation={this.props.navigation} route={'account'} />
       </View>
     );

@@ -111,7 +111,7 @@ export const styles = StyleSheet.create({
   },
   statusText: {
     fontFamily: 'FuturaPT-Book',
-    fontSize: 20,
+    fontSize: 19,
     color: '#707070',
   },
   timeCircle: {

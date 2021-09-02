@@ -127,6 +127,7 @@ class home extends Component {
     ];
 
     this.state = {
+      searchload: false,
       loading_like: false,
       loading: true,
       acctive_shop: '',
@@ -271,7 +272,29 @@ class home extends Component {
       Alert.alert(error);
     }
   }
+
+  async search_store(parm_data) {
+    try {
+      await _defz
+        .get_via_token('user/home' + parm_data, 'GET', this.props.token)
+        .then(response => {
+          if (response.status === 200) {
+            if (response.departments) {
+              this.setState({departments: response.departments});
+            }
+            if (response.vendors) {
+              this.setState({vendors: response.vendors});
+            }
+          }
+          this.setState({searchload: false});
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   async get_store(parm_data) {
+    console.log('data');
     this.setState({loader_Text: 'Get Store Data'});
     const {navigate} = this.props.navigation;
     try {
@@ -283,6 +306,9 @@ class home extends Component {
         this.setState({loader_Text: 'Get Store Data Liked'});
       }
       this.setState({loading: true});
+      /*       if (!String(parm_data).substr(0,6) == '?search=') {
+        this.setState({loading: true});
+      } */
 
       await _defz
         .get_via_token('user/home' + params, 'GET', this.props.token)
@@ -319,6 +345,7 @@ class home extends Component {
     }
   }
   async get_store_via_location() {
+    console.log('location');
     this.setState({loading: true, fetchData: true});
     this.setState({loader_Text: 'Get Store data via Your Location'});
     const {navigate} = this.props.navigation;
@@ -465,7 +492,15 @@ class home extends Component {
                   onPress={() =>
                     this.get_store('?search=' + this.state.serach_txt)
                   }>
-                  <Icon name="ios-search" style={{color: 'black'}} />
+                  {!this.state.searchload == true ? (
+                    <Icon name="ios-search" style={{color: 'black'}} />
+                  ) : (
+                    <ActivityIndicator
+                      size="small"
+                      color="black"
+                      style={{marginLeft: '15%'}}
+                    />
+                  )}
                 </Button>
 
                 <Input
@@ -473,7 +508,20 @@ class home extends Component {
                   value={this.state.serach_txt}
                   style={styles.search_input}
                   onChangeText={text => {
-                    this.setState({serach_txt: text});
+                    this.setState({serach_txt: text}, () => {
+                      console.log(this.state.serach_txt);
+                      if (String(this.state.serach_txt).length > 3) {
+                        this.setState({searchload: true});
+                        this.search_store('?search=' + this.state.serach_txt);
+                      }
+                      if (String(this.state.serach_txt).length == 0) {
+                        this.setState({
+                          LOCATION_OPNED: false,
+                          location_loop: false,
+                          no_location_loop: false,
+                        });
+                      }
+                    });
                   }}
                 />
               </Item>
@@ -526,8 +574,8 @@ class home extends Component {
                 zoomLevel={1}
                 animationMode={'flyTo'}
               />
-              <MapboxGL.Light />
-              {this.state.LOCATION_OPNED ? <MapboxGL.UserLocation /> : null}
+       
+              {this.state.LOCATION_OPNED ? <MapboxGL.UserLocation androidRenderMode="compass"/> : null}
             </MapboxGL.MapView>
 
             {this.state.vendors !== null ? (
@@ -562,12 +610,14 @@ class home extends Component {
                             : styles.touch_style_open,
                         ]}>
                         {this.state.acctive_shop == item.id ? (
-                          <Button
+/*                           <Button
+                          transparent
                             style={styles.view_line_b}
                             onPress={() => {
                               this.setState({acctive_shop: ''});
                             }}
-                          />
+                          /> */
+                          <View style={styles.view_line_b} />
                         ) : null}
                         <SliderBox
                           images={img_arr}
@@ -707,11 +757,10 @@ class home extends Component {
                               <Icon
                                 name="check"
                                 type="AntDesign"
-                                size={25}
                                 style={{
                                   color: 'black',
                                   marginLeft: 'auto',
-                                  fontSize: 10,
+                                  size: 15,
                                 }}
                               />
                             ) : (
@@ -721,7 +770,7 @@ class home extends Component {
                                 style={{
                                   color: 'black',
                                   marginLeft: 'auto',
-                                  size: 10,
+                                  size: 15,
                                 }}
                               />
                             )}

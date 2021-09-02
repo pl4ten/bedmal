@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Text, View, ScrollView, Alert, TouchableOpacity} from 'react-native';
+import {CardItem, Right, Left, Button, Root, Icon} from 'native-base';
 import {styles} from './styles/borrow-receipt.styles';
 
 import {selectUserToken} from '../../redux/user/user.selectors';
@@ -62,39 +63,53 @@ class BorrowReceipt extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Headers
-          route={this.state.vendor_info ? this.state.vendor_info.name : null}
-          navigation={this.props.navigation}
-          message
-        />
-        <View style={styles.content}>
-          {this.state.isLoading ? (
-            <Loader />
-          ) : this.state.vendor_info && this.state.borrowReceipts ? (
-            <>
-              <View style={styles.head}>
-                <Text style={styles.headText} numberOfLines={1}>
-                  {this.state.vendor_info.address}
-                </Text>
-                <View style={styles.headBottom}>
-                  {this.state.activeBorrwed ? (
-                    <>
-                      <Text style={styles.headText}>
-                        Borrow receipt {this.state.activeBorrwed.ref_id}
-                      </Text>
-                      <Text style={styles.headText}>
-                        {this.state.activeBorrwed.due.split('T')[0]} |{' '}
-                        {this.state.activeBorrwed.due.split('T')[1].slice(0, 8)}
-                      </Text>
-                    </>
-                  ) : (
-                    <>
-                      <Text style={styles.headText}>Borrow receipt</Text>
-                      <Text style={styles.headText} />
-                    </>
-                  )}
-                </View>
+        {this.state.isLoading ? (
+          <Loader />
+        ) : this.state.vendor_info && this.state.borrowReceipts ? (
+          <View style={styles.content}>
+            <View style={styles.heading}>
+              <Button
+                transparent
+                style={styles.headerXbutton}
+                onPress={() => this.props.navigation.goBack()}>
+                <Icon
+                  name="closecircleo"
+                  type="AntDesign"
+                  style={styles.headerXIcon}
+                />
+              </Button>
+              <Headers
+                route={
+                  this.state.vendor_info ? this.state.vendor_info.name : null
+                }
+                navigation={this.props.navigation}
+                message
+              />
+            </View>
+            <View style={styles.head}>
+              <Text style={styles.headText} numberOfLines={1}>
+                {this.state.vendor_info.address}
+              </Text>
+              <View style={styles.headBottom}>
+                {this.state.activeBorrwed ? (
+                  <>
+                    <Text style={styles.headText}>
+                      Borrow receipt {this.state.activeBorrwed.ref_id}
+                    </Text>
+                    <Text style={styles.headText}>
+                      {this.state.activeBorrwed.due.split('T')[0]} |{' '}
+                      {this.state.activeBorrwed.due.split('T')[1].slice(0, 8)}
+                    </Text>
+                  </>
+                ) : (
+                  <>
+                    <Text style={styles.headText}>Borrow receipt</Text>
+                    <Text style={styles.headText} />
+                  </>
+                )}
               </View>
+            </View>
+            <ScrollView>
               <View style={styles.main}>
                 <Text style={styles.mainTitle}>Borrowed</Text>
                 <ScrollView
@@ -214,9 +229,10 @@ class BorrowReceipt extends Component {
                   </View>
                 </View>
               </View>
-            </>
-          ) : null}
-        </View>
+              <View style={{marginTop: 100}} />
+            </ScrollView>
+          </View>
+        ) : null}
         <Footers navigation={this.props.navigation} route={'account'} />
       </View>
     );

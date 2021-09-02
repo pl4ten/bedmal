@@ -4,16 +4,19 @@ let _defz = require('../../com/def');
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#FAFAFA',
   },
   cartItem: {
     borderBottomColor: '#F0F0F0',
-    borderBottomWidth: 2,
-    marginTop: 2,
-    paddingBottom: 5,
+    marginTop: 15,
+    paddingBottom: 10,
+    width: _defz.width,
+    left:"-15%",
+    color: 'white',
+    backgroundColor: 'white'
   },
   b1: {
-    width: _defz.width / 4,
+    width: _defz.width / 5,
     textTransform: 'capitalize',
     justifyContent: 'center',
     marginLeft: '5%',
@@ -51,8 +54,7 @@ export const styles = StyleSheet.create({
   text1: {
     color: 'gray',
     fontSize: 14,
-    alignSelf: 'center',
-
+marginRight: "5%",
     textTransform: 'capitalize',
   },
   chatAvatar: {
@@ -62,15 +64,18 @@ export const styles = StyleSheet.create({
   avatarBadge: {
     width: _defz.width / 50,
     height: _defz.width / 50,
-    marginTop: '20%',
+    marginTop: '10%',
     marginRight: '10%',
     color: '#E03174',
     elevation: 5,
+    margin:5
+
+  
   },
   avatarBadge2: {
     width: _defz.width / 50,
     height: _defz.width / 50,
-    marginTop: '20%',
+    marginTop: '10%',
     marginRight: '10%',
     color: 'white',
     elevation: 5,
@@ -97,7 +102,7 @@ export const styles = StyleSheet.create({
     margin: 5,
   },
   header: {
-    backgroundColor: '#fff',
+    backgroundColor: '#FAFAFA',
     flexDirection: 'row',
     alignItems: 'center',
     borderTopLeftRadius: 25,
@@ -129,7 +134,7 @@ export const styles = StyleSheet.create({
     marginLeft: 'auto',
   },
   heading: {
-    backgroundColor: 'white',
+    backgroundColor: '#FAFAFA',
     marginTop: '3%',
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,

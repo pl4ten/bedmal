@@ -5,18 +5,31 @@ export const styles = StyleSheet.create({
   container: {
     width: '100%',
     height: '100%',
-    backgroundColor: '#000',
   },
   content: {
     width: '100%',
     height: '100%',
     backgroundColor: '#FAFAFA',
   },
+  heading: {
+    backgroundColor: '#000',
+    width: '100%',
+  },
   card: {
     marginTop: _defz.height / 50,
     minHeight: _defz.height / 10,
     paddingLeft: _defz.width / 20,
     paddingRight: _defz.width / 20,
+  },
+  headerXbutton: {
+    alignSelf: 'flex-end',
+    marginTop: _defz.height / 50,
+  },
+  headerXicon: {
+    alignSelf: 'center',
+    color: 'silver',
+    fontSize: 35,
+    margin: 5,
   },
   cardTitle: {
     fontFamily: 'FuturaPT-Book',

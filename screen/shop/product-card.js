@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     width: '100%',
     borderBottomRightRadius: 10,
     borderBottomLeftRadius: 10,
-    height: 160,
+    height: 165,
   },
   price: {
     color: '#707070',

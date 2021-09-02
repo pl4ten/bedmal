@@ -300,7 +300,7 @@ class OnDemandStage2 extends Component {
               </Text>
             </Button>
           </View>
-          <ImageBackground source={BorrowBG} style={styles.borrowBG}>
+          <ImageBackground source={BorrowBG}resizeMode={'stretch'}  style={styles.borrowBG}>
             {!this.state.selectedReturns.length ? (
               <Text style={styles.noReturnsText}>No returns</Text>
             ) : (

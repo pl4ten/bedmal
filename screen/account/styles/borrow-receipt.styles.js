@@ -5,7 +5,19 @@ export const styles = StyleSheet.create({
   container: {
     width: '100%',
     height: '100%',
+  },
+  heading: {
     backgroundColor: '#000',
+  },
+  headerXbutton: {
+    alignSelf: 'flex-end',
+    marginTop: 5,
+  },
+  headerXIcon: {
+    alignSelf: 'center',
+    color: 'silver',
+    fontSize: 35,
+    margin: 5,
   },
   content: {
     width: '100%',
@@ -39,17 +51,17 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 10,
-    marginTop: 10,
+    marginTop: -20,
     flexWrap: 'wrap',
   },
   main: {
-    backgroundColor: '#FAFAFA',
+    backgroundColor: 'white',
     padding: 20,
     width: '100%',
   },
   mainTitle: {
     fontFamily: 'FuturaPT-Medium',
-    fontSize: 16,
+    fontSize: 30,
     color: '#000000',
   },
   bottom: {

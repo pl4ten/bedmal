@@ -264,4 +264,18 @@ export const styles = StyleSheet.create({
     fontSize: 13,
     borderRadius: 15,
   },
+  homeButtonWithBadge: {
+    position: 'relative',
+    bottom:10
+  },
+  badgeCircle: {
+    position: 'absolute',
+    right: -5,
+    top: 10,
+    backgroundColor: '#E03174',
+    borderRadius: 400,
+    width: 20,
+    height: 20,
+    zIndex: 10,
+  },
 });

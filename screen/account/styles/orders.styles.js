@@ -5,12 +5,24 @@ export const styles = StyleSheet.create({
   container: {
     width: '100%',
     height: '100%',
-    backgroundColor: '#000',
+  },
+  headerXbutton: {
+    alignSelf: 'flex-end',
+  },
+  headerXIcon: {
+    alignSelf: 'center',
+    color: 'silver',
+    fontSize: 35,
+    margin: 5,
   },
   content: {
     width: '100%',
     height: '100%',
     backgroundColor: '#FAFAFA',
+  },
+  main: {
+    // borderRadius: 40,
+    backgroundColor: '#000',
   },
   card: {
     marginTop: 20,
@@ -73,4 +85,8 @@ export const styles = StyleSheet.create({
     fontSize: 20,
     color: '#707070',
   },
+  heading: {
+    backgroundColor: '#000',
+    width: '100%',
+  }
 });

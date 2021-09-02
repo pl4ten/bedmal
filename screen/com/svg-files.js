@@ -19,6 +19,7 @@ import OnDemandActiveSvg from '../../asset/svg/onDemand-active.svg';
 // ------------------------
 import BagActiveSvg from '../../asset/svg/bag-active.svg';
 import BagInActiveSvg from '../../asset/svg/bag-inActive.svg';
+import Bag2Svg from '../../asset/svg/Bag2.svg';
 // ------------------------
 
 // ohter svg's
@@ -52,6 +53,7 @@ import SleeveCupSvg from '../../asset/svg/sleeve_cup.svg';
 import AlertsOnSvg from '../../asset/svg/alertOn.svg';
 import AlertsOffSvg from '../../asset/svg/alertOff.svg';
 import ConfirmSvg from '../../asset/svg/confirm.svg';
+import VerifySvg from '../../asset/svg/verify.svg';
 
 // footer items
 export class FooterActive extends React.Component {
@@ -153,6 +155,20 @@ export class BagInActive extends React.Component {
     );
   }
 }
+
+export class Bag2 extends React.Component {
+  render() {
+    return (
+      <View style={styles.logoContainer}>
+        <Bag2Svg width={_defz.width / 10} height={_defz.width / 12} />
+        <Text numberOfLines={1} style={styles.text}>
+          Bag
+        </Text>
+      </View>
+    );
+  }
+}
+
 export class BagActive extends React.Component {
   render() {
     return (
@@ -343,6 +359,11 @@ export class AlertsOff extends React.Component {
 export class Confirm extends React.Component {
   render() {
     return <ConfirmSvg width={this.props.width} height={this.props.height} />;
+  }
+}
+export class Verify extends React.Component {
+  render() {
+    return <VerifySvg width={this.props.width} height={this.props.height} />;
   }
 }
 

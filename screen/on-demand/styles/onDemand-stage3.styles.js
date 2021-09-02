@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
     color: '#757575',
   },
   mainScrollView: {
-    backgroundColor: '#FAFAFA',
+    backgroundColor: '#fff',
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     width: '100%',
@@ -124,10 +124,10 @@ export const styles = StyleSheet.create({
     color: '#707070',
   },
   tip: {
-    backgroundColor: '#F0F0F0',
+    width: "60%",
     marginTop: 10,
     alignSelf: 'flex-start',
-    marginLeft: _defz.width / 30,
+    marginLeft: "-5%",
     borderRadius: 10,
     paddingVertical: 10,
     paddingHorizontal: 20,
@@ -186,12 +186,12 @@ export const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 12,
+      height: 5,
     },
     shadowOpacity: 0.58,
     shadowRadius: 16.0,
 
-    elevation: 24,
+    elevation: 10,
   },
   editButtonText: {
     fontFamily: 'FuturaPT-Medium',
@@ -213,11 +213,22 @@ export const styles = StyleSheet.create({
     marginTop: 20,
     elevation: 3,
   },
+  returned2: {
+    backgroundColor: '#000',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 10,
+    borderRadius: 10,
+    marginTop: 20,
+    elevation: 3,
+    width: "60%",
+  },
   returnedText: {
     fontFamily: 'FuturaPT-Medium',
     fontSize: 20,
     color: '#FFF',
-    flex: 1,
+
   },
   returnedItems: {
     flex: 4,
@@ -259,5 +270,15 @@ export const styles = StyleSheet.create({
     fontSize: 35,
     color: '#000000',
     fontWeight: '100',
+  },
+  row: {
+    marginTop: 10,
+    backgroundColor: '#FAFAFA',
+    width: '100%',
+  },
+  verifyButton: {
+    alignSelf: 'center',
+marginLeft: 5
+
   },
 });

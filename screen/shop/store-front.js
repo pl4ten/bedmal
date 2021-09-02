@@ -17,6 +17,7 @@ import {
   HomeInActive,
   BagInActive,
   SearchBox,
+  Bag2
 } from '../com/svg-files';
 
 import ProductCard from './product-card';
@@ -25,6 +26,7 @@ import smallLogo from '../../asset/img/small-logo.png';
 import Loader from '../com/loader';
 
 import {selectUserToken} from '../../redux/user/user.selectors';
+import {selectBagItems} from '../../redux/store/store.selectors';
 import {connect} from 'react-redux';
 
 let _defz = require('../com/def');
@@ -64,6 +66,7 @@ class StoreFront extends React.Component {
               vendorInfo: response.vendor_info,
               isLoading: false,
             });
+            console.log( response.vendor_info)
           }
           if (response.status === 400) {
             Alert.alert('Error', response.errors[0].message, [{text: 'ok'}], {
@@ -72,15 +75,20 @@ class StoreFront extends React.Component {
           }
         });
     } catch (error) {
-      Alert.alert('Error', "error in store data.", [    
+      Alert.alert(
+        'Error',
+        'error in store data.',
+        [
+          {
+            text: 'OK',
+            onPress: () => this.props.navigation.goBack(),
+            style: 'OK',
+          },
+        ],
         {
-          text: "OK",
-          onPress: () =>this.props.navigation.goBack(),
-          style: "OK",
-        },
-      ], {
           cancelable: false,
-        });
+        },
+      );
       console.log(error);
     }
   }
@@ -105,15 +113,20 @@ class StoreFront extends React.Component {
           }
         });
     } catch (error) {
-      Alert.alert('Error', "error in product data.", [    
+      Alert.alert(
+        'Error',
+        'error in product data.',
+        [
+          {
+            text: 'OK',
+            onPress: () => this.props.navigation.goBack(),
+            style: 'OK',
+          },
+        ],
         {
-          text: "OK",
-          onPress: () =>this.props.navigation.goBack(),
-          style: "OK",
-        },
-      ], {
           cancelable: false,
-        });
+        },
+      );
       console.log(error);
     }
   }
@@ -128,6 +141,7 @@ class StoreFront extends React.Component {
 
   render() {
     let vendorID = this.props.navigation.state.params.id;
+    console.log(this.props.bag.length);
     return !this.state.isLoading ? (
       <View style={styles.sotreFront}>
         <View style={styles.header}>
@@ -242,12 +256,24 @@ class StoreFront extends React.Component {
             }>
             <SearchBox />
           </Button>
-          <Button
-            style={styles.homeButton}
-            transparent
-            onPress={() => this.props.navigation.navigate('bag', {x: 1})}>
-            <BagInActive />
-          </Button>
+          {this.props.bag.length > 0 ? (
+            <View style={styles.homeButtonWithBadge}>
+              <View style={styles.badgeCircle} />
+              <Button
+                style={styles.homeButton}
+                transparent
+                onPress={() => this.props.navigation.navigate('bag', {x: 1})}>
+                <Bag2 />
+              </Button>
+            </View>
+          ) : (
+            <Button
+              style={styles.homeButton}
+              transparent
+              onPress={() => this.props.navigation.navigate('bag', {x: 1})}>
+              <BagInActive />
+            </Button>
+          )}
         </View>
         <View style={styles.centeredView}>
           <Modal
@@ -272,9 +298,9 @@ class StoreFront extends React.Component {
                 {this.state.vendorInfo ? (
                   <View>
                     <View style={styles.pickupHeading}>
-                      <Text>{this.state.vendorInfo.name}</Text>
-                      <Text>{this.state.vendorInfo.address}</Text>
-                      <Text>{this.state.vendorInfo.postal_code}</Text>
+                      <Text style={styles.styles_names}>{this.state.vendorInfo.name}</Text>
+                      <Text style={styles.styles_names2}>{this.state.vendorInfo.address} {this.state.vendorInfo.postal_code}</Text>
+    
                     </View>
                     <View style={styles.pickupInfo}>
                       <View style={styles.workTimes}>
@@ -322,6 +348,10 @@ class StoreFront extends React.Component {
                         </View>
                       </View>
                     </View>
+
+
+
+
                     <View style={styles.optionsContainer}>
                       <View style={styles.modalOptionsHeading}>
                         <Image source={smallLogo} />
@@ -377,8 +407,8 @@ class StoreFront extends React.Component {
     );
   }
 }
-
 const mapStateToProps = state => ({
   token: selectUserToken(state),
+  bag: selectBagItems(state),
 });
 export default connect(mapStateToProps)(StoreFront);

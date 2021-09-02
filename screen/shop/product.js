@@ -108,15 +108,20 @@ class Product extends Component {
           }
         });
     } catch (error) {
-      Alert.alert('Error', "error in product data read.", [    
-      {
-        text: "OK",
-        onPress: () =>this.props.navigation.goBack(),
-        style: "OK",
-      },
-    ], {
-        cancelable: false,
-      });
+      Alert.alert(
+        'Error',
+        'error in product data read.',
+        [
+          {
+            text: 'OK',
+            onPress: () => this.props.navigation.goBack(),
+            style: 'OK',
+          },
+        ],
+        {
+          cancelable: false,
+        },
+      );
       console.log(error);
     }
   }
@@ -158,7 +163,7 @@ class Product extends Component {
           }
         });
     } catch (error) {
-      Alert.alert('Error', "error in add address.", [{text: 'ok'}], {
+      Alert.alert('Error', 'error in add address.', [{text: 'ok'}], {
         cancelable: true,
       });
       console.log(error);
@@ -272,57 +277,59 @@ class Product extends Component {
   }
   renderPickUpModal() {
     const {pickup} = this.state.fulfillment;
+    console.log(pickup)
     return (
       <View style={{width: '100%'}}>
         <View style={styles.pickupHeading}>
-          <Text>{pickup.vendor_name}</Text>
-          <Text>{pickup.vendor_address}</Text>
-          <Text>{pickup.vendor_postal_code}</Text>
+
+          <Text style={styles.styles_names}>{pickup.vendor_name}</Text>
+                      <Text style={styles.styles_names2}>{pickup.vendor_address} {pickup.vendor_postal_code}</Text>
+    
         </View>
         <View style={styles.pickupInfo}>
           <Text style={styles.pickupInfoTitle}>
-            {pickup.pickup_info.data.estimated_time}
+            Est. {pickup.pickup_info.data.estimated_time}
           </Text>
           <View style={styles.workTimes}>
             <View style={styles.workTime}>
               <Text style={styles.workTimeText}>Monday</Text>
-              <Text style={styles.workTimeText}>
+              <Text style={styles.workTimeText2}>
                 {pickup.vendor_opening_hours.mon.join('-')}
               </Text>
             </View>
             <View style={styles.workTime}>
               <Text style={styles.workTimeText}>Tuesday</Text>
-              <Text style={styles.workTimeText}>
+              <Text style={styles.workTimeText2}>
                 {pickup.vendor_opening_hours.tue.join('-')}
               </Text>
             </View>
             <View style={styles.workTime}>
               <Text style={styles.workTimeText}>Wednesday</Text>
-              <Text style={styles.workTimeText}>
+              <Text style={styles.workTimeText2}>
                 {pickup.vendor_opening_hours.wed.join('-')}
               </Text>
             </View>
             <View style={styles.workTime}>
               <Text style={styles.workTimeText}>Thursday</Text>
-              <Text style={styles.workTimeText}>
+              <Text style={styles.workTimeText2}>
                 {pickup.vendor_opening_hours.thu.join('-')}
               </Text>
             </View>
             <View style={styles.workTime}>
               <Text style={styles.workTimeText}>Friday</Text>
-              <Text style={styles.workTimeText}>
+              <Text style={styles.workTimeText2}>
                 {pickup.vendor_opening_hours.fri.join('-')}
               </Text>
             </View>
             <View style={styles.workTime}>
               <Text style={styles.workTimeText}>Saturday</Text>
-              <Text style={styles.workTimeText}>
+              <Text style={styles.workTimeText2}>
                 {pickup.vendor_opening_hours.sat.join('-')}
               </Text>
             </View>
             <View style={styles.workTime}>
               <Text style={styles.workTimeText}>Sunday</Text>
-              <Text style={styles.workTimeText}>
+              <Text style={styles.workTimeText2}>
                 {pickup.vendor_opening_hours.sun.join('-')}
               </Text>
             </View>
@@ -330,9 +337,10 @@ class Product extends Component {
         </View>
 
         <View style={styles.pickupOptionsContainer}>
-          <Text style={{marginLeft: '7%'}}>Available options</Text>
+          <Text style={{color: "#707070",fontFamily: 'FuturaPT',fontSize:14 }}>Available options</Text>
           <ImageBackground
             source={OptionsBG}
+            resizeMode={'stretch'}
             style={styles.modalOptionBackground}>
             <View style={styles.pickupOptions}>
               {this.state.fulfillment.pickup.pickup_info
@@ -343,7 +351,7 @@ class Product extends Component {
                     type="AntDesign"
                     style={styles.checkButton}
                   />
-                  <Text>Return BorrowBags</Text>
+                  <Text style={styles.optionText}>Return BorrowBags</Text>
                 </View>
               ) : (
                 <View style={styles.pickupOption}>
@@ -352,27 +360,27 @@ class Product extends Component {
                     type="AntDesign"
                     style={styles.checkButton}
                   />
-                  <Text>Return BorrowBags</Text>
+                  <Text style={styles.optionText}>Return BorrowBags</Text>
                 </View>
               )}
               {this.state.fulfillment.pickup.pickup_info.pack_in_borrow_bags ===
               1 ? (
-                <View style={styles.pickupOption}>
+                <View style={styles.pickupOption2}>
                   <Icon
                     name="check"
                     type="AntDesign"
                     style={styles.checkButton}
                   />
-                  <Text>Packed in BorrowBags</Text>
+                  <Text style={styles.optionText}>Packed in BorrowBags</Text>
                 </View>
               ) : (
-                <View style={styles.pickupOption}>
+                <View style={styles.pickupOption2}>
                   <Icon
                     name="close"
                     type="AntDesign"
                     style={styles.checkButton}
                   />
-                  <Text>Packed in BorrowBags</Text>
+                  <Text style={styles.optionText}>Packed in BorrowBags</Text>
                 </View>
               )}
             </View>
@@ -401,7 +409,7 @@ class Product extends Component {
     const {delivery} = this.state.fulfillment;
     return (
       <View style={{marginTop: 15, width: '100%'}}>
-        <Text>Pick a delivery address</Text>
+        <Text style={{color: "black", fontFamily: 'FuturaPT-Medium',fontSize:16,alignSelf: 'center'}}>Pick a delivery address</Text>
         <View style={{marginTop: 15, width: '100%'}}>
           {delivery ? (
             <ScrollView
@@ -503,12 +511,13 @@ class Product extends Component {
               </View>
             )
           ) : null}
-
+          <Text style={{color: "#707070",fontFamily: 'FuturaPT',fontSize:14,marginTop: 20}}>Available options</Text>
           <ImageBackground
             source={OptionsBG}
+            resizeMode={'stretch'}
             style={styles.modalOptionBackground}>
-            <View style={styles.deliveryPickupOptions}>
-              <View style={styles.pickupOption}>
+            <View style={styles.pickupOptions}>
+              <View style={[styles.pickupOption,{marginLeft: "10%"}]}>
                 <Icon
                   name={
                     this.state.serverDeliveryInfo.return_borrow_products === 1
@@ -522,7 +531,7 @@ class Product extends Component {
                   Return BorrowCups & BorrowBags
                 </Text>
               </View>
-              <View style={styles.pickupOption}>
+              <View style={[styles.pickupOption2,{marginLeft: "10%"}]}>
                 <Icon
                   name={
                     this.state.serverDeliveryInfo.pack_in_borrow_bags === 1
@@ -746,6 +755,7 @@ class Product extends Component {
                 {this.state.borrowCop ? (
                   <ImageBackground
                     source={BorrowTrue}
+                    resizeMode={'stretch'}
                     style={styles.optionBackgroundTrue}>
                     <View style={styles.BorrowTrueHeading}>
                       <Text style={styles.optionsTitleText}>
@@ -761,6 +771,9 @@ class Product extends Component {
                         }>
                         {this.state.borrowCop ? <SwitchOn /> : <SwitchOff />}
                       </Button>
+                    </View>
+                    <View style={styles.BorrowTrueHeading}>
+                      <Text style={styles.borrowSubtitle}>Pick a combo</Text>
                     </View>
                     <View style={styles.BorrowTrueContent}>
                       <Button
@@ -811,10 +824,21 @@ class Product extends Component {
                         </Text>
                       </Button>
                     </View>
+                    <View style={styles.optionsTip}>
+                      <Text style={styles.optionsTipText1}>
+                        5-days to return to any partner store
+                      </Text>
+                      <Text
+                        style={styles.optionsTipText2}
+                        onPress={() => this.props.navigation.navigate('Terms')}>
+                        see terms
+                      </Text>
+                    </View>
                   </ImageBackground>
                 ) : (
                   <ImageBackground
                     source={OptionsBG}
+                    resizeMode={'stretch'}
                     style={styles.optionBackgroundFalse}>
                     <Text style={styles.optionsTitleText}>
                       In a free BorrowCup?
@@ -891,6 +915,9 @@ class Product extends Component {
             }}>
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
+                {this.state.modalPickUp || this.state.modalDelivery ? null : (
+                  <Text style={styles.modalTitle}>Choose fulfilment</Text>
+                )}
                 <View style={styles.modalButtons}>
                   {pickup ? (
                     <Button

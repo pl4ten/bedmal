@@ -5,7 +5,19 @@ export const styles = StyleSheet.create({
   container: {
     width: '100%',
     height: '100%',
+  },
+  main: {
     backgroundColor: '#000',
+  },
+  headerXbutton: {
+    alignSelf: 'flex-end',
+    marginTop: 5,
+  },
+  headerXIcon: {
+    alignSelf: 'center',
+    color: 'silver',
+    fontSize: 35,
+    margin: 5,
   },
   content: {
     width: '100%',

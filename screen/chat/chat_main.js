@@ -30,7 +30,6 @@ let lodings = false;
 let paging = false;
 let _defz = require('../com/def');
 var Footers = require('../com/footer').default;
-var Headers = require('../com/header').default;
 let timer;
 class chat_main extends Component {
   constructor() {
@@ -78,61 +77,64 @@ class chat_main extends Component {
       let items = [];
       this.state.chatdata.map((dataItem, i) => {
         items.push(
-          <List style={{}}>
-            <ListItem noBorder avatar style={styles.cartItem}>
+          <ListItem noBorder avatar style={styles.cartItem}>
+            <TouchableOpacity
+              activeOpacity={1}
+              style={styles.chatAvatar}
+              onPress={() => this.nav(dataItem)}>
+              <Left style={{}}>
+                {dataItem.new_message ? (
+                  <Icon
+                    name="circle"
+                    type="FontAwesome"
+                    style={styles.avatarBadge}
+                  />
+                ) : (
+                  <Icon
+                    name="circle"
+                    type="FontAwesome"
+                    style={styles.avatarBadge2}
+                  />
+                )}
+                {dataItem.receiver.type == 'super_admin' ? (
+                  <Thumbnail
+                    style={{
+                      backgroundColor: 'white',
+                      borderWidth: 1,
+                      borderColor: 'black',
+                      marginTop: -15
+                    }}
+                    source={require('../../asset/img/playstore-icon.png')}
+                  />
+                ) : (
+                  <Thumbnail
+                    style={{backgroundColor: 'white',    marginTop: -15}}
+                    source={{
+                      uri:
+                        'http://bedmal-core.aralstudio.top' +
+                        dataItem.receiver.image_gallery[0],
+                    }}
+                  />
+                )}
+              </Left>
+            </TouchableOpacity>
+            <Body>
               <TouchableOpacity
                 activeOpacity={1}
-                style={styles.chatAvatar}
+                style={styles.chatInfo}
                 onPress={() => this.nav(dataItem)}>
-                <Left style={{}}>
-                  {dataItem.new_message ? (
-                    <Icon
-                      name="circle"
-                      type="FontAwesome"
-                      style={styles.avatarBadge}
-                    />
-                  ) : (
-                    <Icon
-                      name="circle"
-                      type="FontAwesome"
-                      style={styles.avatarBadge2}
-                    />
-                  )}
-                  {dataItem.receiver.type == 'super_admin' ? (
-                    <Thumbnail
-                      style={{
-                        backgroundColor: 'white',
-                        borderWidth: 1,
-                        borderColor: 'black',
-                      }}
-                      source={require('../../asset/img/playstore-icon.png')}
-                    />
-                  ) : (
-                    <Thumbnail
-                      style={{backgroundColor: 'white'}}
-                      source={{
-                        uri:
-                          'http://bedmal-core.aralstudio.top' +
-                          dataItem.receiver.image_gallery[0],
-                      }}
-                    />
-                  )}
-                </Left>
+                <Text>{dataItem.receiver.name}</Text>
+                <Text note>{dataItem.last_message.message}</Text>
               </TouchableOpacity>
-              <Body>
-                <TouchableOpacity
-                  activeOpacity={1}
-                  style={styles.chatInfo}
-                  onPress={() => this.nav(dataItem)}>
-                  <Text>{dataItem.receiver.name}</Text>
-                  <Text note>{dataItem.last_message.message}</Text>
-                </TouchableOpacity>
-              </Body>
-              <Right>
-                <Text note>{dataItem.created_at.slice(0, 11)}</Text>
-              </Right>
-            </ListItem>
-          </List>,
+            </Body>
+            <Right>
+              <Text note style={{marginRight: '8%',marginTop: -3}}>
+                {String(dataItem.created_at.slice(0, 11))
+                  .replace('-', '/')
+                  .replace('-', '/')}
+              </Text>
+            </Right>
+          </ListItem>,
         );
       });
 
@@ -245,7 +247,7 @@ class chat_main extends Component {
             </CardItem>
           </View>
 
-          <ScrollView>
+          <ScrollView style={{marginTop: 5,width: _defz.width,}}>
             <View style={{height: _defz.height / 80}} />
             {this.renderItems()}
 
@@ -259,7 +261,7 @@ class chat_main extends Component {
             {lodings === true && paging === false ? (
               <ActivityIndicator size="large" color="grey" />
             ) : null}
-            <View style={{marginTop: 80}} />
+            <View style={{marginTop: 200}} />
           </ScrollView>
           <Footers navigation={this.props.navigation} route={'account'} />
         </View>

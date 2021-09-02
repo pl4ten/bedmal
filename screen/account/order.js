@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Text, StyleSheet, View, ScrollView, Modal, Alert} from 'react-native';
-import {CardItem, Right, Left, Button} from 'native-base';
+import {CardItem, Right, Left, Button, Icon} from 'native-base';
 import {styles} from './styles/order.styles';
 
 import Headers from '../com/header';
@@ -111,16 +111,28 @@ class Order extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Headers
-          route={'Order'}
-          message={'chat_main'}
-          navigation={this.props.navigation}
-        />
-        <View style={styles.content}>
-          {this.state.isLoading ? (
-            <Loader />
-          ) : this.state.order && this.state.products ? (
-            <>
+        {this.state.isLoading ? (
+          <Loader />
+        ) : this.state.order && this.state.products ? (
+          <>
+            <View style={styles.content}>
+              <View style={styles.heading}>
+              <Button
+                transparent
+                style={styles.headerXbutton}
+                onPress={() => this.props.navigation.goBack()}>
+                <Icon
+                  name="closecircleo"
+                  type="AntDesign"
+                  style={styles.headerXicon}
+                />
+              </Button>
+              <Headers
+                route={'Order'}
+                message={'chat_main'}
+                navigation={this.props.navigation}
+              />
+              </View>
               <View style={styles.info}>
                 <View style={styles.infoLeft}>
                   <Text style={styles.infoText}>Date</Text>
@@ -227,9 +239,9 @@ class Order extends Component {
                 </View>
                 <View style={{marginTop: 200}} />
               </ScrollView>
-            </>
-          ) : null}
-        </View>
+            </View>
+          </>
+        ) : null}
         <Footers navigation={this.props.navigation} route={'account'} />
         <View style={styles.centeredView}>
           <Modal

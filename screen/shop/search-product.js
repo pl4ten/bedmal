@@ -10,12 +10,16 @@ import {
 import {Button, Header, Icon, Item, Input} from 'native-base';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import MapboxGL, {MarkerView} from '@react-native-mapbox-gl/maps';
-import {SearchBoxBlue, HomeInActive, BagInActive} from '../com/svg-files';
+import {SearchBoxBlue, HomeInActive, BagInActive,Bag2} from '../com/svg-files';
 import {SliderBox} from 'react-native-image-slider-box';
 import ProductCard from './product-card';
 import {styles} from './styles/search-product';
 import {Keyboard} from 'react-native';
 import {PermissionsAndroid} from 'react-native';
+import {selectUserToken} from '../../redux/user/user.selectors';
+import {connect} from 'react-redux';
+import {selectBagItems} from '../../redux/store/store.selectors';
+import Geolocation from '@react-native-community/geolocation';
 const {jsonBeautify} = require('beautify-json');
 let _defz = require('../com/def');
 const marker_Local_Image = [
@@ -123,16 +127,13 @@ class SearchProduct extends Component {
         params = parm_data;
       }
       await _defz
-        .get_via_token('user/home' + params, 'GET', _defz._token)
+        .get_via_token('user/home' + params, 'GET', this.props.token)
         .then(response => {
           console.log(response.departments);
           if (response.status === 200) {
             if (response.vendors) {
               this.setState({vendors: response.vendors});
             }
-          }
-          if (response.status === 400) {
-            navigate('usermain');
           }
           this.setState({loading: false});
         });
@@ -150,7 +151,7 @@ class SearchProduct extends Component {
             this.state.searchType === 'all' ? null : id
           }`,
           'GET',
-          _defz._token,
+          this.props.token,
         )
         .then(response => {
           console.log(jsonBeautify(response));
@@ -175,7 +176,7 @@ class SearchProduct extends Component {
         .get_via_token(
           'user/like-dislike-vendor/' + vendor_id,
           'GET',
-          _defz._token,
+          this.props.token,
         )
         .then(response => {
           if (response.status === 200) {
@@ -322,15 +323,8 @@ class SearchProduct extends Component {
             : null}
           <MapboxGL.Camera
             ref={c => (this.camera_map = c)}
-            zoomLevel={10}
-            followUserLocation
+            zoomLevel={1}
             animationMode={'flyTo'}
-          />
-
-          <MapboxGL.UserLocation
-            ref={location => {
-              // console.warn({location});
-            }}
           />
         </MapboxGL.MapView>
         {this.state.vendors !== null ? (
@@ -610,12 +604,24 @@ class SearchProduct extends Component {
           <View style={styles.searchBox}>
             <SearchBoxBlue />
           </View>
-          <Button
-            style={styles.homeButton}
-            transparent
-            onPress={() => this.props.navigation.navigate('bag')}>
-            <BagInActive />
-          </Button>
+          {this.props.bag.length > 0 ? (
+            <View style={styles.homeButtonWithBadge}>
+              <View style={styles.badgeCircle} />
+              <Button
+                style={styles.homeButton}
+                transparent
+                onPress={() => this.props.navigation.navigate('bag', {x: 1})}>
+                <Bag2 />
+              </Button>
+            </View>
+          ) : (
+            <Button
+              style={styles.homeButton}
+              transparent
+              onPress={() => this.props.navigation.navigate('bag', {x: 1})}>
+              <BagInActive />
+            </Button>
+          )}
         </View>
       </View>
     ) : (
@@ -742,16 +748,31 @@ class SearchProduct extends Component {
           <View style={styles.searchBox}>
             <SearchBoxBlue />
           </View>
-          <Button
-            style={styles.homeButton}
-            transparent
-            onPress={() => this.props.navigation.navigate('bag')}>
-            <BagInActive />
-          </Button>
+          {this.props.bag.length > 0 ? (
+            <View style={styles.homeButtonWithBadge}>
+              <View style={styles.badgeCircle} />
+              <Button
+                style={styles.homeButton}
+                transparent
+                onPress={() => this.props.navigation.navigate('bag', {x: 1})}>
+                <Bag2 />
+              </Button>
+            </View>
+          ) : (
+            <Button
+              style={styles.homeButton}
+              transparent
+              onPress={() => this.props.navigation.navigate('bag', {x: 1})}>
+              <BagInActive />
+            </Button>
+          )}
         </View>
       </View>
     );
   }
 }
-
-export default SearchProduct;
+const mapStateToProps = state => ({
+  token: selectUserToken(state),
+  bag: selectBagItems(state),
+});
+export default connect(mapStateToProps)(SearchProduct);

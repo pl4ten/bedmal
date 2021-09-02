@@ -92,33 +92,34 @@ export const styles = StyleSheet.create({
     position: 'relative',
   },
   optionBackgroundFalse: {
-    width: '100%',
+    width: '95%',
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    marginLeft: 20,
     height: 100,
     elevation: 5,
   },
   optionBackgroundTrue: {
-    width: '100%',
+    width: '95%',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    height: 300,
+    justifyContent: 'center',
+    height: 280,
     elevation: 5,
-    paddingTop: 30,
+    marginLeft: 20,
+    alignSelf: 'center',
   },
   BorrowTrueContent: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    alignSelf: 'center',
     justifyContent: 'space-around',
-    marginTop: 20,
-    width: '100%',
-    flex: 1,
-    paddingLeft: 10,
-    paddingRight: 10,
+    paddingHorizontal: 3,
+    marginLeft: "-6%"
   },
   BorrowTrueSelectButtons: {
     display: 'flex',
@@ -126,9 +127,26 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#fff',
-    height: '75%',
     borderRadius: 10,
-    width: '26%',
+    height: 150,
+    width: "24%",
+    marginHorizontal: "1%",
+  },
+  optionsTip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 10,
+  },
+  optionsTipText1: {
+    fontFamily: 'FuturaPT-Medium',
+    color: '#08D18C',
+    fontSize: 14,
+  },
+  optionsTipText2: {
+    fontFamily: 'FuturaPT-Book',
+    color: '#3D80F2',
+    fontSize: 14,
+    marginLeft: 10,
   },
   typeSelected: {
     borderColor: '#3D80F2',
@@ -144,8 +162,7 @@ export const styles = StyleSheet.create({
     fontFamily: 'FuturaPT-Book',
   },
   borrowCopButtonTrue: {
-    marginTop: _defz.height / 70,
-    marginLeft: 30,
+    marginTop: 5,
   },
   borrowCopButtonFalse: {
     marginTop: _defz.height / 30,
@@ -158,11 +175,18 @@ export const styles = StyleSheet.create({
     marginTop: 5,
   },
   BorrowTrueHeading: {
-    width: '100%',
+    width: '75%',
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
+  },
+  borrowSubtitle: {
+    color: '#F79F28',
+    fontFamily: 'FuturaPT-Medium',
+    fontSize: 18,
+    alignSelf: 'flex-start',
+    marginBottom: 10,
   },
   productBuyFooter: {
     width: '90%',
@@ -230,6 +254,7 @@ export const styles = StyleSheet.create({
   },
   modalView: {
     width: '90%',
+    minHeight: 300,
     margin: 20,
     backgroundColor: 'white',
     borderRadius: 20,
@@ -244,6 +269,8 @@ export const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
     position: 'relative',
+    flexDirection: 'column',
+    justifyContent: 'space-around',
   },
   modalViewBag: {
     width: '90%',
@@ -253,8 +280,13 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     position: 'relative',
   },
+  modalTitle: {
+    fontFamily: 'FuturaPT-Medium',
+    fontSize: 25,
+    marginVertical: 10,
+  },
   modalButtons: {
-    width: '50%',
+    width: '70%',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -263,9 +295,10 @@ export const styles = StyleSheet.create({
   modalButton: {
     borderColor: '#707070',
     borderWidth: 1,
-    padding: '4%',
+    paddingHorizontal: 15,
     borderRadius: 40,
-    height: 32,
+    height: 40,
+
   },
   activeButton: {
     borderColor: '#3D80F2',
@@ -281,8 +314,19 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  styles_names:{
+    fontFamily: 'FuturaPT-Medium',
+    fontSize: 22,
+    color: "#707070"
+  },
+  styles_names2:{
+    fontFamily: 'FuturaPT',
+    fontSize: 18,
+    color: "#707070",
+
+  },
   pickupInfo: {
-    marginTop: 10,
+    marginTop: "15%",
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -290,6 +334,8 @@ export const styles = StyleSheet.create({
   },
   pickupInfoTitle: {
     fontSize: 17,
+    color: '#707070',
+    fontFamily: 'FuturaPT-Medium',
   },
   workTimes: {
     marginTop: 10,
@@ -307,6 +353,13 @@ export const styles = StyleSheet.create({
   },
   workTimeText: {
     color: '#707070',
+    fontFamily: 'FuturaPT',
+    marginLeft: -15
+  },
+  workTimeText2: {
+    color: '#707070',
+    fontFamily: 'FuturaPT',
+    marginRight: -20
   },
   pickupOptionsContainer: {
     display: 'flex',
@@ -323,11 +376,16 @@ export const styles = StyleSheet.create({
   },
   checkButton: {
     fontSize: 20,
+    marginLeft: '15%',
   },
   pickupOption: {
-    display: 'flex',
     flexDirection: 'row',
-    alignSelf: 'center',
+    marginTop: '10%',
+    
+  },
+  pickupOption2: {
+    flexDirection: 'row',
+    marginTop: '1%',
   },
   scrollViewH: {
     width: '100%',
@@ -393,14 +451,14 @@ export const styles = StyleSheet.create({
     color: '#000',
   },
   modalOptionBackground: {
-    width: '100%',
-    height: _defz.height / 12,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: '110%',
+    marginLeft: '-10%',
+    height: _defz.height / 7,
   },
   optionText: {
     color: '#707070',
+    fontFamily: 'FuturaPT-Medium',
+    marginLeft: 10,
   },
   acceptModalButton: {
     position: 'relative',
@@ -435,8 +493,6 @@ export const styles = StyleSheet.create({
     width: '80%',
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
   },
   packingOptionsContainer: {
     fontFamily: 'FuturaPT-Medium',

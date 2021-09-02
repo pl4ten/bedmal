@@ -169,18 +169,35 @@ class Bag extends React.Component {
     }
   }
   async checkOut() {
+    if (!this.props.bag.length && !this.state.activeCart) {
+      Alert.alert('Error', 'bag is empty!', [{text: 'ok'}], {
+        cancelable: true,
+      });
+      return 0;
+    }
     this.setState({goToPay: true});
     let products = [];
 
     this.state.activeCart.products.map(item => {
-      products.push({
-        borrow_cup: item.orderType,
-        options: [{title: item.optionTitle, value: item.selectedOption.label}],
-        product_count: item.quantity,
-        product_id: item.product.id,
-      });
-    });
+      if (item.selectedOption.label) {
 
+        products.push({
+          borrow_cup: item.orderType,
+          options: [
+            {title: item.optionTitle, value: item.selectedOption.label},
+          ],
+          product_count: item.quantity,
+          product_id: item.product.id,
+        });
+      } else {
+        products.push({
+          borrow_cup: item.orderType,
+          options: [],
+          product_count: item.quantity,
+          product_id: item.product.id,
+        });
+      }
+    });
     const formData = new FormData();
 
     if (this.state.fulfillmentInfo.fulfilment.type === 'pickup') {
@@ -196,6 +213,7 @@ class Bag extends React.Component {
       'return_borrows',
       JSON.stringify(this.state.returnBorrowIdz),
     );
+    console.log(formData);
     await axios({
       url: 'https://www.bedmal-core.aralstudio.top/api/user/bag/checkout',
       method: 'POST',

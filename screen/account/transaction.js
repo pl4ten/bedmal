@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Text, View, ScrollView, TouchableOpacity, Alert} from 'react-native';
-import {CardItem, Right, Left, Icon} from 'native-base';
+import {CardItem, Right, Left, Icon, Button} from 'native-base';
 import {styles} from './styles/transaction.styles';
 
 import {selectUserToken} from '../../redux/user/user.selectors';
@@ -59,65 +59,77 @@ class Transaction extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Headers
-          route={'Transaction'}
-          navigation={this.props.navigation}
-          message={'chat_main'}
-        />
-
         {this.state.isLoading ? (
           <Loader />
         ) : this.state.transaction ? (
-          <View style={styles.content}>
-            <View style={styles.info}>
-              <View style={styles.infoLeft}>
-                <Text style={styles.infoText}>Date</Text>
-                <Text style={styles.infoText}>Ref</Text>
-                <Text style={styles.infoText}>Total</Text>
-              </View>
-              <View style={styles.infoRight}>
-                <Text style={styles.infoText}>
-                  {this.state.transaction.created_at.slice(0, 10)}
-                </Text>
-                <Text style={styles.infoText}>
-                  {this.state.transaction.ref_id}
-                </Text>
-                <Text style={styles.infoText}>
-                  {this.state.transaction.total_price}
-                </Text>
-              </View>
-            </View>
-            <ScrollView>
-              <View>
-                {this.state.vendors.map(item => {
-                  return (
-                    <TouchableOpacity
-                      onPress={() =>
-                        this.props.navigation.navigate('order', {
-                          id: this.state.transaction.order_id,
-                        })
-                      }
-                      style={styles.card}>
-                      <Left>
-                        <Text style={styles.cardTitle}>{item.name}</Text>
-                        <Text style={styles.cardTitle}>
-                          £{item.total_price}
-                        </Text>
-                      </Left>
+          <View style={styles.main}>
+            <Button
+              transparent
+              style={styles.headerXbutton}
+              onPress={() => this.props.navigation.goBack()}>
+              <Icon
+                name="closecircleo"
+                type="AntDesign"
+                style={styles.headerXIcon}
+              />
+            </Button>
+            <Headers
+              route={'Transaction'}
+              navigation={this.props.navigation}
+              message={'chat_main'}
+            />
 
-                      <Right>
-                        <Icon
-                          type="AntDesign"
-                          name="arrowright"
-                          style={styles.icon}
-                        />
-                      </Right>
-                    </TouchableOpacity>
-                  );
-                })}
+            <View style={styles.content}>
+              <View style={styles.info}>
+                <View style={styles.infoLeft}>
+                  <Text style={styles.infoText}>Date</Text>
+                  <Text style={styles.infoText}>Ref</Text>
+                  <Text style={styles.infoText}>Total</Text>
+                </View>
+                <View style={styles.infoRight}>
+                  <Text style={styles.infoText}>
+                    {this.state.transaction.created_at.slice(0, 10)}
+                  </Text>
+                  <Text style={styles.infoText}>
+                    {this.state.transaction.ref_id}
+                  </Text>
+                  <Text style={styles.infoText}>
+                    {this.state.transaction.total_price}
+                  </Text>
+                </View>
               </View>
-              <View style={{marginTop: 100}} />
-            </ScrollView>
+              <ScrollView>
+                <View style={{height:"100%"}}>
+                  {this.state.vendors.map(item => {
+                    return (
+                      <TouchableOpacity
+                        onPress={() =>
+                          this.props.navigation.navigate('order', {
+                            id: this.state.transaction.order_id,
+                          })
+                        }
+                        style={styles.card}>
+                        <Left>
+                          <Text style={styles.cardTitle}>{item.name}</Text>
+                          <Text style={styles.cardTitle}>
+                            £{item.total_price}
+                          </Text>
+                        </Left>
+
+                        <Right>
+                          <Icon
+                            type="AntDesign"
+                            name="arrowright"
+                            style={styles.icon}
+                          />
+                        </Right>
+                      </TouchableOpacity>
+                    );
+                  })}
+                </View>
+                <View style={{marginTop: 100}} />
+              </ScrollView>
+            </View>
           </View>
         ) : null}
 

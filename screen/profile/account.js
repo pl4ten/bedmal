@@ -253,7 +253,7 @@ class account extends Component {
                   </CardItem>
                 </TouchableOpacity>
               </View>
-              <View style={{marginTop: 550}} />
+              <View style={{marginTop: _defz.height/1.4}} />
             </ScrollView>
           </View>
         </View>

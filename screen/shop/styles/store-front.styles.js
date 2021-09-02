@@ -165,6 +165,18 @@ export const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
+
+  },
+  styles_names:{
+    fontFamily: 'FuturaPTDemi',
+    fontSize: 22,
+    color: "#707070"
+  },
+  styles_names2:{
+    fontFamily: 'FuturaPTDemi',
+    fontSize: 19,
+    color: "#707070",
+
   },
   pickupInfo: {
     marginTop: 10,
@@ -234,5 +246,18 @@ export const styles = StyleSheet.create({
   vendorName: {
     fontFamily: 'FuturaPTDemi',
     fontSize: 22,
+  },
+  homeButtonWithBadge: {
+    position: 'relative',
+  },
+  badgeCircle: {
+    position: 'absolute',
+    right: -5,
+    top: 10,
+    backgroundColor: '#E03174',
+    borderRadius: 400,
+    width: 20,
+    height: 20,
+    zIndex: 10,
   },
 });

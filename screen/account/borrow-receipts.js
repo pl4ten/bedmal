@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Text, View, ScrollView, TouchableOpacity, Alert} from 'react-native';
-import {CardItem, Right, Left, Icon} from 'native-base';
+import {CardItem, Right, Left, Icon, Button} from 'native-base';
 import {styles} from './styles/borrow-receipts.styles';
 
 import {selectUserToken} from '../../redux/user/user.selectors';
@@ -10,6 +10,7 @@ import Loader from '../com/loader';
 import Headers from '../com/header';
 import Footers from '../com/footer';
 
+import {ArrowBack, Massage} from './../com/svg-files';
 let _defz = require('../com/def');
 class BorrowReceipts extends Component {
   constructor() {
@@ -34,9 +35,9 @@ class BorrowReceipts extends Component {
           this.setState({isLoading: false});
           console.log(jsonBeautify(response));
           if (response.status === 200) {
-            this.setState({
+           this.setState({
               borrowReceipts: response.borrow_receipts,
-            });
+            }); 
           }
           if (response.status === 400) {
             Alert.alert('Error', response.errors[0].message, [{text: 'ok'}], {
@@ -54,13 +55,35 @@ class BorrowReceipts extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Headers route={'Borrow receipts'} navigation={this.props.navigation} />
-        <View style={styles.content}>
-          {this.state.isLoading ? (
-            <Loader />
-          ) : (
-            <ScrollView>
-              <View>
+        {this.state.isLoading ? (
+          <Loader />
+        ) : (
+          <View style={styles.main}>
+            <Button
+              transparent
+              style={styles.headerXbutton}
+              onPress={() => this.props.navigation.goBack()}>
+              <Icon
+                name="closecircleo"
+                type="AntDesign"
+                style={styles.headerXIcon}
+              />
+            </Button>
+            <View transparent style={styles.headerContainer}>
+            <Button
+          transparent
+          style={styles.arrowBack}
+          onPress={() => this.props.navigation.goBack()}>
+          <ArrowBack />
+        </Button>
+
+        <Text style={styles.headerText}>Borrow receipts</Text>
+
+            </View>
+
+
+            <ScrollView style={styles.content}>
+              <View style={styles.content}>
                 {this.state.borrowReceipts
                   ? this.state.borrowReceipts.map(item => {
                       return (
@@ -93,10 +116,10 @@ class BorrowReceipts extends Component {
                     })
                   : null}
               </View>
-              <View style={{marginTop: 100}} />
+              <View style={{marginTop: 150}} />
             </ScrollView>
-          )}
-        </View>
+          </View>
+        )}
         <Footers navigation={this.props.navigation} route={'account'} />
       </View>
     );

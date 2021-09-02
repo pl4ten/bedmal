@@ -26,7 +26,7 @@ export const styles = StyleSheet.create({
   },
   headerXbutton: {
     alignSelf: 'flex-end',
-    marginTop: _defz.height / 50,
+    marginTop: 5,
   },
   headerXIcon: {
     alignSelf: 'center',
@@ -115,7 +115,7 @@ export const styles = StyleSheet.create({
     color: '#3D80F2',
   },
   borrowBG: {
-    width: '100%',
+    width: '98%',
     height: 140,
     flexDirection: 'row',
     justifyContent: 'space-around',
