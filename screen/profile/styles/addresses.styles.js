@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
   },
   headerXbutton: {
     alignSelf: 'flex-end',
-    marginTop: _defz.height / 50,
+    marginTop: 5,
   },
   noAddress: {
     width: '100%',
@@ -25,7 +25,6 @@ export const styles = StyleSheet.create({
   },
   container: {
     backgroundColor: '#FAFAFA',
-    marginTop: '3%',
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
   },
@@ -45,7 +44,7 @@ export const styles = StyleSheet.create({
   },
   activeCard: {
     borderColor: '#3D80F2',
-    borderWidth: 3,
+    borderWidth: 2,
     elevation: 6,
     backgroundColor: '#fff',
     width: '85%',
@@ -87,11 +86,15 @@ export const styles = StyleSheet.create({
   },
   addressCardFooterButton: {
     borderRadius: 50,
-    height: _defz.height / 30,
+    height: _defz.height / 35,
     backgroundColor: '#fff',
     position: 'relative',
-    width: '40%',
     elevation: 4,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    minWidth: 100,
   },
   primaryButtonActive: {
     borderRadius: 50,
@@ -103,15 +106,20 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    minWidth: 100,
   },
   addressCardFooterButtonEdit: {
     borderRadius: 50,
     height: _defz.height / 30,
     backgroundColor: '#C3BCBC',
+    
   },
   addressCardFooterTextEdit: {
     color: '#fff',
-    position: 'relative',
+    fontSize: 14,
+    fontFamily: 'FuturaPT-Book',
+    paddingVertical: 2,
+    paddingHorizontal: 20,
   },
   primaryButton: {
     borderColor: '#3D80F2',
@@ -119,10 +127,19 @@ export const styles = StyleSheet.create({
   },
   primaryText: {
     color: '#3D80F2',
+    fontSize: 14,
+    fontFamily: 'FuturaPT-Medium',
   },
-
+  primaryText1: {
+    color: '#3D80F2',
+    fontSize: 14,
+    fontFamily: 'FuturaPT-Medium',
+    marginLeft: 28,
+  },
   addressCardFooterText: {
     color: '#C3BCBC',
+    fontFamily: 'FuturaPT-Medium',
+    fontSize: 14,
   },
   activeEditButton: {
     borderColor: '#fff',
@@ -137,16 +154,27 @@ export const styles = StyleSheet.create({
     borderRadius: 50,
     borderWidth: 2,
     height: _defz.height / 30,
+    minWidth: 100,
   },
   activeEditText: {
     color: '#fff',
+    fontFamily: 'FuturaPT-Book',
+    fontSize: 14,
+    paddingVertical: 2,
+    paddingHorizontal: 20,
   },
   textInput: {
     borderBottomColor: '#707070',
     borderBottomWidth: 1,
+    marginVertical: 8,
+    color: '#C3BCBC',
+    fontFamily: 'FuturaPT-Book',
+    fontSize: 18,
   },
   addresText: {
-    fontSize: 15,
+    fontSize: 18,
+    fontFamily: 'FuturaPT-Medium',
+    color: '#707070',
   },
   notPrimaryConainer: {
     position: 'relative',
@@ -155,14 +183,18 @@ export const styles = StyleSheet.create({
     fontSize: 25,
     color: 'silver',
     position: 'absolute',
-    right: -25,
-    top: -2,
+    right: -40,
+    top: -4,
   },
   footerButtonXIconPrimary: {
     color: '#3D80F2',
+    position: 'absolute',
+    right: -12,
   },
   notPrimaryText: {
     color: 'silver',
+    fontSize: 14,
+    fontFamily: 'FuturaPT-Medium',
   },
   arrowBack: {
     flex: 1,
@@ -175,7 +207,7 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'FuturaPT-Medium',
     flex: 3,
-    marginLeft: "-18%",
+    marginLeft: '-18%',
     padding: '2%',
   },
   headerContainer: {

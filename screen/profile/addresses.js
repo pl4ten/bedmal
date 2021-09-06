@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {View, Alert, ScrollView, TextInput} from 'react-native';
-import {Button, Text, Root, Icon} from 'native-base';
+import {View, Alert, ScrollView, TextInput, Text} from 'react-native';
+import {Button, Root, Icon} from 'native-base';
 import {styles} from './styles/addresses.styles';
 import Footers from '../com/footer';
 import Headers from '../com/header';
@@ -20,7 +20,7 @@ class Addresses extends Component {
     this.state = {
       addresses: '',
       isLoading: false,
-      itemToEditID: 0,
+      primaryAddresId: 0,
       primaryAddress: 0,
       itemToEditAddress: '',
       itemToEditPostalCode: '',
@@ -41,9 +41,14 @@ class Addresses extends Component {
             });
           }
           if (response.status === 200) {
+            let primaryAddresId = 0;
+            response.addresses.map(item =>
+              item.primary === 1 ? (primaryAddresId = item.id) : null,
+            );
             this.setState({
               isLoading: false,
               addresses: response.addresses,
+              primaryAddresId: primaryAddresId,
             });
           }
         });
@@ -106,18 +111,16 @@ class Addresses extends Component {
                 />
               </Button>
               <View style={styles.container}>
-              <View transparent style={styles.headerContainer}>
-            <Button
-          transparent
-          style={styles.arrowBack}
-          onPress={() => this.props.navigation.goBack()}>
-          <ArrowBack />
-        </Button>
+                <View transparent style={styles.headerContainer}>
+                  <Button
+                    transparent
+                    style={styles.arrowBack}
+                    onPress={() => this.props.navigation.goBack()}>
+                    <ArrowBack />
+                  </Button>
 
-        <Text style={styles.headerText2}>Your Addresses</Text>
-
-            </View>
-
+                  <Text style={styles.headerText2}>Your Addresses</Text>
+                </View>
 
                 {this.state.addresses.length ? (
                   <ScrollView
@@ -131,7 +134,7 @@ class Addresses extends Component {
                       return (
                         <View
                           style={
-                            this.state.itemToEditID === item.id
+                            this.state.primaryAddresId === item.id
                               ? styles.activeCard
                               : styles.addressCard
                           }>
@@ -174,7 +177,9 @@ class Addresses extends Component {
                               <Text style={styles.addresText}>
                                 {item.address}
                               </Text>
-                              <Text>{item.postal_code}</Text>
+                              <Text style={styles.addresText}>
+                                {item.postal_code}
+                              </Text>
                             </>
                           )}
                           <View style={styles.addressCardFooter}>
@@ -201,7 +206,7 @@ class Addresses extends Component {
                                     style={
                                       item.primary === 1 ||
                                       this.state.itemToEditPrimary === item.id
-                                        ? styles.primaryText
+                                        ? styles.primaryText1
                                         : styles.addressCardFooterText
                                     }>
                                     Primary
@@ -212,7 +217,7 @@ class Addresses extends Component {
                                       item.primary === 1 ||
                                       this.state.itemToEditPrimary === item.id
                                         ? styles.primaryButtonActive
-                                        : styles.addressCardFooterText,
+                                        : null,
                                     ]}>
                                     <Text
                                       style={[
@@ -314,4 +319,3 @@ const mapStateToProps = state => ({
   token: selectUserToken(state),
 });
 export default connect(mapStateToProps)(Addresses);
-
