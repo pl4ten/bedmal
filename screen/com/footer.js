@@ -73,7 +73,6 @@ class Footers extends React.Component {
                     </Button>
                   </View>
                 ) : (
-                  
                   <Button
                     style={{marginTop: 11}}
                     transparent
@@ -102,13 +101,12 @@ const styles = StyleSheet.create({
   footer: {
     backgroundColor: '#FAFAFA',
     borderColor: 'silver',
-    height: heights / 10,
-    borderWidth: 1,
+    height: 65,
+    borderWidth: 0.3,
   },
   footerTab: {
     backgroundColor: '#FAFAFA',
     alignSelf: 'flex-start',
-    marginTop: '3%',
   },
   footerItem: {
     justifyContent: 'center',
@@ -116,7 +114,7 @@ const styles = StyleSheet.create({
   },
   footerItemImg: {
     alignSelf: 'center',
-    margin: 15,
+    // margin: 15,
   },
   homeButtonWithBadge: {
     position: 'relative',
