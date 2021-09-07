@@ -9,13 +9,16 @@ export const styles = StyleSheet.create({
   },
   header: {
     width: '100%',
-    height: 100,
+    height: 75,
     backgroundColor: '#000',
   },
   heading: {
     fontFamily: 'FuturaPT-Book',
     fontSize: 25,
     color: '#757575',
+    width: '100%',
+    backgroundColor: '#FAFAFA',
+    textAlign: 'center',
   },
   mainScrollView: {
     backgroundColor: '#fff',
@@ -34,7 +37,6 @@ export const styles = StyleSheet.create({
   },
   headerXbutton: {
     alignSelf: 'flex-end',
-    marginTop: _defz.height / 50,
   },
   headerXIcon: {
     alignSelf: 'center',
@@ -124,10 +126,10 @@ export const styles = StyleSheet.create({
     color: '#707070',
   },
   tip: {
-    width: "60%",
+    width: '60%',
     marginTop: 10,
     alignSelf: 'flex-start',
-    marginLeft: "-5%",
+    marginLeft: '-5%',
     borderRadius: 10,
     paddingVertical: 10,
     paddingHorizontal: 20,
@@ -222,13 +224,12 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 20,
     elevation: 3,
-    width: "60%",
+    width: '60%',
   },
   returnedText: {
     fontFamily: 'FuturaPT-Medium',
     fontSize: 20,
     color: '#FFF',
-
   },
   returnedItems: {
     flex: 4,
@@ -278,7 +279,6 @@ export const styles = StyleSheet.create({
   },
   verifyButton: {
     alignSelf: 'center',
-marginLeft: 5
-
+    marginLeft: 5,
   },
 });
