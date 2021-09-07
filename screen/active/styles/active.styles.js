@@ -149,4 +149,12 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     color: '#707070',
   },
+  noitem: {
+    alignSelf: 'center',
+    justifyContent: 'center',
+    marginTop: 200,
+    fontFamily: 'FuturaPT-Book',
+    fontSize: 25,
+    color: '#707070',
+  }
 });
