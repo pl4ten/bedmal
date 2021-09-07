@@ -85,7 +85,7 @@ export const styles = StyleSheet.create({
   },
 
   map: {
-    marginTop: _defz.height / 15,
+    marginTop: 80,
     width: _defz.width,
     borderRadius: 100,
     position: 'relative',
@@ -98,7 +98,7 @@ export const styles = StyleSheet.create({
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     position: 'absolute',
-    top: _defz.height / 30.5,
+    top: 50,
   },
   view_line_b: {
     width: '50%',
@@ -158,7 +158,7 @@ export const styles = StyleSheet.create({
     height: 10,
     backgroundColor: '#000',
     borderRadius: 50,
-    marginTop: '6%',
+    marginTop: 5,
     alignSelf: 'center',
   },
   mapHeaderBackButton: {
@@ -166,7 +166,7 @@ export const styles = StyleSheet.create({
     height: 10,
     backgroundColor: '#000',
     borderRadius: 50,
-    marginTop: '12%',
+    marginTop: '8%',
     alignSelf: 'center',
   },
   content: {
@@ -174,8 +174,8 @@ export const styles = StyleSheet.create({
     height: '100%',
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-    position: 'absolute',
-    top: _defz.height / 13.5,
+    position: 'relative',
+    top: 80,
     marginBottom: _defz.height / 3,
     backgroundColor: '#F0F0F0',
   },
@@ -206,15 +206,13 @@ export const styles = StyleSheet.create({
   productCards: {
     width: '100%',
     position: 'absolute',
-    top: '25%',
-    flex: 1,
     paddingRight: '2%',
     paddingLeft: '2%',
+    top: 145,
   },
   scrollViewV: {
     width: '100%',
     height: _defz.height / 1.3,
-    marginTop: 60,
   },
   products: {
     display: 'flex',
@@ -223,7 +221,7 @@ export const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   searchTypeButtons: {
-    width: '50%',
+    width: '40%',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -256,7 +254,7 @@ export const styles = StyleSheet.create({
     width: '90%',
     alignSelf: 'center',
     borderRadius: 30,
-    marginTop: -_defz.height / 400,
+    marginTop: -20,
   },
   search_input: {
     color: 'gray',

@@ -10,7 +10,7 @@ import {
 import {Button, Header, Icon, Item, Input} from 'native-base';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import MapboxGL, {MarkerView} from '@react-native-mapbox-gl/maps';
-import {SearchBoxBlue, HomeInActive, BagInActive,Bag2} from '../com/svg-files';
+import {SearchBoxBlue, HomeInActive, BagInActive, Bag2} from '../com/svg-files';
 import {SliderBox} from 'react-native-image-slider-box';
 import ProductCard from './product-card';
 import {styles} from './styles/search-product';
@@ -92,7 +92,7 @@ class SearchProduct extends Component {
       searchText: '',
       searchProducts: null,
       searchType: 'current',
-      show_full: false,
+      show_full: true,
       mapRef: null,
       loading_like: false,
       loading: false,
@@ -296,7 +296,7 @@ class SearchProduct extends Component {
           </View>
         </View>
         <MapboxGL.MapView
-          styleURL={'mapbox://styles/mapbox/light-v10'}
+          styleURL={'mapbox://styles/mapbox/outdoors-v11'}
           ref={c => (this._map = c)}
           zoomLevel={2}
           style={styles.map}>
@@ -327,6 +327,7 @@ class SearchProduct extends Component {
             animationMode={'flyTo'}
           />
         </MapboxGL.MapView>
+
         {this.state.vendors !== null ? (
           <View style={styles.types}>
             <ScrollView style={styles.scrollViewH2} horizontal>
@@ -716,28 +717,29 @@ class SearchProduct extends Component {
               </Text>
             </Button>
           </View>
+          <View style={styles.productCards}>
+            <ScrollView style={styles.scrollViewV} scrollEnabled>
+              {this.state.searchProducts ? (
+                <View style={styles.products}>
+                  {this.state.searchProducts.map(item =>
+                    item ? (
+                      <ProductCard
+                        new={item.new}
+                        name={item.name}
+                        price={item.price}
+                        img={item.images[0]}
+                        id={item.id}
+                        navigation={this.props.navigation}
+                      />
+                    ) : null,
+                  )}
+                </View>
+              ) : null}
+              <View style={{height: _defz.height / 4}} />
+            </ScrollView>
+          </View>
         </View>
-        <View style={styles.productCards}>
-          <ScrollView style={styles.scrollViewV} scrollEnabled>
-            {this.state.searchProducts ? (
-              <View style={styles.products}>
-                {this.state.searchProducts.map(item =>
-                  item ? (
-                    <ProductCard
-                      new={item.new}
-                      name={item.name}
-                      price={item.price}
-                      img={item.images[0]}
-                      id={item.id}
-                      navigation={this.props.navigation}
-                    />
-                  ) : null,
-                )}
-              </View>
-            ) : null}
-            <View style={{height: _defz.height / 4}} />
-          </ScrollView>
-        </View>
+
         <View style={styles.footer}>
           <Button
             style={styles.homeButton}
