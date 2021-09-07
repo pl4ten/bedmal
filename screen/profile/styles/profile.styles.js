@@ -7,7 +7,6 @@ export const styles = StyleSheet.create({
   },
   container: {
     backgroundColor: '#FAFAFA',
-    marginTop: '3%',
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     height: '90%',
@@ -70,7 +69,6 @@ export const styles = StyleSheet.create({
   },
   headerXbutton: {
     alignSelf: 'flex-end',
-    marginTop: _defz.height / 50,
   },
   headerXicon: {
     alignSelf: 'center',

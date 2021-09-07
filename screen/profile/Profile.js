@@ -253,7 +253,7 @@ class Profile extends Component {
                     <Left style={styles.cardLeft}>
                       <Text style={styles.text1}>Mobile Number</Text>
                       <TextInput
-                        placeholder={this.state.email}
+                        placeholder={this.state.mobile}
                         placeholderTextColor="black"
                         onChangeText={text => {
                           mobile = text;
