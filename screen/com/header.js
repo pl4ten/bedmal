@@ -42,7 +42,6 @@ class Headers extends React.Component {
 const styles = StyleSheet.create({
   headerContainer: {
     minHeight: _defz.height / 15,
-    marginTop: _defz.height / 50,
     backgroundColor: '#FAFAFA',
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
