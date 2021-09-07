@@ -1,10 +1,10 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 let _defz = require('../../com/def');
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F0F0F0',
+    backgroundColor: '#fff',
   },
 
   b1: {
@@ -23,23 +23,29 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   textInput: {
-    fontSize: 13,
+    fontSize: 18,
     height: 50,
     marginLeft: 'auto',
     width: '100%',
+    fontFamily: 'FuturaPT-Book',
   },
-  text_card: {color: 'gray'},
+  text_card: { color: 'gray' },
   card: {
     borderRadius: 50,
     width: '90%',
     alignSelf: 'center',
     alignItems: 'center',
     marginTop: _defz.height / 100,
-    elevation: 2,
     height: 40,
-    borderWidth: 1,
-    borderColor: 'silver',
     backgroundColor: '#F0F0F0',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.34,
+    shadowRadius: 6.27,
+    elevation: 3,
   },
   icon: {
     color: 'black',
@@ -86,17 +92,23 @@ export const styles = StyleSheet.create({
   },
   cahtBoxDateTime: {
     position: 'absolute',
-    right: '2%',
-    bottom: '2%',
-    fontSize: 11,
+    right: 0,
+    bottom: -5,
+    fontSize: 12,
+    color: '#C3BCBC',
+    fontFamily: 'FuturaPT-Book',
   },
   chatText: {
     color: '#707070',
+    fontFamily: 'FuturaPT-Book',
+    fontSize: 18,
   },
   createdAt: {
     textAlign: 'center',
     marginTop: '3%',
     color: '#C3BCBC',
+    fontFamily: 'FuturaPT-Medium',
+    fontSize: 14,
   },
   headerXButton: {
     alignSelf: 'flex-end',
@@ -111,13 +123,22 @@ export const styles = StyleSheet.create({
     margin: 5,
   },
   heading: {
-    backgroundColor: '#FAFAFA',
+    backgroundColor: '#FFFFFF',
     marginTop: '3%',
     borderRadius: 5,
     width: '90%',
     alignSelf: 'center',
-    elevation: 3,
     paddingHorizontal: 10,
+
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    shadowOpacity: 0.39,
+    shadowRadius: 8.30,
+
+    elevation: 13,
   },
   headingImg: {
     marginLeft: '10%',
@@ -129,12 +150,20 @@ export const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     backgroundColor: '#FAFAFA',
+
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.27,
+    shadowRadius: 4.65,
+
+    elevation: 6,
   },
   footer: {
     backgroundColor: '#FAFAFA',
-    borderColor: 'silver',
-    height: _defz.height / 10,
-    borderWidth: 1,
+    height: 80,
   },
   footerTab: {
     backgroundColor: '#FAFAFA',
@@ -165,13 +194,20 @@ export const styles = StyleSheet.create({
     borderRadius: 40,
     alignItems: 'center',
     justifyContent: 'center',
+    width: 70,
     height: 20,
-    marginBottom: 5,
-    marginLeft: 'auto',
+    marginBottom: 4,
   },
   headingButtonText: {
     color: '#fff',
     fontFamily: 'FuturaPT-Medium',
     fontSize: 14,
+  },
+  info: {
+    fontFamily: 'FuturaPT-Book',
+    fontSize: 14,
+    color: '#707070',
+    marginVertical: 4,
+    marginLeft: 20,
   },
 });

@@ -1,12 +1,11 @@
 import React, {Component} from 'react';
-import {View, Image, ScrollView, Alert, TextInput} from 'react-native';
+import {View, Image, ScrollView, Alert, TextInput, Text} from 'react-native';
 import {
   CardItem,
   Right,
   Left,
   Body,
   Button,
-  Text,
   Footer,
   FooterTab,
   Root,
@@ -213,9 +212,11 @@ class Chat_one extends Component {
           <View>
             {all !== 2 ? (
               <Text style={styles.createdAt}>
-                {String(dataItem.created_at.slice(0, 10))
-                  .replace('-', '/')
-                  .replace('-', '/')}
+                {dataItem.created_at
+                  .slice(0, 11)
+                  .split('-')
+                  .reverse()
+                  .join('/')}
               </Text>
             ) : null}
           </View>,
@@ -327,7 +328,7 @@ class Chat_one extends Component {
                     <LogoChat width={_defz.width / 5} height={30} />
                   </View>
 
-                  <Text style={styles.text1}>
+                  <Text style={styles.info}>
                     App or borrow product issues? We’re here to help.
                   </Text>
                 </>
@@ -342,7 +343,7 @@ class Chat_one extends Component {
                 this.scrollView.scrollToEnd({animated: true})
               }>
               <View>{this.renderItems()}</View>
-              <View style={{marginTop: 200}} />
+              <View style={{marginTop: 120}} />
             </ScrollView>
 
             <View style={styles.footerContainer}>
@@ -376,7 +377,7 @@ class Chat_one extends Component {
                               this.textInput = input;
                             }}
                             placeholder="Type Message"
-                            placeholderTextColor="silver"
+                            placeholderTextColor="#C3BCBC"
                             multiline={true}
                             onChangeText={text => {
                               msg = text;
