@@ -12,7 +12,7 @@ class Loader extends React.Component {
     return (
       <View style={styles.loader}>
         <View style={styles.loadingz}>
-          <Text style={{alignSelf: 'center', zIndex: 201,fontSize:20,opacity:1,color:"white"}}>{this.props.text}</Text>
+
           <ActivityIndicator size="large" color="white" />
         </View>
       </View>
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     zIndex: 200,
     top: 0,
     left: 0,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
