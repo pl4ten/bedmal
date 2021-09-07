@@ -13,7 +13,7 @@ export const styles = StyleSheet.create({
   },
   content: {
     backgroundColor: '#FAFAFA',
-flex:1,
+    flex: 1,
   },
   card: {
     marginTop: 20,
