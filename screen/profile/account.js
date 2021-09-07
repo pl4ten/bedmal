@@ -139,6 +139,7 @@ class account extends Component {
 
                     <Right>
                       <TouchableOpacity onPress={() => navigate('userprofile')}>
+                        <View style={{marginTop: 12,}} />
                         <Icon
                           type="AntDesign"
                           name="arrowright"

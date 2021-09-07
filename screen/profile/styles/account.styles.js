@@ -25,21 +25,21 @@ export const styles = StyleSheet.create({
     fontFamily: 'FuturaPT-Medium',
   },
   card: {
-    marginTop: _defz.height / 50,
+    marginTop: 20,
+    alignItems: 'center',
   },
   icon: {
-    color: 'black',
+    color: '#707070',
     width: 30,
     height: 30,
-    marginRight: '2%',
-    marginTop: '2%',
+    marginRight: 5,
     backgroundColor: 'white',
+    alignSelf: 'center',
   },
   text1: {
     color: 'gray',
     fontSize: 40,
     alignSelf: 'center',
-    marginTop: '5%',
     textTransform: 'capitalize',
     fontFamily: 'FuturaPT-Medium',
   },
@@ -48,7 +48,7 @@ export const styles = StyleSheet.create({
   },
   headerXbutton: {
     alignSelf: 'flex-end',
-    marginTop: 5,
+    marginTop: 2,
   },
   headerXIcon: {
     alignSelf: 'center',
