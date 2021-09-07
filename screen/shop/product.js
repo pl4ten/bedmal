@@ -277,14 +277,13 @@ class Product extends Component {
   }
   renderPickUpModal() {
     const {pickup} = this.state.fulfillment;
-    console.log(pickup)
     return (
       <View style={{width: '100%'}}>
         <View style={styles.pickupHeading}>
-
           <Text style={styles.styles_names}>{pickup.vendor_name}</Text>
-                      <Text style={styles.styles_names2}>{pickup.vendor_address} {pickup.vendor_postal_code}</Text>
-    
+          <Text style={styles.styles_names2}>
+            {pickup.vendor_address} {pickup.vendor_postal_code}
+          </Text>
         </View>
         <View style={styles.pickupInfo}>
           <Text style={styles.pickupInfoTitle}>
@@ -337,7 +336,10 @@ class Product extends Component {
         </View>
 
         <View style={styles.pickupOptionsContainer}>
-          <Text style={{color: "#707070",fontFamily: 'FuturaPT',fontSize:14 }}>Available options</Text>
+          <Text
+            style={{color: '#707070', fontFamily: 'FuturaPT', fontSize: 14}}>
+            Available options
+          </Text>
           <ImageBackground
             source={OptionsBG}
             resizeMode={'stretch'}
@@ -409,7 +411,15 @@ class Product extends Component {
     const {delivery} = this.state.fulfillment;
     return (
       <View style={{marginTop: 15, width: '100%'}}>
-        <Text style={{color: "black", fontFamily: 'FuturaPT-Medium',fontSize:16,alignSelf: 'center'}}>Pick a delivery address</Text>
+        <Text
+          style={{
+            color: 'black',
+            fontFamily: 'FuturaPT-Medium',
+            fontSize: 16,
+            alignSelf: 'center',
+          }}>
+          Pick a delivery address
+        </Text>
         <View style={{marginTop: 15, width: '100%'}}>
           {delivery ? (
             <ScrollView
@@ -428,7 +438,7 @@ class Product extends Component {
                   onPress={() =>
                     this.getDeliveryInfo(this.state.product.id, item.id)
                   }>
-                  <View>
+                  <View style={styles.addressInfo}>
                     <Text
                       style={[
                         styles.addressCartText,
@@ -511,13 +521,13 @@ class Product extends Component {
               </View>
             )
           ) : null}
-          <Text style={{color: "#707070",fontFamily: 'FuturaPT',fontSize:14,marginTop: 20}}>Available options</Text>
+          <Text style={styles.deliveryOptionsTitle}>Available options</Text>
           <ImageBackground
             source={OptionsBG}
             resizeMode={'stretch'}
             style={styles.modalOptionBackground}>
             <View style={styles.pickupOptions}>
-              <View style={[styles.pickupOption,{marginLeft: "10%"}]}>
+              <View style={[styles.pickupOption, {marginLeft: '10%'}]}>
                 <Icon
                   name={
                     this.state.serverDeliveryInfo.return_borrow_products === 1
@@ -531,7 +541,7 @@ class Product extends Component {
                   Return BorrowCups & BorrowBags
                 </Text>
               </View>
-              <View style={[styles.pickupOption2,{marginLeft: "10%"}]}>
+              <View style={[styles.pickupOption2, {marginLeft: '10%'}]}>
                 <Icon
                   name={
                     this.state.serverDeliveryInfo.pack_in_borrow_bags === 1
@@ -935,7 +945,9 @@ class Product extends Component {
                       ]}>
                       <Text
                         style={
-                          this.state.modalPickUp ? styles.activeText : null
+                          this.state.modalPickUp
+                            ? styles.activeText
+                            : styles.modalButtonText
                         }>
                         Pick Up
                       </Text>
@@ -956,7 +968,7 @@ class Product extends Component {
                     ]}>
                     <Text
                       style={
-                        this.state.modalDelivery ? styles.activeText : null
+                        this.state.modalDelivery ? styles.activeText : styles.modalButtonText
                       }>
                       Delivery
                     </Text>

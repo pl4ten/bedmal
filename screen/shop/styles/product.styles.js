@@ -119,7 +119,7 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'space-around',
     paddingHorizontal: 3,
-    marginLeft: "-6%"
+    marginLeft: '-6%',
   },
   BorrowTrueSelectButtons: {
     display: 'flex',
@@ -129,8 +129,8 @@ export const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 10,
     height: 150,
-    width: "24%",
-    marginHorizontal: "1%",
+    width: '24%',
+    marginHorizontal: '1%',
   },
   optionsTip: {
     flexDirection: 'row',
@@ -298,13 +298,17 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 15,
     borderRadius: 40,
     height: 40,
-
   },
   activeButton: {
     borderColor: '#3D80F2',
   },
   activeText: {
     color: '#3D80F2',
+    fontFamily: 'FuturaPT-Medium',
+  },
+  modalButtonText: {
+    color: '#707070',
+    fontFamily: 'FuturaPT-Medium',
   },
   pickupHeading: {
     marginTop: 10,
@@ -314,19 +318,18 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  styles_names:{
+  styles_names: {
     fontFamily: 'FuturaPT-Medium',
     fontSize: 22,
-    color: "#707070"
+    color: '#707070',
   },
-  styles_names2:{
+  styles_names2: {
     fontFamily: 'FuturaPT',
     fontSize: 18,
-    color: "#707070",
-
+    color: '#707070',
   },
   pickupInfo: {
-    marginTop: "15%",
+    marginTop: '15%',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -354,12 +357,12 @@ export const styles = StyleSheet.create({
   workTimeText: {
     color: '#707070',
     fontFamily: 'FuturaPT',
-    marginLeft: -15
+    marginLeft: -15,
   },
   workTimeText2: {
     color: '#707070',
     fontFamily: 'FuturaPT',
-    marginRight: -20
+    marginRight: -20,
   },
   pickupOptionsContainer: {
     display: 'flex',
@@ -381,7 +384,6 @@ export const styles = StyleSheet.create({
   pickupOption: {
     flexDirection: 'row',
     marginTop: '10%',
-    
   },
   pickupOption2: {
     flexDirection: 'row',
@@ -437,10 +439,10 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     height: 'auto',
     minHeight: _defz.height / 10,
-    minWidth: _defz.width / 10,
+    minWidth: 100,
   },
   addressCartText: {
-    maxWidth: '80%',
+    flex: 1,
     color: '#707070',
   },
   activeAddress: {
@@ -449,6 +451,12 @@ export const styles = StyleSheet.create({
   },
   activeAddressText: {
     color: '#000',
+  },
+  deliveryOptionsTitle: {
+    color: '#707070',
+    fontFamily: 'FuturaPT-Book',
+    fontSize: 14,
+    marginTop: 20,
   },
   modalOptionBackground: {
     width: '110%',
@@ -479,15 +487,19 @@ export const styles = StyleSheet.create({
   },
   serverDeliveryInfoTitle: {
     fontSize: 18,
+    fontFamily: 'FuturaPT-Book',
   },
   serverDeliveryInfoRowTitle: {
     color: '#C3BCBC',
-    fontSize: 16,
+    fontSize: 18,
+    fontFamily: 'FuturaPT-Book',
   },
   serverDeliveryInfoRowText: {
-    fontSize: 15,
+    fontSize: 18,
     fontWeight: '100',
     marginLeft: '1%',
+    fontFamily: 'FuturaPT-Book',
+    color: '#707070',
   },
   deliveryPickupOptions: {
     width: '80%',
