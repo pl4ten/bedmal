@@ -59,7 +59,7 @@ export const styles = StyleSheet.create({
   card: {
     backgroundColor: '#fff',
     width: 140,
-    height: 280,
+    height: 265,
     borderRadius: 10,
     elevation: 4,
     flexDirection: 'column',
