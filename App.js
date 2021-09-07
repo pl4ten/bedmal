@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Image, ImageBackground, View, Text} from 'react-native';
+import {StyleSheet} from 'react-native';
 
 import {I18nManager} from 'react-native';
 import {Root} from 'popup-ui';
@@ -34,7 +34,6 @@ import BorrowReceipts from './screen/account/borrow-receipts';
 import BorrowReceipt from './screen/account/borrow-receipt';
 
 import Active from './screen/active/active';
-
 
 import OnDemand from './screen/on-demand/onDemand';
 import OnDemandStage2 from './screen/on-demand/onDemand-stage2';
@@ -81,34 +80,27 @@ const RootStack = createStackNavigator(
   },
 );
 
-
 class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {isLoading: true};
-  
-  };
+  }
   async componentDidMount() {
     I18nManager.allowRTL(false);
-
     // Preload data from an external API
     // Preload data using AsyncStorage
     //const data = await this.performTimeConsumingTask();
 
-
-      this.setState({isLoading: false});
-    
+    this.setState({isLoading: false});
   }
 
   render() {
+    let AppContainer;
 
-      let AppContainer;
+    AppContainer = createAppContainer(RootStack);
 
-      AppContainer = createAppContainer(RootStack);
-
-      return <AppContainer />;
-    
+    return <AppContainer />;
   }
 }
 const styles = StyleSheet.create({
