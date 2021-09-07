@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 let _defz = require('../../com/def');
 
 export const styles = StyleSheet.create({
@@ -11,16 +11,18 @@ export const styles = StyleSheet.create({
     marginTop: 15,
     paddingBottom: 10,
     width: _defz.width,
-    left:"-15%",
+    left: '-15%',
     color: 'white',
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
   b1: {
-    width: _defz.width / 5,
     textTransform: 'capitalize',
-    justifyContent: 'center',
-    marginLeft: '5%',
-    marginTop: '5%',
+    position: 'absolute',
+    top: 0,
+    left: 10,
+  },
+  headerBtn: {
+    textTransform: 'capitalize',
   },
   b2: {
     backgroundColor: '#3D80F2',
@@ -30,7 +32,7 @@ export const styles = StyleSheet.create({
     textTransform: 'capitalize',
     justifyContent: 'center',
   },
-  text_card: {color: 'gray'},
+  text_card: { color: 'gray' },
   card: {
     borderRadius: 9,
     width: '90%',
@@ -54,7 +56,7 @@ export const styles = StyleSheet.create({
   text1: {
     color: 'gray',
     fontSize: 14,
-marginRight: "5%",
+    marginRight: '5%',
     textTransform: 'capitalize',
   },
   chatAvatar: {
@@ -68,9 +70,7 @@ marginRight: "5%",
     marginRight: '10%',
     color: '#E03174',
     elevation: 5,
-    margin:5
-
-  
+    margin: 5,
   },
   avatarBadge2: {
     width: _defz.width / 50,
@@ -79,6 +79,23 @@ marginRight: "5%",
     marginRight: '10%',
     color: 'white',
     elevation: 5,
+  },
+  cardTitle: {
+    fontSize: 18,
+    color: '#000',
+    fontFamily: 'FuturaPT-Book',
+  },
+  lastMassage: {
+    fontSize: 14,
+    color: '#707070',
+    fontFamily: 'FuturaPT-Book',
+  },
+  dateTime: {
+    marginRight: '8%',
+    marginTop: -3,
+    fontSize: 14,
+    color: '#707070',
+    fontFamily: 'FuturaPT-Book',
   },
   avatarBadge_non: {
     width: _defz.width / 50,
@@ -93,7 +110,7 @@ marginRight: "5%",
   },
   headerBackButto: {
     alignSelf: 'flex-end',
-    marginTop: _defz.height / 50,
+    marginTop: 10,
   },
   alertIcon: {
     alignSelf: 'center',
@@ -105,8 +122,8 @@ marginRight: "5%",
     backgroundColor: '#FAFAFA',
     flexDirection: 'row',
     alignItems: 'center',
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25,
+    justifyContent: 'center',
+    position: 'relative',
   },
   alertButtonTextOff: {
     fontSize: 12,
@@ -126,12 +143,11 @@ marginRight: "5%",
   },
   headerText: {
     color: 'gray',
-    fontSize: 35,
+    fontSize: 40,
     alignSelf: 'center',
     marginTop: '1%',
     textTransform: 'capitalize',
-    marginRight: '25%',
-    marginLeft: 'auto',
+    fontFamily: 'FuturaPT-Medium',
   },
   heading: {
     backgroundColor: '#FAFAFA',

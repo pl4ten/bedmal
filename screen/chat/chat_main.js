@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   ScrollView,
   ActivityIndicator,
+  Text,
   Alert,
 } from 'react-native';
 import {
@@ -13,7 +14,6 @@ import {
   Left,
   Body,
   Button,
-  Text,
   Thumbnail,
   ListItem,
   List,
@@ -123,15 +123,17 @@ class chat_main extends Component {
                 activeOpacity={1}
                 style={styles.chatInfo}
                 onPress={() => this.nav(dataItem)}>
-                <Text>{dataItem.receiver.name}</Text>
-                <Text note>{dataItem.last_message.message}</Text>
+                <Text style={styles.cardTitle}>{dataItem.receiver.name}</Text>
+                <Text style={styles.lastMassage}>{dataItem.last_message.message}</Text>
               </TouchableOpacity>
             </Body>
             <Right>
-              <Text note style={{marginRight: '8%',marginTop: -3}}>
-                {String(dataItem.created_at.slice(0, 11))
-                  .replace('-', '/')
-                  .replace('-', '/')}
+              <Text style={styles.dateTime}>
+                {dataItem.created_at
+                  .slice(0, 11)
+                  .split('-')
+                  .reverse()
+                  .join('/')}
               </Text>
             </Right>
           </ListItem>,
@@ -235,7 +237,7 @@ class chat_main extends Component {
               <Right style={styles.headingButton}>
                 <Button
                   transparent
-                  style={styles.b1}
+                  style={styles.headerBtn}
                   onPress={() =>
                     navigate('chat_one', {id: '0', type: 'admin'})
                   }>
@@ -261,7 +263,7 @@ class chat_main extends Component {
             {lodings === true && paging === false ? (
               <ActivityIndicator size="large" color="grey" />
             ) : null}
-            <View style={{marginTop: 200}} />
+            <View style={{marginTop: 120}} />
           </ScrollView>
           <Footers navigation={this.props.navigation} route={'account'} />
         </View>
