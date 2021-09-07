@@ -1,6 +1,6 @@
 'use strict';
 import React, {Component} from 'react';
-import {View,ActivityIndicator} from 'react-native';
+import {View, ActivityIndicator} from 'react-native';
 
 import {selectUserToken} from '../../redux/user/user.selectors';
 import {connect} from 'react-redux';
@@ -9,7 +9,7 @@ import {Image, ImageBackground} from 'react-native';
 import {Button, Text} from 'native-base';
 import Loader from '../com/loader';
 import AsyncStorage from '@react-native-community/async-storage';
-import { StackActions, NavigationActions } from 'react-navigation';
+import {StackActions, NavigationActions} from 'react-navigation';
 let _defz = require('../com/def');
 class usermain extends Component {
   constructor(props) {
@@ -23,7 +23,6 @@ class usermain extends Component {
     this.getprofile();
   }
 
-
   async getprofile() {
     const {navigate} = this.props.navigation;
     try {
@@ -34,10 +33,9 @@ class usermain extends Component {
             this.setState({loading: false});
             const resetAction = StackActions.reset({
               index: 0,
-              actions: [NavigationActions.navigate({ routeName: 'home' })],
-          });
-          this.props.navigation.dispatch(resetAction);
-      
+              actions: [NavigationActions.navigate({routeName: 'home'})],
+            });
+            this.props.navigation.dispatch(resetAction);
           } else {
             this.setState({loading: true});
           }
@@ -52,11 +50,9 @@ class usermain extends Component {
     this.setState({loading: false});
     const resetAction = StackActions.reset({
       index: 0,
-      actions: [NavigationActions.navigate({ routeName: x })],
-  });
-  this.props.navigation.dispatch(resetAction);
-
-
+      actions: [NavigationActions.navigate({routeName: x})],
+    });
+    this.props.navigation.dispatch(resetAction);
   }
   render() {
     return (
@@ -74,7 +70,6 @@ class usermain extends Component {
 
             <Text style={styles.text1}>Find Coffe You love </Text>
             <Text style={styles.text2}>Discover new Coffe shop</Text>
-
           </ImageBackground>
         ) : (
           <ImageBackground
@@ -106,5 +101,5 @@ class usermain extends Component {
 const mapStateToProps = state => ({
   token: selectUserToken(state),
 });
-// selectUserToken
+
 export default connect(mapStateToProps)(usermain);
