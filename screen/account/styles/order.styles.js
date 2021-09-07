@@ -23,13 +23,13 @@ export const styles = StyleSheet.create({
   },
   headerXbutton: {
     alignSelf: 'flex-end',
-    marginTop: _defz.height / 50,
+    // marginTop: _defz.height / 50,
   },
   headerXicon: {
     alignSelf: 'center',
     color: 'silver',
     fontSize: 35,
-    margin: 5,
+    // margin: 5,
   },
   cardTitle: {
     fontFamily: 'FuturaPT-Book',

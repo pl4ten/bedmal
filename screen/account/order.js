@@ -103,6 +103,33 @@ class Order extends Component {
       console.log(error);
     }
   }
+
+  async cancelOrder() {
+    let id = this.props.navigation.state.params.id;
+    try {
+      this.setState({isLoading: true});
+      await _defz
+        .get_via_token(
+          `user/account/orders/cancel/${id}`,
+          'GET',
+          this.props.token,
+        )
+        .then(response => {
+          this.setState({isLoading: false});
+          console.log(jsonBeautify(response));
+          if (response.status === 200) {
+            this.getOrder(id);
+          }
+          if (response.status === 400) {
+            Alert.alert('Error', response.errors[0].message, [{text: 'ok'}], {
+              cancelable: true,
+            });
+          }
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  }
   componentDidMount() {
     let id = this.props.navigation.state.params.id;
     this.getOrder(id);
@@ -117,21 +144,21 @@ class Order extends Component {
           <>
             <View style={styles.content}>
               <View style={styles.heading}>
-              <Button
-                transparent
-                style={styles.headerXbutton}
-                onPress={() => this.props.navigation.goBack()}>
-                <Icon
-                  name="closecircleo"
-                  type="AntDesign"
-                  style={styles.headerXicon}
+                <Button
+                  transparent
+                  style={styles.headerXbutton}
+                  onPress={() => this.props.navigation.goBack()}>
+                  <Icon
+                    name="closecircleo"
+                    type="AntDesign"
+                    style={styles.headerXicon}
+                  />
+                </Button>
+                <Headers
+                  route={'Order'}
+                  message={'chat_main'}
+                  navigation={this.props.navigation}
                 />
-              </Button>
-              <Headers
-                route={'Order'}
-                message={'chat_main'}
-                navigation={this.props.navigation}
-              />
               </View>
               <View style={styles.info}>
                 <View style={styles.infoLeft}>
@@ -257,7 +284,7 @@ class Order extends Component {
                   Are you sure you wish to cancel?
                 </Text>
                 <View style={styles.modalButtons}>
-                  <Button transparent>
+                  <Button transparent onPress={() => this.cancelOrder()}>
                     <Text style={styles.yesText}>yes</Text>
                   </Button>
                   <Button
