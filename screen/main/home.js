@@ -1,12 +1,5 @@
 import React, {Component} from 'react';
-import {
-  View,
-  StatusBar,
-  ScrollView,
-  Image,
-  ActivityIndicator,
-  Alert,
-} from 'react-native';
+import {View, ScrollView, Image, ActivityIndicator, Alert, StatusBar} from 'react-native';
 import {Text, Item, Button, Input, Icon, Header} from 'native-base';
 import Loader from '../com/loader';
 
@@ -94,17 +87,16 @@ MapboxGL.setTelemetryEnabled(false);
 
 const Marker = ({coordinate, id, color, label}) => {
   return coordinate[0] && coordinate[1] ? (
-    <MarkerView coordinate={coordinate} id={id}>
-      <View style={[styles.markerView, {}]} />
-      <View>
+    <View style={styles.markerView}>
+      <MarkerView coordinate={coordinate} id={id}>
         <Image
           resizeMode={'contain'}
           width={25}
           height={25}
           source={marker_Local_Image[id]}
         />
-      </View>
-    </MarkerView>
+      </MarkerView>
+    </View>
   ) : null;
 };
 class home extends Component {
@@ -157,10 +149,12 @@ class home extends Component {
     this.setState({renderMode});
   }
   shop_selecter = async (x, lng, lat) => {
+    this.setState({followUserLocation: false});
     if (this.state.acctive_shop == x) {
       this.setState({acctive_shop: ''});
     } else {
       this.setState({acctive_shop: x});
+      this.camera_map.zoomTo(12);
       this.camera_map.flyTo([lng, lat], 1000);
     }
   };
@@ -169,7 +163,6 @@ class home extends Component {
   }
   componentDidMount() {
     try {
-      StatusBar.setHidden(true);
       PermissionsAndroid.requestMultiple(
         [
           PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
@@ -221,6 +214,7 @@ class home extends Component {
   tryToGetSrotes() {
     try {
       location_checker = setInterval(() => {
+        StatusBar.setBackgroundColor('black');
         Geolocation.getCurrentPosition(
           position => {
             this.setState({LOCATION_OPNED: true});
@@ -274,6 +268,7 @@ class home extends Component {
   }
 
   async search_store(parm_data) {
+    this.setState({followUserLocation: false});
     try {
       await _defz
         .get_via_token('user/home' + parm_data, 'GET', this.props.token)
@@ -294,8 +289,7 @@ class home extends Component {
   }
 
   async get_store(parm_data) {
-    console.log('data');
-    this.setState({loader_Text: 'Get Store Data'});
+    this.setState({loader_Text: '', followUserLocation: false});
     const {navigate} = this.props.navigation;
     try {
       let params = '';
@@ -303,7 +297,7 @@ class home extends Component {
         params = parm_data;
       }
       if (parm_data == '?liked=1') {
-        this.setState({loader_Text: 'Get Store Data Liked'});
+        this.setState({loader_Text: ''});
       }
       this.setState({loading: true});
       /*       if (!String(parm_data).substr(0,6) == '?search=') {
@@ -379,6 +373,7 @@ class home extends Component {
   }
   select_btn(b) {
     try {
+      this.setState({followUserLocation: false});
       if (this.state.userLocationOn) {
         this.get_store_via_location();
       } else {
@@ -474,7 +469,6 @@ class home extends Component {
     MapboxGL.setAccessToken(
       'pk.eyJ1IjoiYmFyYmFyeWFiIiwiYSI6ImNraTMyaWt3dTFta2oycnFxcDRrOW4xd2oifQ.190FCXQ4cF95_ZhzMisEyw',
     );
-
     return (
       <View style={styles.container}>
         {this.state.loading === true ? (
@@ -493,7 +487,7 @@ class home extends Component {
                     this.get_store('?search=' + this.state.serach_txt)
                   }>
                   {!this.state.searchload == true ? (
-                    <Icon name="ios-search" style={{color: 'black'}} />
+                    <Icon name="ios-search" style={{color: '#707070'}} />
                   ) : (
                     <ActivityIndicator
                       size="small"
@@ -504,9 +498,12 @@ class home extends Component {
                 </Button>
 
                 <Input
-                  placeholder="ُSearch for a store or Product"
+                  placeholder={'Search for a Store Or Product'}
                   value={this.state.serach_txt}
                   style={styles.search_input}
+                  onEndEditing={() =>
+                    this.get_store('?search=' + this.state.serach_txt)
+                  }
                   onChangeText={text => {
                     this.setState({serach_txt: text}, () => {
                       console.log(this.state.serach_txt);
@@ -533,7 +530,6 @@ class home extends Component {
                 <ScrollView
                   horizontal
                   style={{
-                    marginTop: 5,
                     width: '95%',
                     alignSelf: 'center',
                     height: 45,
@@ -545,9 +541,9 @@ class home extends Component {
             ) : null}
 
             <MapboxGL.MapView
-              styleURL={'mapbox://styles/mapbox/light-v10'}
+              styleURL={'mapbox://styles/mapbox/outdoors-v11'}
               ref={c => (this._map = c)}
-              zoomLevel={2}
+              zoomLevel={5}
               style={styles.map}>
               {this.state.vendors
                 ? this.state.vendors.map((item, index) => {
@@ -571,11 +567,14 @@ class home extends Component {
                 : null}
               <MapboxGL.Camera
                 ref={c => (this.camera_map = c)}
-                zoomLevel={1}
+                zoomLevel={5}
                 animationMode={'flyTo'}
+                followUserLocation={this.state.followUserLocation}
+                followZoomLevel={5}
               />
-       
-              {this.state.LOCATION_OPNED ? <MapboxGL.UserLocation androidRenderMode="compass"/> : null}
+              {this.state.LOCATION_OPNED ? (
+                <MapboxGL.UserLocation androidRenderMode="compass" />
+              ) : null}
             </MapboxGL.MapView>
 
             {this.state.vendors !== null ? (
@@ -610,19 +609,19 @@ class home extends Component {
                             : styles.touch_style_open,
                         ]}>
                         {this.state.acctive_shop == item.id ? (
-/*                           <Button
-                          transparent
-                            style={styles.view_line_b}
-                            onPress={() => {
-                              this.setState({acctive_shop: ''});
-                            }}
-                          /> */
+                          /*                           <Button
+                                                    transparent
+                                                      style={styles.view_line_b}
+                                                      onPress={() => {
+                                                        this.setState({acctive_shop: ''});
+                                                      }}
+                                                    /> */
                           <View style={styles.view_line_b} />
                         ) : null}
                         <SliderBox
                           images={img_arr}
-                          sliderBoxHeight={_defz.height / 6}
-                          parentWidth={_defz.width / 2}
+                          sliderBoxHeight={_defz.height / 8}
+                          parentWidth={_defz.width / 2.3}
                           dotColor={'#fff'}
                           style={styles.sliderImages}
                         />
@@ -630,9 +629,17 @@ class home extends Component {
                           <Text style={styles.text_title_shop_number}>
                             {index + 1} |{' '}
                           </Text>
-                          <Text style={styles.text_title_shop}>
-                            {item.name}
-                          </Text>
+                          {this.state.acctive_shop == item.id ? (
+                            <Text style={styles.text_title_shop}>
+                              {item.name}
+                            </Text>
+                          ) : (
+                            <Text
+                              numberOfLines={1}
+                              style={styles.text_title_shop}>
+                              {item.name}
+                            </Text>
+                          )}
                         </View>
                         {this.state.acctive_shop == item.id ? (
                           <Text numberOfLines={1} style={styles.text_address}>
@@ -646,7 +653,7 @@ class home extends Component {
                               flexDirection: 'row',
                               width: '80%',
                               alignSelf: 'center',
-                              marginTop: 10,
+                              marginTop: 5,
                             }}>
                             <Text style={styles.text_borrow} numberOfLines={1}>
                               Collection
@@ -658,7 +665,7 @@ class home extends Component {
                                 style={{
                                   color: 'black',
                                   marginLeft: 'auto',
-                                  size: 15,
+                                  fontSize: 16,
                                 }}
                               />
                             ) : (
@@ -668,7 +675,7 @@ class home extends Component {
                                 style={{
                                   color: 'black',
                                   marginLeft: 'auto',
-                                  size: 15,
+                                  fontSize: 16,
                                 }}
                               />
                             )}
@@ -691,7 +698,7 @@ class home extends Component {
                                 style={{
                                   color: 'black',
                                   marginLeft: 'auto',
-                                  size: 15,
+                                  fontSize: 16,
                                 }}
                               />
                             ) : (
@@ -701,7 +708,7 @@ class home extends Component {
                                 style={{
                                   color: 'black',
                                   marginLeft: 'auto',
-                                  size: 15,
+                                  fontSize: 16,
                                 }}
                               />
                             )}
@@ -714,7 +721,7 @@ class home extends Component {
                               flexDirection: 'row',
                               width: '80%',
                               alignSelf: 'center',
-                              marginTop: 20,
+                              marginTop: 5,
                             }}>
                             <Text style={styles.text_borrow} numberOfLines={1}>
                               BorrowCup
@@ -726,7 +733,7 @@ class home extends Component {
                                 style={{
                                   color: 'black',
                                   marginLeft: 'auto',
-                                  size: 15,
+                                  fontSize: 16,
                                 }}
                               />
                             ) : (
@@ -736,7 +743,7 @@ class home extends Component {
                                 style={{
                                   color: 'black',
                                   marginLeft: 'auto',
-                                  size: 15,
+                                  fontSize: 16,
                                 }}
                               />
                             )}
@@ -760,7 +767,7 @@ class home extends Component {
                                 style={{
                                   color: 'black',
                                   marginLeft: 'auto',
-                                  size: 15,
+                                  fontSize: 16,
                                 }}
                               />
                             ) : (
@@ -770,7 +777,7 @@ class home extends Component {
                                 style={{
                                   color: 'black',
                                   marginLeft: 'auto',
-                                  size: 15,
+                                  fontSize: 16,
                                 }}
                               />
                             )}
@@ -786,7 +793,7 @@ class home extends Component {
                               width: '80%',
                               alignSelf: 'center',
                               borderRadius: 10,
-                              marginTop: '5%',
+                              marginVertical: 10,
                             }}>
                             {this.state.loading_like == false ? (
                               <Button
@@ -844,10 +851,6 @@ class home extends Component {
                         {this.state.acctive_shop !== item.id ? (
                           <View style={styles.view_line} />
                         ) : null}
-
-                        <View
-                          style={{marginTop: '10%', bottom: _defz.height / 300}}
-                        />
                       </TouchableOpacity>
                     );
                   })}
