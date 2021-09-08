@@ -59,7 +59,7 @@ export const styles = StyleSheet.create({
     width: _defz.width,
     paddingLeft: 20,
     paddingRight: 20,
-    height: _defz.height / 12,
+    height: 65,
     borderTopColor: '#C3BCBC',
     backgroundColor: '#fff',
     position: 'absolute',
@@ -73,7 +73,7 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   searchBoxButton: {
-    marginTop: _defz.height / 60,
+    alignSelf: 'center',
   },
   searchInput: {
     borderColor: '#707070',

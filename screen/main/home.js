@@ -834,6 +834,7 @@ class home extends Component {
                                 marginRight: '4%',
                                 marginLeft: 'auto',
                                 backgroundColor: '#3D80F2',
+                                width: 60,
                               }}
                               onPress={() =>
                                 navigate('storeFront', {id: item.id})
@@ -842,6 +843,7 @@ class home extends Component {
                                 style={{
                                   color: 'white',
                                   textTransform: 'capitalize',
+                                  fontFamily: 'FuturaPT-Book',
                                 }}>
                                 Shop
                               </Text>

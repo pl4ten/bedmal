@@ -541,9 +541,9 @@ class Active extends Component {
                 <View style={{marginTop: 200}} />
               </ScrollView>
             )}
-            <Footers navigation={this.props.navigation} route={'active'} />
           </>
         )}
+        <Footers navigation={this.props.navigation} route={'active'} />
       </View>
     );
   }

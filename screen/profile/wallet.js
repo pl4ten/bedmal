@@ -282,11 +282,11 @@ class wallet extends Component {
                 </ScrollView>
               </View>
             </View>
-            <Footers navigation={this.props.navigation} route={'account'} />
           </>
         ) : (
           <Loader />
         )}
+        <Footers navigation={this.props.navigation} route={'account'} />
       </Root>
     );
   }

@@ -62,227 +62,253 @@ class OnDemand extends Component {
     this.getprofile();
   }
   render() {
-    return !this.state.isLoading ? (
+    return (
       <View style={styles.container}>
-        <View style={styles.header}>
-          <Button
-            transparent
-            style={styles.headerXbutton}
-            onPress={() => this.props.navigation.goBack()}>
-            <Icon
-              name="closecircleo"
-              type="AntDesign"
-              style={styles.headerXIcon}
-            />
-          </Button>
-        </View>
-        <ScrollView style={styles.mainScroll}>
-          <View style={styles.content}>
-            <View style={styles.heading}>
-              <Text style={styles.title}>
-                Hi {this.state.userName ? this.state.userName : null},
-              </Text>
-              <Text style={styles.subTitle}>
-                What would you like to borrow?
-              </Text>
-            </View>
-            <ScrollView
-              style={styles.scrollViewH}
-              horizontal
-              scrollEnabled
-              showsHorizontalScrollIndicator={false}>
-              <View style={styles.card}>
-                <LidSleeveCup
-                  width={_defz.width / 4}
-                  height={_defz.height / 7}
-                />
-                <Text style={styles.cardBorrowItemsText}>
-                  lid + sleeve + cup
-                </Text>
-                <View style={styles.cardInfo}>
-                  <Text style={styles.cardInfoTextTop}>5-days free</Text>
-                  <Text style={styles.cardInfoTextBottom}>no cleaning fee</Text>
-                </View>
-                <View style={styles.counter}>
-                  <Button
-                    transparent
-                    style={styles.counterButton}
-                    onPress={() =>
-                      this.props.removeFromBascket('lid_sleeve_cup')
-                    }>
-                    <Text style={styles.counterButtonMines}>-</Text>
-                  </Button>
-                  <Text style={styles.count}>
-                    {this.props.onDemand.lid_sleeve_cup}
-                  </Text>
-                  <Button
-                    transparent
-                    style={styles.counterButton}
-                    onPress={() => this.props.addToBascket('lid_sleeve_cup')}>
-                    <Text style={styles.counterButtonPlus}>+</Text>
-                  </Button>
-                </View>
-              </View>
-
-              <View style={styles.card}>
-                <Bag width={_defz.width / 4} height={_defz.height / 7} />
-                <Text style={styles.cardBorrowItemsText}>bag</Text>
-                <View style={styles.cardInfo}>
-                  <Text style={styles.cardInfoTextTop}>5-days free</Text>
-                  <Text style={styles.cardInfoTextBottom}>no cleaning fee</Text>
-                </View>
-                <View style={styles.counter}>
-                  <Button
-                    transparent
-                    style={styles.counterButton}
-                    onPress={() => this.props.removeFromBascket('bag')}>
-                    <Text style={styles.counterButtonMines}>-</Text>
-                  </Button>
-                  <Text style={styles.count}>{this.props.onDemand.bag}</Text>
-                  <Button
-                    transparent
-                    style={styles.counterButton}
-                    onPress={() => this.props.addToBascket('bag')}>
-                    <Text style={styles.counterButtonPlus}>+</Text>
-                  </Button>
-                </View>
-              </View>
-
-              <View style={styles.card}>
-                <EmptyGlass width={_defz.width / 4} height={_defz.height / 7} />
-                <Text style={styles.cardBorrowItemsText}>cup only</Text>
-                <View style={styles.cardInfo}>
-                  <Text style={styles.cardInfoTextTop}>5-days free</Text>
-                  <Text style={styles.cardInfoTextBottom}>no cleaning fee</Text>
-                </View>
-                <View style={styles.counter}>
-                  <Button
-                    transparent
-                    style={styles.counterButton}
-                    onPress={() => this.props.removeFromBascket('cup')}>
-                    <Text style={styles.counterButtonMines}>-</Text>
-                  </Button>
-                  <Text style={styles.count}>{this.props.onDemand.cup}</Text>
-                  <Button
-                    transparent
-                    style={styles.counterButton}
-                    onPress={() => this.props.addToBascket('cup')}>
-                    <Text style={styles.counterButtonPlus}>+</Text>
-                  </Button>
-                </View>
-              </View>
-
-              <View style={styles.card}>
-                <LidCup width={_defz.width / 1} height={_defz.height / 7} />
-                <Text style={styles.cardBorrowItemsText}>lid + cup</Text>
-                <View style={styles.cardInfo}>
-                  <Text style={styles.cardInfoTextTop}>5-days free</Text>
-                  <Text style={styles.cardInfoTextBottom}>no cleaning fee</Text>
-                </View>
-                <View style={styles.counter}>
-                  <Button
-                    transparent
-                    style={styles.counterButton}
-                    onPress={() => this.props.removeFromBascket('lid_cup')}>
-                    <Text style={styles.counterButtonMines}>-</Text>
-                  </Button>
-                  <Text style={styles.count}>
-                    {this.props.onDemand.lid_cup}
-                  </Text>
-                  <Button
-                    transparent
-                    style={styles.counterButton}
-                    onPress={() => this.props.addToBascket('lid_cup')}>
-                    <Text style={styles.counterButtonPlus}>+</Text>
-                  </Button>
-                </View>
-              </View>
-            </ScrollView>
-
-            <View style={styles.tip}>
-              <Text style={styles.tipHead}>
-                Keep borrowing free. Return on time
-              </Text>
+        {this.state.isLoading ? (
+          <Loader />
+        ) : (
+          <View style={styles.main}>
+            <View style={styles.header}>
               <Button
                 transparent
-                onPress={() => this.props.navigation.navigate('Terms')}>
-                <Text style={styles.tipTerms}>see full terms </Text>
+                style={styles.headerXbutton}
+                onPress={() => this.props.navigation.goBack()}>
+                <Icon
+                  name="closecircleo"
+                  type="AntDesign"
+                  style={styles.headerXIcon}
+                />
               </Button>
             </View>
-            <View style={{width: '90%'}} />
-            <ImageBackground
-              source={BorrowBG}
-              resizeMode={'stretch'}
-              style={styles.borrowBG}>
-              {this.props.onDemand.lid_cup === 0 &&
-              this.props.onDemand.lid_sleeve_cup === 0 &&
-              this.props.onDemand.cup === 0 &&
-              this.props.onDemand.bag === 0 ? (
-                <Text style={styles.noReturnsText}>Return only</Text>
-              ) : (
-                <View style={styles.BorrowBGItems}>
-                  {this.props.onDemand.lid_cup > 0 ? (
-                    <View style={styles.BorrowBGItem}>
-                      <LidCup
-                        width={_defz.width / 10}
-                        height={_defz.height / 10}
-                      />
-                      <Text style={styles.BorrowBGItemText}>
-                        {this.props.onDemand.lid_cup}
+
+            <ScrollView style={styles.mainScroll}>
+              <View style={styles.content}>
+                <View style={styles.heading}>
+                  <Text style={styles.title}>
+                    Hi {this.state.userName ? this.state.userName : null},
+                  </Text>
+                  <Text style={styles.subTitle}>
+                    What would you like to borrow?
+                  </Text>
+                </View>
+                <ScrollView
+                  style={styles.scrollViewH}
+                  horizontal
+                  scrollEnabled
+                  showsHorizontalScrollIndicator={false}>
+                  <View style={styles.card}>
+                    <LidSleeveCup
+                      width={_defz.width / 4}
+                      height={_defz.height / 7}
+                    />
+                    <Text style={styles.cardBorrowItemsText}>
+                      lid + sleeve + cup
+                    </Text>
+                    <View style={styles.cardInfo}>
+                      <Text style={styles.cardInfoTextTop}>5-days free</Text>
+                      <Text style={styles.cardInfoTextBottom}>
+                        no cleaning fee
                       </Text>
                     </View>
-                  ) : null}
-                  {this.props.onDemand.lid_sleeve_cup > 0 ? (
-                    <View style={styles.BorrowBGItem}>
-                      <LidSleeveCup
-                        width={_defz.width / 10}
-                        height={_defz.height / 10}
-                      />
-                      <Text style={styles.BorrowBGItemText}>
+                    <View style={styles.counter}>
+                      <Button
+                        transparent
+                        style={styles.counterButton}
+                        onPress={() =>
+                          this.props.removeFromBascket('lid_sleeve_cup')
+                        }>
+                        <Text style={styles.counterButtonMines}>-</Text>
+                      </Button>
+                      <Text style={styles.count}>
                         {this.props.onDemand.lid_sleeve_cup}
                       </Text>
+                      <Button
+                        transparent
+                        style={styles.counterButton}
+                        onPress={() =>
+                          this.props.addToBascket('lid_sleeve_cup')
+                        }>
+                        <Text style={styles.counterButtonPlus}>+</Text>
+                      </Button>
                     </View>
-                  ) : null}
-                  {this.props.onDemand.cup > 0 ? (
-                    <View style={styles.BorrowBGItem}>
-                      <EmptyGlassNoBG
-                        width={_defz.width / 10}
-                        height={_defz.height / 10}
-                      />
-                      <Text style={styles.BorrowBGItemText}>
-                        {this.props.onDemand.cup}
+                  </View>
+
+                  <View style={styles.card}>
+                    <Bag width={_defz.width / 4} height={_defz.height / 7} />
+                    <Text style={styles.cardBorrowItemsText}>bag</Text>
+                    <View style={styles.cardInfo}>
+                      <Text style={styles.cardInfoTextTop}>5-days free</Text>
+                      <Text style={styles.cardInfoTextBottom}>
+                        no cleaning fee
                       </Text>
                     </View>
-                  ) : null}
-                  {this.props.onDemand.bag > 0 ? (
-                    <View style={styles.BorrowBGItem}>
-                      <Bag
-                        width={_defz.width / 10}
-                        height={_defz.height / 10}
-                      />
-                      <Text style={styles.BorrowBGItemText}>
+                    <View style={styles.counter}>
+                      <Button
+                        transparent
+                        style={styles.counterButton}
+                        onPress={() => this.props.removeFromBascket('bag')}>
+                        <Text style={styles.counterButtonMines}>-</Text>
+                      </Button>
+                      <Text style={styles.count}>
                         {this.props.onDemand.bag}
                       </Text>
+                      <Button
+                        transparent
+                        style={styles.counterButton}
+                        onPress={() => this.props.addToBascket('bag')}>
+                        <Text style={styles.counterButtonPlus}>+</Text>
+                      </Button>
                     </View>
-                  ) : null}
+                  </View>
+
+                  <View style={styles.card}>
+                    <EmptyGlass
+                      width={_defz.width / 4}
+                      height={_defz.height / 7}
+                    />
+                    <Text style={styles.cardBorrowItemsText}>cup only</Text>
+                    <View style={styles.cardInfo}>
+                      <Text style={styles.cardInfoTextTop}>5-days free</Text>
+                      <Text style={styles.cardInfoTextBottom}>
+                        no cleaning fee
+                      </Text>
+                    </View>
+                    <View style={styles.counter}>
+                      <Button
+                        transparent
+                        style={styles.counterButton}
+                        onPress={() => this.props.removeFromBascket('cup')}>
+                        <Text style={styles.counterButtonMines}>-</Text>
+                      </Button>
+                      <Text style={styles.count}>
+                        {this.props.onDemand.cup}
+                      </Text>
+                      <Button
+                        transparent
+                        style={styles.counterButton}
+                        onPress={() => this.props.addToBascket('cup')}>
+                        <Text style={styles.counterButtonPlus}>+</Text>
+                      </Button>
+                    </View>
+                  </View>
+
+                  <View style={styles.card}>
+                    <LidCup width={_defz.width / 1} height={_defz.height / 7} />
+                    <Text style={styles.cardBorrowItemsText}>lid + cup</Text>
+                    <View style={styles.cardInfo}>
+                      <Text style={styles.cardInfoTextTop}>5-days free</Text>
+                      <Text style={styles.cardInfoTextBottom}>
+                        no cleaning fee
+                      </Text>
+                    </View>
+                    <View style={styles.counter}>
+                      <Button
+                        transparent
+                        style={styles.counterButton}
+                        onPress={() => this.props.removeFromBascket('lid_cup')}>
+                        <Text style={styles.counterButtonMines}>-</Text>
+                      </Button>
+                      <Text style={styles.count}>
+                        {this.props.onDemand.lid_cup}
+                      </Text>
+                      <Button
+                        transparent
+                        style={styles.counterButton}
+                        onPress={() => this.props.addToBascket('lid_cup')}>
+                        <Text style={styles.counterButtonPlus}>+</Text>
+                      </Button>
+                    </View>
+                  </View>
+                </ScrollView>
+
+                <View style={styles.tip}>
+                  <Text style={styles.tipHead}>
+                    Keep borrowing free. Return on time
+                  </Text>
+                  <Button
+                    transparent
+                    onPress={() => this.props.navigation.navigate('Terms')}>
+                    <Text style={styles.tipTerms}>see full terms </Text>
+                  </Button>
                 </View>
-              )}
-              <Button
-                transparent
-                style={styles.forwardButton}
-                onPress={() =>
-                  this.props.navigation.navigate('onDemandStage2')
-                }>
-                <BlueForward width={_defz.width / 7} height={_defz.width / 7} />
-              </Button>
-            </ImageBackground>
+                <View style={{width: '90%'}} />
+                <ImageBackground
+                  source={BorrowBG}
+                  resizeMode={'stretch'}
+                  style={styles.borrowBG}>
+                  {this.props.onDemand.lid_cup === 0 &&
+                  this.props.onDemand.lid_sleeve_cup === 0 &&
+                  this.props.onDemand.cup === 0 &&
+                  this.props.onDemand.bag === 0 ? (
+                    <Text style={styles.noReturnsText}>Return only</Text>
+                  ) : (
+                    <View style={styles.BorrowBGItems}>
+                      {this.props.onDemand.lid_cup > 0 ? (
+                        <View style={styles.BorrowBGItem}>
+                          <LidCup
+                            width={_defz.width / 10}
+                            height={_defz.height / 10}
+                          />
+                          <Text style={styles.BorrowBGItemText}>
+                            {this.props.onDemand.lid_cup}
+                          </Text>
+                        </View>
+                      ) : null}
+                      {this.props.onDemand.lid_sleeve_cup > 0 ? (
+                        <View style={styles.BorrowBGItem}>
+                          <LidSleeveCup
+                            width={_defz.width / 10}
+                            height={_defz.height / 10}
+                          />
+                          <Text style={styles.BorrowBGItemText}>
+                            {this.props.onDemand.lid_sleeve_cup}
+                          </Text>
+                        </View>
+                      ) : null}
+                      {this.props.onDemand.cup > 0 ? (
+                        <View style={styles.BorrowBGItem}>
+                          <EmptyGlassNoBG
+                            width={_defz.width / 10}
+                            height={_defz.height / 10}
+                          />
+                          <Text style={styles.BorrowBGItemText}>
+                            {this.props.onDemand.cup}
+                          </Text>
+                        </View>
+                      ) : null}
+                      {this.props.onDemand.bag > 0 ? (
+                        <View style={styles.BorrowBGItem}>
+                          <Bag
+                            width={_defz.width / 10}
+                            height={_defz.height / 10}
+                          />
+                          <Text style={styles.BorrowBGItemText}>
+                            {this.props.onDemand.bag}
+                          </Text>
+                        </View>
+                      ) : null}
+                    </View>
+                  )}
+                  <Button
+                    transparent
+                    style={styles.forwardButton}
+                    onPress={() =>
+                      this.props.navigation.navigate('onDemandStage2')
+                    }>
+                    <BlueForward
+                      width={_defz.width / 7}
+                      height={_defz.width / 7}
+                    />
+                  </Button>
+                </ImageBackground>
+              </View>
+              <View style={{marginTop: 200}} />
+            </ScrollView>
           </View>
-          <View style={{marginTop: 200}} />
-        </ScrollView>
+        )}
+
         <Footers navigation={this.props.navigation} route={'demand'} />
       </View>
-    ) : (
-      <Loader />
     );
   }
 }

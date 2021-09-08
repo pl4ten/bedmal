@@ -189,12 +189,14 @@ class SearchProduct extends Component {
       console.log(error);
     }
   }
-  shop_selecter = async x => {
-    Keyboard.dismiss();
+
+  shop_selecter = async (x, lng, lat) => {
     if (this.state.acctive_shop == x) {
       this.setState({acctive_shop: ''});
     } else {
       this.setState({acctive_shop: x});
+      this.camera_map.zoomTo(12);
+      this.camera_map.flyTo([lng, lat], 1000);
     }
   };
   componentDidMount() {
@@ -295,10 +297,11 @@ class SearchProduct extends Component {
             </Button>
           </View>
         </View>
+
         <MapboxGL.MapView
           styleURL={'mapbox://styles/mapbox/outdoors-v11'}
           ref={c => (this._map = c)}
-          zoomLevel={2}
+          zoomLevel={5}
           style={styles.map}>
           {this.state.vendors
             ? this.state.vendors.map((item, index) => {
@@ -323,7 +326,7 @@ class SearchProduct extends Component {
             : null}
           <MapboxGL.Camera
             ref={c => (this.camera_map = c)}
-            zoomLevel={1}
+            zoomLevel={5}
             animationMode={'flyTo'}
           />
         </MapboxGL.MapView>
@@ -343,8 +346,12 @@ class SearchProduct extends Component {
                     key={index}
                     onPress={() => {
                       this.state.acctive_shop !== item.id
-                        ? this.shop_selecter(item.id)
-                        : null;
+                        ? this.shop_selecter(
+                            item.id,
+                            item.longitude,
+                            item.latitude,
+                          )
+                        : this.setState({acctive_shop: ''});
                     }}
                     style={[
                       this.state.acctive_shop !== item.id
@@ -352,17 +359,19 @@ class SearchProduct extends Component {
                         : styles.touch_style_open,
                     ]}>
                     {this.state.acctive_shop == item.id ? (
-                      <Button
-                        style={styles.view_line_b}
-                        onPress={() => {
-                          this.shop_selecter(item.id);
-                        }}
-                      />
+                      /*                           <Button
+                                                transparent
+                                                  style={styles.view_line_b}
+                                                  onPress={() => {
+                                                    this.setState({acctive_shop: ''});
+                                                  }}
+                                                /> */
+                      <View style={styles.view_line_b} />
                     ) : null}
                     <SliderBox
                       images={img_arr}
-                      sliderBoxHeight={_defz.height / 6}
-                      parentWidth={_defz.width / 2}
+                      sliderBoxHeight={_defz.height / 8}
+                      parentWidth={_defz.width / 2.3}
                       dotColor={'#fff'}
                       style={styles.sliderImages}
                     />
@@ -370,7 +379,13 @@ class SearchProduct extends Component {
                       <Text style={styles.text_title_shop_number}>
                         {index + 1} |{' '}
                       </Text>
-                      <Text style={styles.text_title_shop}>{item.name}</Text>
+                      {this.state.acctive_shop == item.id ? (
+                        <Text style={styles.text_title_shop}>{item.name}</Text>
+                      ) : (
+                        <Text numberOfLines={1} style={styles.text_title_shop}>
+                          {item.name}
+                        </Text>
+                      )}
                     </View>
                     {this.state.acctive_shop == item.id ? (
                       <Text numberOfLines={1} style={styles.text_address}>
@@ -384,7 +399,7 @@ class SearchProduct extends Component {
                           flexDirection: 'row',
                           width: '80%',
                           alignSelf: 'center',
-                          marginTop: 10,
+                          marginTop: 5,
                         }}>
                         <Text style={styles.text_borrow} numberOfLines={1}>
                           Collection
@@ -396,7 +411,7 @@ class SearchProduct extends Component {
                             style={{
                               color: 'black',
                               marginLeft: 'auto',
-                              size: 15,
+                              fontSize: 16,
                             }}
                           />
                         ) : (
@@ -406,7 +421,7 @@ class SearchProduct extends Component {
                             style={{
                               color: 'black',
                               marginLeft: 'auto',
-                              size: 15,
+                              fontSize: 16,
                             }}
                           />
                         )}
@@ -429,7 +444,7 @@ class SearchProduct extends Component {
                             style={{
                               color: 'black',
                               marginLeft: 'auto',
-                              size: 15,
+                              fontSize: 16,
                             }}
                           />
                         ) : (
@@ -439,7 +454,7 @@ class SearchProduct extends Component {
                             style={{
                               color: 'black',
                               marginLeft: 'auto',
-                              size: 15,
+                              fontSize: 16,
                             }}
                           />
                         )}
@@ -452,7 +467,7 @@ class SearchProduct extends Component {
                           flexDirection: 'row',
                           width: '80%',
                           alignSelf: 'center',
-                          marginTop: 20,
+                          marginTop: 5,
                         }}>
                         <Text style={styles.text_borrow} numberOfLines={1}>
                           BorrowCup
@@ -464,7 +479,7 @@ class SearchProduct extends Component {
                             style={{
                               color: 'black',
                               marginLeft: 'auto',
-                              size: 15,
+                              fontSize: 16,
                             }}
                           />
                         ) : (
@@ -474,7 +489,7 @@ class SearchProduct extends Component {
                             style={{
                               color: 'black',
                               marginLeft: 'auto',
-                              size: 15,
+                              fontSize: 16,
                             }}
                           />
                         )}
@@ -495,11 +510,10 @@ class SearchProduct extends Component {
                           <Icon
                             name="check"
                             type="AntDesign"
-                            size={25}
                             style={{
                               color: 'black',
                               marginLeft: 'auto',
-                              fontSize: 10,
+                              fontSize: 16,
                             }}
                           />
                         ) : (
@@ -509,7 +523,7 @@ class SearchProduct extends Component {
                             style={{
                               color: 'black',
                               marginLeft: 'auto',
-                              size: 10,
+                              fontSize: 16,
                             }}
                           />
                         )}
@@ -525,7 +539,7 @@ class SearchProduct extends Component {
                           width: '80%',
                           alignSelf: 'center',
                           borderRadius: 10,
-                          marginTop: '5%',
+                          marginVertical: 10,
                         }}>
                         {this.state.loading_like == false ? (
                           <Button
@@ -563,18 +577,18 @@ class SearchProduct extends Component {
                             height: 26,
                             bottom: _defz.height / 300,
                             textTransform: 'capitalize',
-                            marginRight: '4%',
+                            alignItems: 'center',
                             justifyContent: 'center',
-                            marginLeft: 'auto',
-                            width: '30%',
                             backgroundColor: '#3D80F2',
+                            width: 60,
                           }}
                           onPress={() => navigate('storeFront', {id: item.id})}>
                           <Text
                             style={{
                               color: 'white',
                               textTransform: 'capitalize',
-                              textAlign: 'center',
+                              fontFamily: 'FuturaPT-Book',
+                              alignSelf: 'center',
                             }}>
                             Shop
                           </Text>
@@ -584,10 +598,6 @@ class SearchProduct extends Component {
                     {this.state.acctive_shop !== item.id ? (
                       <View style={styles.view_line} />
                     ) : null}
-
-                    <View
-                      style={{marginTop: '10%', bottom: _defz.height / 300}}
-                    />
                   </TouchableOpacity>
                 );
               })}
@@ -735,7 +745,7 @@ class SearchProduct extends Component {
                   )}
                 </View>
               ) : null}
-              <View style={{height: _defz.height / 4}} />
+              <View style={{marginBottom: 110,}} />
             </ScrollView>
           </View>
         </View>

@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
   },
   scrollViewH2: {
     position: 'absolute',
-    bottom: _defz.height / 8,
+    bottom: 70,
     left: 0,
     zIndex: 99999999,
   },
@@ -28,20 +28,21 @@ export const styles = StyleSheet.create({
     backgroundColor: '#F0F0F0',
     marginLeft: _defz.width / 15,
     borderRadius: 10,
-    width: _defz.width / 2,
+    width: _defz.width / 2.3,
     marginTop: 'auto',
   },
   touch_style_open: {
     backgroundColor: 'white',
     marginLeft: _defz.width / 15,
     borderRadius: 10,
-    width: _defz.width / 2,
+    width: _defz.width / 2.3,
     marginTop: 'auto',
   },
   text_borrow: {
-    fontSize: 13,
-    color: 'gray',
+    fontSize: 12,
+    color: '#707070',
     marginLeft: '9%',
+    fontFamily: 'FuturaPT-Book',
   },
   sliderImages: {
     borderTopLeftRadius: 10,
@@ -53,23 +54,26 @@ export const styles = StyleSheet.create({
     marginLeft: '5%',
     marginTop: 2,
     fontSize: 10,
+    fontFamily: 'FuturaPT-Medium',
   },
   text_title_shop: {
     marginLeft: 5,
     marginTop: 5,
     fontSize: 18,
+    fontFamily: 'FuturaPT-Medium',
   },
   text_title_shop_number: {
     marginLeft: 5,
     marginTop: 8,
     fontSize: 14,
+    fontFamily: 'FuturaPT-Medium',
   },
   view_line: {
     width: '70%',
     alignSelf: 'center',
     height: 5,
     borderRadius: 15,
-    marginTop: 5,
+    marginVertical: 5,
     backgroundColor: 'black',
   },
   view_line_b: {
@@ -87,9 +91,9 @@ export const styles = StyleSheet.create({
   map: {
     marginTop: 80,
     width: _defz.width,
-    borderRadius: 100,
     position: 'relative',
     flex: 1,
+    overflow: 'hidden',
   },
   transparentHeader: {
     zIndex: 999999,
@@ -114,7 +118,7 @@ export const styles = StyleSheet.create({
     width: '100%',
     paddingLeft: 20,
     paddingRight: 20,
-    height: _defz.height / 10,
+    height: 65,
     borderTopColor: '#C3BCBC',
     backgroundColor: '#fff',
     position: 'absolute',
@@ -130,8 +134,8 @@ export const styles = StyleSheet.create({
   searchBox: {
     width: '70%',
     position: 'relative',
-    left: _defz.width / 15,
-    bottom: _defz.height / 70,
+    left: 25,
+    bottom: 3,
   },
   footerSearchInput: {
     borderColor: '#3D80F2',
@@ -176,7 +180,7 @@ export const styles = StyleSheet.create({
     borderTopRightRadius: 25,
     position: 'relative',
     top: 80,
-    marginBottom: _defz.height / 3,
+    
     backgroundColor: '#F0F0F0',
   },
   contentTransparent: {
@@ -229,7 +233,7 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     backgroundColor: '#F0F0F0',
     elevation: 3,
-    paddingHorizontal: '1%',
+    paddingHorizontal: 10,
     borderRadius: 50,
     height: 35,
     marginTop: 15,
@@ -264,7 +268,6 @@ export const styles = StyleSheet.create({
   },
   homeButtonWithBadge: {
     position: 'relative',
-    bottom:10
   },
   badgeCircle: {
     position: 'absolute',

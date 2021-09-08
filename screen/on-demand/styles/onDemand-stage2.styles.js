@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
   },
   header: {
     width: '100%',
-    height: 100,
+    height: 70,
     backgroundColor: '#000',
   },
   content: {
@@ -26,7 +26,6 @@ export const styles = StyleSheet.create({
   },
   headerXbutton: {
     alignSelf: 'flex-end',
-    marginTop: 5,
   },
   headerXIcon: {
     alignSelf: 'center',

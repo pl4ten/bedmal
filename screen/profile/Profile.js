@@ -133,209 +133,206 @@ class Profile extends Component {
     return (
       <Root>
         {!this.state.isLoading ? (
-          <>
-            <View style={styles.header}>
-              <Button
-                transparent
-                style={styles.headerXbutton}
-                onPress={() => this.props.navigation.goBack()}>
-                <Icon
-                  name="closecircleo"
-                  type="AntDesign"
-                  style={styles.headerXicon}
-                />
-              </Button>
-              <View style={styles.container}>
-                <Headers navigation={this.props.navigation} route={'Profile'} />
+          <View style={styles.header}>
+            <Button
+              transparent
+              style={styles.headerXbutton}
+              onPress={() => this.props.navigation.goBack()}>
+              <Icon
+                name="closecircleo"
+                type="AntDesign"
+                style={styles.headerXicon}
+              />
+            </Button>
+            <View style={styles.container}>
+              <Headers navigation={this.props.navigation} route={'Profile'} />
 
-                <CardItem style={styles.card}>
-                  {!this.state.editname ? (
-                    <Left style={styles.cardLeft}>
-                      <Text style={styles.title}>Name</Text>
-                      {this.state.profile ? (
-                        <Text style={styles.text1}>
-                          {this.state.profile.name}
-                        </Text>
-                      ) : null}
-                    </Left>
-                  ) : (
-                    <Left style={styles.cardLeft}>
-                      <Text style={styles.text1}>Name</Text>
-                      <TextInput
-                        placeholder={this.state.name}
-                        placeholderTextColor="black"
-                        onChangeText={text => {
-                          name = text;
-                        }}
-                        maxLength={50}
-                        style={styles.textInput}
-                      />
-                    </Left>
-                  )}
-                  <Right style={{flex: 1}}>
-                    {!this.state.editname ? (
-                      <Button
-                        rounded
-                        light
-                        style={styles.b1}
-                        onPress={() => this.setState({editname: true})}>
-                        <Text style={styles.editButton}> Edit </Text>
-                      </Button>
-                    ) : (
-                      <Button
-                        rounded
-                        light
-                        style={styles.b2}
-                        onPress={() => this.update('name')}>
-                        <Text style={styles.editButton}>Save</Text>
-                      </Button>
-                    )}
-                  </Right>
-                </CardItem>
-
-                <CardItem style={styles.card}>
-                  {!this.state.editemail ? (
-                    <Left style={styles.cardLeft}>
-                      <Text style={styles.title}>Email Address</Text>
-                      {this.state.profile ? (
-                        <Text style={styles.text1}>
-                          {this.state.profile.email}
-                        </Text>
-                      ) : null}
-                    </Left>
-                  ) : (
-                    <Left style={styles.cardLeft}>
-                      <Text numberOfLines={1} style={styles.text1}>
-                        Email Address
+              <CardItem style={styles.card}>
+                {!this.state.editname ? (
+                  <Left style={styles.cardLeft}>
+                    <Text style={styles.title}>Name</Text>
+                    {this.state.profile ? (
+                      <Text style={styles.text1}>
+                        {this.state.profile.name}
                       </Text>
-                      <TextInput
-                        placeholder={this.state.email}
-                        placeholderTextColor="black"
-                        onChangeText={text => {
-                          email = text;
-                        }}
-                        maxLength={50}
-                        style={styles.textInput}
-                      />
-                    </Left>
+                    ) : null}
+                  </Left>
+                ) : (
+                  <Left style={styles.cardLeft}>
+                    <Text style={styles.text1}>Name</Text>
+                    <TextInput
+                      placeholder={this.state.name}
+                      placeholderTextColor="black"
+                      onChangeText={text => {
+                        name = text;
+                      }}
+                      maxLength={50}
+                      style={styles.textInput}
+                    />
+                  </Left>
+                )}
+                <Right style={{flex: 1}}>
+                  {!this.state.editname ? (
+                    <Button
+                      rounded
+                      light
+                      style={styles.b1}
+                      onPress={() => this.setState({editname: true})}>
+                      <Text style={styles.editButton}> Edit </Text>
+                    </Button>
+                  ) : (
+                    <Button
+                      rounded
+                      light
+                      style={styles.b2}
+                      onPress={() => this.update('name')}>
+                      <Text style={styles.editButton}>Save</Text>
+                    </Button>
                   )}
+                </Right>
+              </CardItem>
 
-                  <Right style={{}}>
-                    {!this.state.editemail ? (
-                      <Button
-                        rounded
-                        light
-                        style={styles.b1}
-                        onPress={() => this.setState({editemail: true})}>
-                        <Text style={styles.editButton}> Edit </Text>
-                      </Button>
-                    ) : (
-                      <Button
-                        rounded
-                        light
-                        style={styles.b2}
-                        onPress={() => this.update('email')}>
-                        <Text style={styles.editButton}>Save</Text>
-                      </Button>
-                    )}
-                  </Right>
-                </CardItem>
+              <CardItem style={styles.card}>
+                {!this.state.editemail ? (
+                  <Left style={styles.cardLeft}>
+                    <Text style={styles.title}>Email Address</Text>
+                    {this.state.profile ? (
+                      <Text style={styles.text1}>
+                        {this.state.profile.email}
+                      </Text>
+                    ) : null}
+                  </Left>
+                ) : (
+                  <Left style={styles.cardLeft}>
+                    <Text numberOfLines={1} style={styles.text1}>
+                      Email Address
+                    </Text>
+                    <TextInput
+                      placeholder={this.state.email}
+                      placeholderTextColor="black"
+                      onChangeText={text => {
+                        email = text;
+                      }}
+                      maxLength={50}
+                      style={styles.textInput}
+                    />
+                  </Left>
+                )}
 
-                <CardItem style={styles.card}>
+                <Right style={{}}>
+                  {!this.state.editemail ? (
+                    <Button
+                      rounded
+                      light
+                      style={styles.b1}
+                      onPress={() => this.setState({editemail: true})}>
+                      <Text style={styles.editButton}> Edit </Text>
+                    </Button>
+                  ) : (
+                    <Button
+                      rounded
+                      light
+                      style={styles.b2}
+                      onPress={() => this.update('email')}>
+                      <Text style={styles.editButton}>Save</Text>
+                    </Button>
+                  )}
+                </Right>
+              </CardItem>
+
+              <CardItem style={styles.card}>
+                {!this.state.editmobile ? (
+                  <Left style={styles.cardLeft}>
+                    <Text style={styles.title}>Mobile Number</Text>
+                    {this.state.profile ? (
+                      <Text style={styles.text1}>{this.state.mobile}</Text>
+                    ) : null}
+                  </Left>
+                ) : (
+                  <Left style={styles.cardLeft}>
+                    <Text style={styles.text1}>Mobile Number</Text>
+                    <TextInput
+                      placeholder={this.state.mobile}
+                      placeholderTextColor="black"
+                      onChangeText={text => {
+                        mobile = text;
+                      }}
+                      maxLength={50}
+                      style={styles.textInput}
+                    />
+                  </Left>
+                )}
+
+                <Right style={{flex: 1}}>
                   {!this.state.editmobile ? (
-                    <Left style={styles.cardLeft}>
-                      <Text style={styles.title}>Mobile Number</Text>
-                      {this.state.profile ? (
-                        <Text style={styles.text1}>{this.state.mobile}</Text>
-                      ) : null}
-                    </Left>
+                    <Button
+                      rounded
+                      light
+                      style={styles.b1}
+                      onPress={() => this.setState({editmobile: true})}>
+                      <Text style={styles.editButton}> Edit </Text>
+                    </Button>
                   ) : (
-                    <Left style={styles.cardLeft}>
-                      <Text style={styles.text1}>Mobile Number</Text>
-                      <TextInput
-                        placeholder={this.state.mobile}
-                        placeholderTextColor="black"
-                        onChangeText={text => {
-                          mobile = text;
-                        }}
-                        maxLength={50}
-                        style={styles.textInput}
-                      />
-                    </Left>
+                    <Button
+                      rounded
+                      light
+                      style={styles.b2}
+                      onPress={() => this.update('mobile')}>
+                      <Text style={styles.editButton}>Save</Text>
+                    </Button>
                   )}
+                </Right>
+              </CardItem>
 
-                  <Right style={{flex: 1}}>
-                    {!this.state.editmobile ? (
-                      <Button
-                        rounded
-                        light
-                        style={styles.b1}
-                        onPress={() => this.setState({editmobile: true})}>
-                        <Text style={styles.editButton}> Edit </Text>
-                      </Button>
-                    ) : (
-                      <Button
-                        rounded
-                        light
-                        style={styles.b2}
-                        onPress={() => this.update('mobile')}>
-                        <Text style={styles.editButton}>Save</Text>
-                      </Button>
-                    )}
-                  </Right>
-                </CardItem>
-
-                <CardItem style={styles.card}>
+              <CardItem style={styles.card}>
+                {!this.state.editpass ? (
+                  <Left style={styles.cardLeftLarge}>
+                    <Text style={styles.title}>Password</Text>
+                    {this.state.profile ? (
+                      <Text style={styles.text1}>**********</Text>
+                    ) : null}
+                  </Left>
+                ) : (
+                  <Left style={styles.cardLeftLarge}>
+                    <Text style={styles.text1}>Password</Text>
+                    <TextInput
+                      placeholder="******"
+                      placeholderTextColor="black"
+                      onChangeText={text => {
+                        pass = text;
+                      }}
+                      maxLength={50}
+                      style={styles.textInput}
+                    />
+                  </Left>
+                )}
+                <Body />
+                <Right>
                   {!this.state.editpass ? (
-                    <Left style={styles.cardLeftLarge}>
-                      <Text style={styles.title}>Password</Text>
-                      {this.state.profile ? (
-                        <Text style={styles.text1}>**********</Text>
-                      ) : null}
-                    </Left>
+                    <Button
+                      rounded
+                      light
+                      style={styles.b1}
+                      onPress={() => this.setState({editpass: true})}>
+                      <Text style={styles.editButton}> Edit </Text>
+                    </Button>
                   ) : (
-                    <Left style={styles.cardLeftLarge}>
-                      <Text style={styles.text1}>Password</Text>
-                      <TextInput
-                        placeholder="******"
-                        placeholderTextColor="black"
-                        onChangeText={text => {
-                          pass = text;
-                        }}
-                        maxLength={50}
-                        style={styles.textInput}
-                      />
-                    </Left>
+                    <Button
+                      rounded
+                      light
+                      style={styles.b2}
+                      onPress={() => this.update('pass')}>
+                      <Text style={styles.editButton}> Save </Text>
+                    </Button>
                   )}
-                  <Body />
-                  <Right>
-                    {!this.state.editpass ? (
-                      <Button
-                        rounded
-                        light
-                        style={styles.b1}
-                        onPress={() => this.setState({editpass: true})}>
-                        <Text style={styles.editButton}> Edit </Text>
-                      </Button>
-                    ) : (
-                      <Button
-                        rounded
-                        light
-                        style={styles.b2}
-                        onPress={() => this.update('pass')}>
-                        <Text style={styles.editButton}> Save </Text>
-                      </Button>
-                    )}
-                  </Right>
-                </CardItem>
-              </View>
+                </Right>
+              </CardItem>
             </View>
-
-            <Footers navigation={this.props.navigation} route={'account'} />
-          </>
+          </View>
         ) : (
           <Loader />
         )}
+        <Footers navigation={this.props.navigation} route={'account'} />
       </Root>
     );
   }

@@ -9,7 +9,6 @@ export const styles = StyleSheet.create({
     backgroundColor: '#FAFAFA',
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-    height: '90%',
   },
   b1: {
     backgroundColor: '#C3BCBC',

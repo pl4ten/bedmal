@@ -306,11 +306,12 @@ class Addresses extends Component {
                 )}
               </View>
             </View>
-            <Footers navigation={this.props.navigation} route={'account'} />
+            
           </>
         ) : (
           <Loader />
         )}
+        <Footers navigation={this.props.navigation} route={'account'} />
       </Root>
     );
   }

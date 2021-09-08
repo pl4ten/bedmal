@@ -5,13 +5,9 @@ export const styles = StyleSheet.create({
   container: {
     width: '100%',
     height: '100%',
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25,
-    backgroundColor: '#000',
   },
   header: {
     width: '100%',
-    height: 60,
     backgroundColor: '#000',
   },
   content: {
@@ -27,8 +23,17 @@ export const styles = StyleSheet.create({
   mainScroll: {
     backgroundColor: '#FAFAFA',
     flex: 1,
+    width: '100%',
+    height: '100%',
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
+    position: 'absolute',
+    top: 60,
+  },
+  main: {
+    backgroundColor: '#000',
+    width: '100%',
+    height: '100%',
   },
   headerXbutton: {
     alignSelf: 'flex-end',

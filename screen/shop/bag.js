@@ -180,7 +180,6 @@ class Bag extends React.Component {
 
     this.state.activeCart.products.map(item => {
       if (item.selectedOption.label) {
-
         products.push({
           borrow_cup: item.orderType,
           options: [
@@ -270,408 +269,415 @@ class Bag extends React.Component {
   }
 
   render() {
-    return this.state.isLoading ? null : this.state.goToPay ? (
-      <Loader />
-    ) : (
-      <>
-        <ScrollView>
-          <View style={styles.container}>
-            <Button
-              style={styles.bagDeleteButton}
-              transparent
-              onPress={() => this.bagDeleteHandler()}>
-              <Text style={styles.bagDeleteButtonText}>delete</Text>
-            </Button>
-            <View style={styles.bag}>
-              <View style={styles.bagHeading}>
-                <View style={styles.top}>
-                  <Text style={styles.bagHeadingTitle}>
-                    {this.state.fulfillmentInfo
-                      ? this.state.fulfillmentInfo.vendor_info.name
-                      : null}
-                  </Text>
-                  {this.state.bag.length ? (
-                    <View style={styles.paginationActive}>
-                      <View style={styles.paginationSmallBoxActive} />
-                      <Text style={styles.paginationTextActive}>
-                        {this.state.activeBag}
-                      </Text>
-                    </View>
-                  ) : null}
-                </View>
-                <View style={styles.headingBottom}>
-                  <View style={styles.optionBackground}>
-                    {this.state.fulfillmentInfo.borrow_partner_bag === 1 ? (
-                      <>
-                        <View style={styles.optionRow}>
-                          <View>
-                            <Text style={styles.headingText}>
-                              Pack order in BorrowBags?
-                            </Text>
-                            {this.state.packInBorrowBags ? (
-                              <Text style={styles.headingText2}>
-                                5-days to return to any partner store, free. As
-                                few bags as possible will be used. 20p per bag
-                                cleaning fee.
-                                <Text
-                                  style={{color: '#3D80F2'}}
-                                  onPress={() =>
-                                    this.props.navigation.navigate('Terms')
-                                  }>
-                                  See full terms
-                                </Text>
-                              </Text>
-                            ) : null}
-                          </View>
-
-                          <Button
-                            transparent
-                            onPress={() =>
-                              this.setState({
-                                packInBorrowBags: !this.state.packInBorrowBags,
-                              })
-                            }>
-                            {this.state.packInBorrowBags ? (
-                              <SwitchOn />
-                            ) : (
-                              <SwitchOff />
-                            )}
-                          </Button>
-                        </View>
-                      </>
-                    ) : null}
-                    <View style={styles.optionRow2}>
-                      <Text style={styles.headingText}>
-                        Returning any Borrows?
-                      </Text>
-                      <Button
-                        transparent
-                        onPress={() =>
-                          this.setState({
-                            returnBorrows: !this.state.returnBorrows,
-                          })
-                        }>
-                        {this.state.returnBorrows ? (
-                          <SwitchOn />
-                        ) : (
-                          <SwitchOff />
-                        )}
-                      </Button>
-                    </View>
-                    {this.state.returnBorrows ? (
-                      <ScrollView
-                        horizontal
-                        showsHorizontalScrollIndicator={false}>
-                        {this.state.borrowed_items
-                          ? this.state.borrowed_items.map(item => {
-                              if (item.combo === 'cup_sleeve_lid') {
-                                return (
-                                  <TouchableOpacity
-                                    onPress={() =>
-                                      this.handleBorrowItemsAdd(item.id)
-                                    }
-                                    activeOpacity={1}
-                                    style={
-                                      this.state.returnBorrowIdz.includes(
-                                        item.id,
-                                      )
-                                        ? styles.borrowItemActive
-                                        : styles.borrowItem
-                                    }>
-                                    <LidSleeveCup
-                                      width={_defz.width / 5}
-                                      height={_defz.height / 10}
-                                    />
-                                    <Text style={styles.borrowItemText}>
-                                      lid + sleeve + cup
-                                    </Text>
-                                    <View style={styles.borrowItemFooter}>
-                                      <Text style={styles.borrowItemFooterText}>
-                                        {this.timeDetector(
-                                          item.due.slice(0, 10),
-                                        )}
-                                      </Text>
-                                    </View>
-                                  </TouchableOpacity>
-                                );
-                              } else if (item.combo === 'cup_sleeve') {
-                                return (
-                                  <TouchableOpacity
-                                    onPress={() =>
-                                      this.handleBorrowItemsAdd(item.id)
-                                    }
-                                    activeOpacity={1}
-                                    style={
-                                      this.state.returnBorrowIdz.includes(
-                                        item.id,
-                                      )
-                                        ? styles.borrowItemActive
-                                        : styles.borrowItem
-                                    }>
-                                    <SleeveCup
-                                      width={_defz.width / 5}
-                                      height={_defz.height / 10}
-                                    />
-                                    <Text style={styles.borrowItemText}>
-                                      sleeve + cup
-                                    </Text>
-                                    <View style={styles.borrowItemFooter}>
-                                      <Text style={styles.borrowItemFooterText}>
-                                        {this.timeDetector(
-                                          item.due.slice(0, 10),
-                                        )}
-                                      </Text>
-                                    </View>
-                                  </TouchableOpacity>
-                                );
-                              } else if (item.combo === 'cup') {
-                                return (
-                                  <TouchableOpacity
-                                    onPress={() =>
-                                      this.handleBorrowItemsAdd(item.id)
-                                    }
-                                    activeOpacity={1}
-                                    style={
-                                      this.state.returnBorrowIdz.includes(
-                                        item.id,
-                                      )
-                                        ? styles.borrowItemActive
-                                        : styles.borrowItem
-                                    }>
-                                    <EmptyGlass
-                                      width={_defz.width / 5}
-                                      height={_defz.height / 10}
-                                    />
-                                    <Text style={styles.borrowItemText}>
-                                      cup
-                                    </Text>
-                                    <View style={styles.borrowItemFooter}>
-                                      <Text style={styles.borrowItemFooterText}>
-                                        {this.timeDetector(
-                                          item.due.slice(0, 10),
-                                        )}
-                                      </Text>
-                                    </View>
-                                  </TouchableOpacity>
-                                );
-                              } else if (item.combo === 'bag') {
-                                return (
-                                  <TouchableOpacity
-                                    onPress={() =>
-                                      this.handleBorrowItemsAdd(item.id)
-                                    }
-                                    activeOpacity={1}
-                                    style={
-                                      this.state.returnBorrowIdz.includes(
-                                        item.id,
-                                      )
-                                        ? styles.borrowItemActive
-                                        : styles.borrowItem
-                                    }>
-                                    <BagImg
-                                      width={_defz.width / 5}
-                                      height={_defz.height / 10}
-                                    />
-                                    <Text style={styles.borrowItemText}>
-                                      bag
-                                    </Text>
-                                    <View style={styles.borrowItemFooter}>
-                                      <Text style={styles.borrowItemFooterText}>
-                                        {this.timeDetector(
-                                          item.due.slice(0, 10),
-                                        )}
-                                      </Text>
-                                    </View>
-                                  </TouchableOpacity>
-                                );
-                              }
-                            })
-                          : null}
-                      </ScrollView>
-                    ) : null}
-                  </View>
-                </View>
-              </View>
-
-              <View style={styles.content}>
-                <View style={styles.contentHeading}>
-                  <View style={styles.contentHeadingLeft}>
-                    <LocationWhite />
-                    {this.state.bag.length ? (
-                      this.state.bag[this.state.activeBag - 1].buyType ===
-                      'delivery' ? (
-                        <Text style={styles.contentHeadingLeftText}>
-                          Delivery to{' '}
-                          {this.state.fulfillmentInfo.address
-                            ? this.state.fulfillmentInfo.address.address
-                            : null}
-                        </Text>
-                      ) : (
-                        <Text style={styles.contentHeadingLeftText}>
-                          Collection
-                        </Text>
-                      )
-                    ) : null}
-                  </View>
-                  {this.state.deliveryCost !== -1 ? (
-                    <Text style={styles.contentHeadingRigthText}>
-                      {this.state.totalPrice > this.state.freeDeliveryCostOver
-                        ? 'free'
-                        : `£ ${this.state.deliveryCost}`}
+    return (
+      <View style={{width: '100%', height: '100%'}}>
+        {this.state.isLoading ? null : this.state.goToPay ? (
+          <Loader />
+        ) : (
+          <ScrollView>
+            <View style={styles.container}>
+              <Button
+                style={styles.bagDeleteButton}
+                transparent
+                onPress={() => this.bagDeleteHandler()}>
+                <Text style={styles.bagDeleteButtonText}>delete</Text>
+              </Button>
+              <View style={styles.bag}>
+                <View style={styles.bagHeading}>
+                  <View style={styles.top}>
+                    <Text style={styles.bagHeadingTitle}>
+                      {this.state.fulfillmentInfo
+                        ? this.state.fulfillmentInfo.vendor_info.name
+                        : null}
                     </Text>
-                  ) : null}
-                </View>
-                <ScrollView
-                  style={styles.scrollView}
-                  showsVerticalScrollIndicator={false}
-                  contentContainerStyle={{alignItems: 'center'}}>
-                  {this.state.bag.length
-                    ? this.state.bag[this.state.activeBag - 1].products.map(
-                        (product, index) => {
-                          return (
-                            <View
-                              key={index}
-                              style={
-                                index % 2 === 0
-                                  ? styles.bagCard
-                                  : styles.bagCardBg
-                              }>
-                              <View style={styles.bagCardLeft}>
-                                <Text style={styles.title}>
-                                  {product.product.name}
-                                </Text>
-                                <Text style={styles.subTtitle}>
-                                  {product.selectedOption.label}
-                                </Text>
-                                {product.orderType ? (
-                                  <Text style={styles.subTtitle}>
-                                    {product.orderType}
+                    {this.state.bag.length ? (
+                      <View style={styles.paginationActive}>
+                        <View style={styles.paginationSmallBoxActive} />
+                        <Text style={styles.paginationTextActive}>
+                          {this.state.activeBag}
+                        </Text>
+                      </View>
+                    ) : null}
+                  </View>
+                  <View style={styles.headingBottom}>
+                    <View style={styles.optionBackground}>
+                      {this.state.fulfillmentInfo.borrow_partner_bag === 1 ? (
+                        <>
+                          <View style={styles.optionRow}>
+                            <View>
+                              <Text style={styles.headingText}>
+                                Pack order in BorrowBags?
+                              </Text>
+                              {this.state.packInBorrowBags ? (
+                                <Text style={styles.headingText2}>
+                                  5-days to return to any partner store, free.
+                                  As few bags as possible will be used. 20p per
+                                  bag cleaning fee.
+                                  <Text
+                                    style={{color: '#3D80F2'}}
+                                    onPress={() =>
+                                      this.props.navigation.navigate('Terms')
+                                    }>
+                                    See full terms
                                   </Text>
-                                ) : null}
-                              </View>
-                              <View style={styles.bagCardRigth}>
-                                {product.packing ? (
-                                  <Text style={styles.productPacking}>
-                                    {product.packing}
-                                  </Text>
-                                ) : null}
+                                </Text>
+                              ) : null}
+                            </View>
 
-                                <View style={styles.counter}>
-                                  <Button
-                                    transparent
-                                    style={styles.counterButton}
-                                    onPress={() => {
-                                      this.quantityDowner(
-                                        this.state.activeBag - 1,
-                                        index,
-                                      );
-                                      this.forceUpdate();
-                                    }}>
-                                    <Text style={styles.counterButtonText}>
-                                      -
-                                    </Text>
-                                  </Button>
-                                  <Text style={styles.quantity}>
-                                    {product.quantity}
+                            <Button
+                              transparent
+                              onPress={() =>
+                                this.setState({
+                                  packInBorrowBags: !this.state
+                                    .packInBorrowBags,
+                                })
+                              }>
+                              {this.state.packInBorrowBags ? (
+                                <SwitchOn />
+                              ) : (
+                                <SwitchOff />
+                              )}
+                            </Button>
+                          </View>
+                        </>
+                      ) : null}
+                      <View style={styles.optionRow2}>
+                        <Text style={styles.headingText}>
+                          Returning any Borrows?
+                        </Text>
+                        <Button
+                          transparent
+                          onPress={() =>
+                            this.setState({
+                              returnBorrows: !this.state.returnBorrows,
+                            })
+                          }>
+                          {this.state.returnBorrows ? (
+                            <SwitchOn />
+                          ) : (
+                            <SwitchOff />
+                          )}
+                        </Button>
+                      </View>
+                      {this.state.returnBorrows ? (
+                        <ScrollView
+                          horizontal
+                          showsHorizontalScrollIndicator={false}>
+                          {this.state.borrowed_items
+                            ? this.state.borrowed_items.map(item => {
+                                if (item.combo === 'cup_sleeve_lid') {
+                                  return (
+                                    <TouchableOpacity
+                                      onPress={() =>
+                                        this.handleBorrowItemsAdd(item.id)
+                                      }
+                                      activeOpacity={1}
+                                      style={
+                                        this.state.returnBorrowIdz.includes(
+                                          item.id,
+                                        )
+                                          ? styles.borrowItemActive
+                                          : styles.borrowItem
+                                      }>
+                                      <LidSleeveCup
+                                        width={_defz.width / 5}
+                                        height={_defz.height / 10}
+                                      />
+                                      <Text style={styles.borrowItemText}>
+                                        lid + sleeve + cup
+                                      </Text>
+                                      <View style={styles.borrowItemFooter}>
+                                        <Text
+                                          style={styles.borrowItemFooterText}>
+                                          {this.timeDetector(
+                                            item.due.slice(0, 10),
+                                          )}
+                                        </Text>
+                                      </View>
+                                    </TouchableOpacity>
+                                  );
+                                } else if (item.combo === 'cup_sleeve') {
+                                  return (
+                                    <TouchableOpacity
+                                      onPress={() =>
+                                        this.handleBorrowItemsAdd(item.id)
+                                      }
+                                      activeOpacity={1}
+                                      style={
+                                        this.state.returnBorrowIdz.includes(
+                                          item.id,
+                                        )
+                                          ? styles.borrowItemActive
+                                          : styles.borrowItem
+                                      }>
+                                      <SleeveCup
+                                        width={_defz.width / 5}
+                                        height={_defz.height / 10}
+                                      />
+                                      <Text style={styles.borrowItemText}>
+                                        sleeve + cup
+                                      </Text>
+                                      <View style={styles.borrowItemFooter}>
+                                        <Text
+                                          style={styles.borrowItemFooterText}>
+                                          {this.timeDetector(
+                                            item.due.slice(0, 10),
+                                          )}
+                                        </Text>
+                                      </View>
+                                    </TouchableOpacity>
+                                  );
+                                } else if (item.combo === 'cup') {
+                                  return (
+                                    <TouchableOpacity
+                                      onPress={() =>
+                                        this.handleBorrowItemsAdd(item.id)
+                                      }
+                                      activeOpacity={1}
+                                      style={
+                                        this.state.returnBorrowIdz.includes(
+                                          item.id,
+                                        )
+                                          ? styles.borrowItemActive
+                                          : styles.borrowItem
+                                      }>
+                                      <EmptyGlass
+                                        width={_defz.width / 5}
+                                        height={_defz.height / 10}
+                                      />
+                                      <Text style={styles.borrowItemText}>
+                                        cup
+                                      </Text>
+                                      <View style={styles.borrowItemFooter}>
+                                        <Text
+                                          style={styles.borrowItemFooterText}>
+                                          {this.timeDetector(
+                                            item.due.slice(0, 10),
+                                          )}
+                                        </Text>
+                                      </View>
+                                    </TouchableOpacity>
+                                  );
+                                } else if (item.combo === 'bag') {
+                                  return (
+                                    <TouchableOpacity
+                                      onPress={() =>
+                                        this.handleBorrowItemsAdd(item.id)
+                                      }
+                                      activeOpacity={1}
+                                      style={
+                                        this.state.returnBorrowIdz.includes(
+                                          item.id,
+                                        )
+                                          ? styles.borrowItemActive
+                                          : styles.borrowItem
+                                      }>
+                                      <BagImg
+                                        width={_defz.width / 5}
+                                        height={_defz.height / 10}
+                                      />
+                                      <Text style={styles.borrowItemText}>
+                                        bag
+                                      </Text>
+                                      <View style={styles.borrowItemFooter}>
+                                        <Text
+                                          style={styles.borrowItemFooterText}>
+                                          {this.timeDetector(
+                                            item.due.slice(0, 10),
+                                          )}
+                                        </Text>
+                                      </View>
+                                    </TouchableOpacity>
+                                  );
+                                }
+                              })
+                            : null}
+                        </ScrollView>
+                      ) : null}
+                    </View>
+                  </View>
+                </View>
+
+                <View style={styles.content}>
+                  <View style={styles.contentHeading}>
+                    <View style={styles.contentHeadingLeft}>
+                      <LocationWhite />
+                      {this.state.bag.length ? (
+                        this.state.bag[this.state.activeBag - 1].buyType ===
+                        'delivery' ? (
+                          <Text style={styles.contentHeadingLeftText}>
+                            Delivery to{' '}
+                            {this.state.fulfillmentInfo.address
+                              ? this.state.fulfillmentInfo.address.address
+                              : null}
+                          </Text>
+                        ) : (
+                          <Text style={styles.contentHeadingLeftText}>
+                            Collection
+                          </Text>
+                        )
+                      ) : null}
+                    </View>
+                    {this.state.deliveryCost !== -1 ? (
+                      <Text style={styles.contentHeadingRigthText}>
+                        {this.state.totalPrice > this.state.freeDeliveryCostOver
+                          ? 'free'
+                          : `£ ${this.state.deliveryCost}`}
+                      </Text>
+                    ) : null}
+                  </View>
+                  <ScrollView
+                    style={styles.scrollView}
+                    showsVerticalScrollIndicator={false}
+                    contentContainerStyle={{alignItems: 'center'}}>
+                    {this.state.bag.length
+                      ? this.state.bag[this.state.activeBag - 1].products.map(
+                          (product, index) => {
+                            return (
+                              <View
+                                key={index}
+                                style={
+                                  index % 2 === 0
+                                    ? styles.bagCard
+                                    : styles.bagCardBg
+                                }>
+                                <View style={styles.bagCardLeft}>
+                                  <Text style={styles.title}>
+                                    {product.product.name}
                                   </Text>
-                                  <Button
-                                    transparent
-                                    style={styles.counterButton}
-                                    onPress={() => {
-                                      this.quantityUpper(
-                                        this.state.activeBag - 1,
-                                        index,
-                                      );
-                                      this.forceUpdate();
-                                    }}>
-                                    <Text style={styles.counterButtonText}>
-                                      +
+                                  <Text style={styles.subTtitle}>
+                                    {product.selectedOption.label}
+                                  </Text>
+                                  {product.orderType ? (
+                                    <Text style={styles.subTtitle}>
+                                      {product.orderType}
                                     </Text>
-                                  </Button>
+                                  ) : null}
+                                </View>
+                                <View style={styles.bagCardRigth}>
+                                  {product.packing ? (
+                                    <Text style={styles.productPacking}>
+                                      {product.packing}
+                                    </Text>
+                                  ) : null}
+
+                                  <View style={styles.counter}>
+                                    <Button
+                                      transparent
+                                      style={styles.counterButton}
+                                      onPress={() => {
+                                        this.quantityDowner(
+                                          this.state.activeBag - 1,
+                                          index,
+                                        );
+                                        this.forceUpdate();
+                                      }}>
+                                      <Text style={styles.counterButtonText}>
+                                        -
+                                      </Text>
+                                    </Button>
+                                    <Text style={styles.quantity}>
+                                      {product.quantity}
+                                    </Text>
+                                    <Button
+                                      transparent
+                                      style={styles.counterButton}
+                                      onPress={() => {
+                                        this.quantityUpper(
+                                          this.state.activeBag - 1,
+                                          index,
+                                        );
+                                        this.forceUpdate();
+                                      }}>
+                                      <Text style={styles.counterButtonText}>
+                                        +
+                                      </Text>
+                                    </Button>
+                                  </View>
                                 </View>
                               </View>
-                            </View>
-                          );
-                        },
-                      )
-                    : null}
-                </ScrollView>
-              </View>
-            </View>
-            <View style={styles.paginationContainer}>
-              <Text
-                style={{
-                  fontSize: 30,
-                  fontFamily: 'FuturaPT-Medium',
-                  color: '#707070',
-                }}>
-                Bags
-              </Text>
-              <View style={styles.paginationContainerCenter}>
-                {this.state.bag
-                  ? this.state.bag.map((item, idx) => {
-                      return (
-                        <Button
-                          key={idx}
-                          transparent
-                          style={[
-                            this.state.activeBag === idx + 1
-                              ? styles.paginationActive
-                              : styles.pagination,
-                            styles.paginationButton,
-                          ]}
-                          onPress={() => {
-                            this.setState(
-                              {
-                                activeVendorBag: item.vendorID,
-                                activeBag: idx + 1,
-                                activeCart: item,
-                              },
-                              () => {
-                                this.getFulfillmentInfo();
-                                this.sumPrice();
-                              },
                             );
-                          }}>
-                          <View
-                            style={
-                              this.state.activeBag === idx + 1
-                                ? styles.paginationSmallBoxActive
-                                : styles.paginationSmallBox
-                            }
-                          />
-                          <Text
-                            style={
-                              this.state.activeBag === idx + 1
-                                ? styles.paginationTextActive
-                                : styles.paginationText
-                            }>
-                            {idx + 1}
-                          </Text>
-                        </Button>
-                      );
-                    })
-                  : null}
+                          },
+                        )
+                      : null}
+                  </ScrollView>
+                </View>
               </View>
-              <Text
-                style={{
-                  fontSize: 16,
-                  fontFamily: 'FuturaPT-Medium',
-                  color: '#707070',
-                }}>
-                £{this.state.totalPrice}
-              </Text>
+              <View style={styles.paginationContainer}>
+                <Text
+                  style={{
+                    fontSize: 30,
+                    fontFamily: 'FuturaPT-Medium',
+                    color: '#707070',
+                  }}>
+                  Bags
+                </Text>
+                <View style={styles.paginationContainerCenter}>
+                  {this.state.bag
+                    ? this.state.bag.map((item, idx) => {
+                        return (
+                          <Button
+                            key={idx}
+                            transparent
+                            style={[
+                              this.state.activeBag === idx + 1
+                                ? styles.paginationActive
+                                : styles.pagination,
+                              styles.paginationButton,
+                            ]}
+                            onPress={() => {
+                              this.setState(
+                                {
+                                  activeVendorBag: item.vendorID,
+                                  activeBag: idx + 1,
+                                  activeCart: item,
+                                },
+                                () => {
+                                  this.getFulfillmentInfo();
+                                  this.sumPrice();
+                                },
+                              );
+                            }}>
+                            <View
+                              style={
+                                this.state.activeBag === idx + 1
+                                  ? styles.paginationSmallBoxActive
+                                  : styles.paginationSmallBox
+                              }
+                            />
+                            <Text
+                              style={
+                                this.state.activeBag === idx + 1
+                                  ? styles.paginationTextActive
+                                  : styles.paginationText
+                              }>
+                              {idx + 1}
+                            </Text>
+                          </Button>
+                        );
+                      })
+                    : null}
+                </View>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    fontFamily: 'FuturaPT-Medium',
+                    color: '#707070',
+                  }}>
+                  £{this.state.totalPrice}
+                </Text>
+              </View>
+              <Button
+                transparent
+                onPress={() => this.checkOut()}
+                style={styles.checkOutButton}>
+                <Text style={styles.checkOutButtonText}>Checkout</Text>
+              </Button>
             </View>
-            <Button
-              transparent
-              onPress={() => this.checkOut()}
-              style={styles.checkOutButton}>
-              <Text style={styles.checkOutButtonText}>Checkout</Text>
-            </Button>
-          </View>
-        </ScrollView>
+          </ScrollView>
+        )}
         <Footer navigation={this.props.navigation} route={'bag'} />
-      </>
+      </View>
     );
   }
 }

@@ -17,7 +17,7 @@ import {
   HomeInActive,
   BagInActive,
   SearchBox,
-  Bag2
+  Bag2,
 } from '../com/svg-files';
 
 import ProductCard from './product-card';
@@ -66,7 +66,7 @@ class StoreFront extends React.Component {
               vendorInfo: response.vendor_info,
               isLoading: false,
             });
-            console.log( response.vendor_info)
+            console.log(response.vendor_info);
           }
           if (response.status === 400) {
             Alert.alert('Error', response.errors[0].message, [{text: 'ok'}], {
@@ -298,9 +298,13 @@ class StoreFront extends React.Component {
                 {this.state.vendorInfo ? (
                   <View>
                     <View style={styles.pickupHeading}>
-                      <Text style={styles.styles_names}>{this.state.vendorInfo.name}</Text>
-                      <Text style={styles.styles_names2}>{this.state.vendorInfo.address} {this.state.vendorInfo.postal_code}</Text>
-    
+                      <Text style={styles.styles_names}>
+                        {this.state.vendorInfo.name}
+                      </Text>
+                      <Text style={styles.styles_names2}>
+                        {this.state.vendorInfo.address}{' '}
+                        {this.state.vendorInfo.postal_code}
+                      </Text>
                     </View>
                     <View style={styles.pickupInfo}>
                       <View style={styles.workTimes}>
@@ -348,9 +352,6 @@ class StoreFront extends React.Component {
                         </View>
                       </View>
                     </View>
-
-
-
 
                     <View style={styles.optionsContainer}>
                       <View style={styles.modalOptionsHeading}>

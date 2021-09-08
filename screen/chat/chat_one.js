@@ -405,6 +405,7 @@ class Chat_one extends Component {
                 </FooterTab>
               </Footer>
             </View>
+          
           </View>
         )}
       </Root>
