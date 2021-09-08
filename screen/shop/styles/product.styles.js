@@ -444,6 +444,7 @@ export const styles = StyleSheet.create({
   addressCartText: {
     flex: 1,
     color: '#707070',
+    fontFamily: 'FuturaPT-Book',
   },
   activeAddress: {
     borderColor: '#3D80F2',
