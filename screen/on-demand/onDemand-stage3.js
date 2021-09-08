@@ -3,9 +3,7 @@ import {
   Text,
   View,
   ScrollView,
-  ImageBackground,
-  Alert,
-  TouchableOpacity,
+  Image
 } from 'react-native';
 import {Button, Icon} from 'native-base';
 import {EmptyGlass, LidCup, LidSleeveCup, Bag, Verify} from '../com/svg-files';
@@ -19,6 +17,8 @@ import {selectUserToken} from '../../redux/user/user.selectors';
 import {selectOnDemandItems} from '../../redux/onDemand/onDemand.selectors';
 import {addReturnItems} from '../../redux/onDemand/onDemand.actions';
 import {connect} from 'react-redux';
+
+import VerifyImg from '../../asset/img/verify.png';
 
 const _defz = require('../com/def');
 
@@ -197,20 +197,21 @@ class OnDemandStage3 extends Component {
             <View
               style={{
                 flexDirection: 'row',
-                
+                alignItems: 'center',
+                paddingHorizontal: 50,
               }}>
               <View style={styles.tip}>
-                <Text style={styles.tipHead}>Your ticket will be verified in-store.</Text>
+                <Text style={styles.tipHead}>
+                  Your ticket will be verified in-store.
+                </Text>
                 <Button
                   transparent
                   onPress={() => this.props.navigation.navigate('Terms')}>
-                  <Text style={styles.tipTerms}>
-                    having problem verifying?
-                  </Text>
+                  <Text style={styles.tipTerms}>having problem verifying?</Text>
                 </Button>
               </View>
               <Button transparent style={styles.verifyButton}>
-                <Verify width={_defz.width/2.7} height={_defz.width/2}  />
+                <Image source={VerifyImg} resizeMode={'stretch'} />
               </Button>
             </View>
             <View style={{marginTop: 100}} />

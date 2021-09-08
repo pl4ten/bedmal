@@ -19,6 +19,7 @@ export const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: '#FAFAFA',
     textAlign: 'center',
+    marginRight: 20,
   },
   mainScrollView: {
     backgroundColor: '#fff',
@@ -126,10 +127,7 @@ export const styles = StyleSheet.create({
     color: '#707070',
   },
   tip: {
-    width: '60%',
-    marginTop: 10,
     alignSelf: 'flex-start',
-    marginLeft: '-5%',
     borderRadius: 10,
     paddingVertical: 10,
     paddingHorizontal: 20,
@@ -279,6 +277,5 @@ export const styles = StyleSheet.create({
   },
   verifyButton: {
     alignSelf: 'center',
-    marginLeft: 5,
   },
 });
