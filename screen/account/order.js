@@ -267,36 +267,36 @@ class Order extends Component {
                 <View style={{marginTop: 200}} />
               </ScrollView>
             </View>
+            <View style={styles.centeredView}>
+              <Modal
+                animationType="slide"
+                transparent={true}
+                visible={this.state.modalVisible}
+                onRequestClose={() => {
+                  this.setState({modalVisible: false});
+                }}>
+                <View style={styles.centeredView}>
+                  <View style={styles.modalView}>
+                    <Text style={styles.modalTitle}>
+                      Are you sure you wish to cancel?
+                    </Text>
+                    <View style={styles.modalButtons}>
+                      <Button transparent onPress={() => this.cancelOrder()}>
+                        <Text style={styles.yesText}>yes</Text>
+                      </Button>
+                      <Button
+                        transparent
+                        onPress={() => this.setState({modalVisible: false})}>
+                        <Text style={styles.noText}>no</Text>
+                      </Button>
+                    </View>
+                  </View>
+                </View>
+              </Modal>
+            </View>
           </>
         ) : null}
         <Footers navigation={this.props.navigation} route={'account'} />
-        <View style={styles.centeredView}>
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={this.state.modalVisible}
-            onRequestClose={() => {
-              this.setState({modalVisible: false});
-            }}>
-            <View style={styles.centeredView}>
-              <View style={styles.modalView}>
-                <Text style={styles.modalTitle}>
-                  Are you sure you wish to cancel?
-                </Text>
-                <View style={styles.modalButtons}>
-                  <Button transparent onPress={() => this.cancelOrder()}>
-                    <Text style={styles.yesText}>yes</Text>
-                  </Button>
-                  <Button
-                    transparent
-                    onPress={() => this.setState({modalVisible: false})}>
-                    <Text style={styles.noText}>no</Text>
-                  </Button>
-                </View>
-              </View>
-            </View>
-          </Modal>
-        </View>
       </View>
     );
   }
