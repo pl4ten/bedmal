@@ -61,6 +61,7 @@ class Bag extends React.Component {
         activeCart: '',
         isLoading: true,
         totalPrice: 0,
+        fulfillmentInfo: '',
       },
       () => {
         this.setState(
@@ -95,6 +96,7 @@ class Bag extends React.Component {
   }
   bagDeleteHandler() {
     this.props.deleteBag(this.state.activeBag - 1);
+    this.setState({activeBag: this.state.activeBag - 1});
     this.getBag;
   }
   sumPrice() {
