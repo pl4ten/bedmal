@@ -334,7 +334,7 @@ class Chat_one extends Component {
                 </>
               )}
             </View>
-
+            <View style={{marginTop: 10}} />
             <ScrollView
               ref={ref => {
                 this.scrollView = ref;
@@ -405,7 +405,6 @@ class Chat_one extends Component {
                 </FooterTab>
               </Footer>
             </View>
-          
           </View>
         )}
       </Root>
