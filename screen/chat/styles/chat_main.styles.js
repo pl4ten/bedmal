@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
     textTransform: 'capitalize',
     position: 'absolute',
     top: 0,
-    left: 10,
+    left: 30,
   },
   headerBtn: {
     textTransform: 'capitalize',
