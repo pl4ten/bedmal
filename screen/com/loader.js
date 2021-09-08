@@ -27,8 +27,8 @@ const styles = StyleSheet.create({
 
   loadingz: {
     position: 'absolute',
-    width: _defz.width,
-    height: _defz.height,
+    width: '100%',
+    height: '100%',
 
     zIndex: 200,
     top: 0,
